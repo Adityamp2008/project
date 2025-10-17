@@ -1,20 +1,38 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [LoginController::class, 'index'])->name('login');
+Route::post('/login', [LoginController::class, 'loginAction'])->name('login.action');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+
+// Semua route yang butuh login
+
+//routing admin
+Route::group([
+    'prefix' => 'admin',
+    'middleware' => 'auth'
+], function() {
+    Route::get('/dashboard',[DashboardController::class, 'index'])->name('admin.dashboard');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+//routing petugas
+Route::group([
+    'prefix' => 'petugas',
+    'middleware' => 'auth'
+], function() {
+    Route::get('/dashboard',[DashboardController::class, 'index'])->name('petugas.dashboard');
 });
 
+//routing kepdin
+Route::group([
+    'prefix' => 'kepdin',
+    'middleware' => 'auth'
+], function() {
+    Route::get('/dashboard',[DashboardController::class, 'index'])->name('kepdin.dashboard');
+});
 require __DIR__.'/auth.php';
