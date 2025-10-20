@@ -7,9 +7,10 @@
     <form action="{{ route('atk.store') }}" method="POST">
         @csrf
         <div class="mb-3">
-    <label class="form-label">Kode (otomatis)</label>
-    <input type="text" class="form-control" value="(otomatis terisi saat disimpan)" readonly>
-  </div>
+    <label class="form-label">Kode Barang</label>
+    <input type="text" name="code" class="form-control" value="{{ $newCode }}" readonly>
+</div>
+
 
         <div class="mb-3">
             <label class="form-label">Nama Barang</label>

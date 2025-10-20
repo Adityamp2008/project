@@ -20,42 +20,53 @@ class AtkItemController extends Controller
     }
 
      public function create()
-     {
-         return view('pages.admin.atk.create'); 
-     }
+{
+    // ambil kode terakhir
+    $lastCode = AtkItem::orderBy('id', 'desc')->value('code');
 
-     public function store(Request $r)
-     {
-        $r->validate([
-   'name'=>'required',
-   'stock'=>'nullable|integer|min:0',
-]);
+    if ($lastCode) {
+        // ambil angka dari kode terakhir, misal: ID-005 -> 5
+        $num = (int) str_replace('ID-', '', $lastCode) + 1;
+    } else {
+        $num = 1;
+    }
 
-// ambil kode terakhir
-$lastCode = AtkItem::orderBy('id','desc')->value('code');
-if ($lastCode) {
-    $num = (int) str_replace('ATK-', '', $lastCode) + 1;
-} else {
-    $num = 1;
+    // format jadi ID-001, ID-002, dst
+    $newCode = 'ID-' . str_pad($num, 3, '0', STR_PAD_LEFT);
+
+    // kirim ke view
+    return view('pages.admin.atk.create', compact('newCode'));
 }
-$code = 'ATK-' . str_pad($num, 4, '0', STR_PAD_LEFT);
 
-// opsional: generate barcode (pakai teks saja)
-$barcode = $code; // bisa juga generate gambar nanti
+public function store(Request $r)
+{
+    $r->validate([
+        'name'=>'required',
+        'stock'=>'nullable|integer|min:0',
+    ]);
 
-AtkItem::create([
-    'code' => $code,
-    'name' => $r->name,
-    'description' => $r->description,
-    'unit' => $r->unit,
-    'stock' => $r->stock ?? 0,
-    'low_stock_threshold' => $r->low_stock_threshold,
-    'category' => $r->category,
-    'barcode' => $barcode ?? null, // pastikan kolom ada di tabel
-]);
+    // generate ulang (supaya aman kalau ada request lain)
+    $lastCode = AtkItem::orderBy('id', 'desc')->value('code');
+    if ($lastCode) {
+        $num = (int) str_replace('ID-', '', $lastCode) + 1;
+    } else {
+        $num = 1;
+    }
+    $code = 'ID-' . str_pad($num, 3, '0', STR_PAD_LEFT);
 
-        return redirect()->route('atk.index')->with('success','Item dibuat');
-     }
+    AtkItem::create([
+        'code' => $code,
+        'name' => $r->name,
+        'description' => $r->description,
+        'unit' => $r->unit,
+        'stock' => $r->stock ?? 0,
+        'low_stock_threshold' => $r->low_stock_threshold,
+        'category' => $r->category,
+    ]);
+
+    return redirect()->route('atk.index')->with('success', 'Item baru berhasil dibuat!');
+}
+
 
      public function edit(AtkItem $atk)
      {

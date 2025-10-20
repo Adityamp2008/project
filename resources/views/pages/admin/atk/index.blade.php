@@ -39,7 +39,6 @@
                     <th>Kategori</th>
                     <th>Satuan</th>
                     <th>Stok</th>
-                    <th>Barcode</th>
                     <th>Status</th>
                     <th width="130">Aksi</th>
                 </tr>
@@ -54,15 +53,6 @@
                     <td class="text-center">{{ $item->unit ?? '-' }}</td>
                     <td class="text-center">{{ $item->stock }}</td>
 
-                    <td class="text-center">
-                        @if($item->barcode)
-                            {{-- tampilkan barcode (pakai milon/barcode) --}}
-                            {!! DNS1D::getBarcodeHTML($item->barcode, 'C128', 1.5, 40) !!}
-                            <div style="font-size:12px;">{{ $item->barcode }}</div>
-                        @else
-                            <span class="text-muted">-</span>
-                        @endif
-                    </td>
 
                     <td class="text-center">
                         @if($item->active)
