@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AtkItemController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Admin\AssetsController;
 use App\Http\Controllers\Admin\KategoriController;
@@ -30,6 +31,8 @@ Route::group([
     Route::resource('kondisi', KondisiController::class);
     Route::resource('lokasi', LokasiController::class);
     Route::resource('riwayat', RiwayatController::class);
+    Route::resource('users', UserController::class);
+
 
 });
 

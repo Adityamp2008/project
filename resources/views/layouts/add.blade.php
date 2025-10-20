@@ -58,8 +58,6 @@
                 <i class="bi bi-list"></i>
               </a>
             </li>
-            <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Home</a></li>
-            <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Contact</a></li>
           </ul>
           <ul class="navbar-nav ms-auto">
             <li class="nav-item dropdown user-menu">
@@ -74,7 +72,7 @@
               </ul>
             </li>
           </ul>
-        </div>>
+        </div>
       </nav>
       <!--end::Header-->
       <!--begin::Sidebar-->
@@ -109,61 +107,122 @@
         <li class="nav-item">
           <a href="{{ route('admin.dashboard') }}"
              class="nav-link {{ Route::is('admin.dashboard') ? 'active' : '' }}">
-            <i class="nav-icon bi bi-circle"></i>
+            <i class="nav-icon bi bi-speedometer2"></i>
             <p>Dashboard</p>
           </a>
         </li>
 
     {{-- === Group: Admin === --}}
-    <li class="nav-item {{ Route::is('admin.*') || Route::is('atk.*') ? 'menu-open' : '' }}">
-      <a href="#" class="nav-link {{ Route::is('admin.*') || Route::is('atk.*') ? 'active' : '' }}">
-        <i class="nav-icon bi bi-speedometer"></i>
-        <p>
-          Admin
-          <i class="nav-arrow bi bi-chevron-right"></i>
-        </p>
+<li class="nav-item {{ Route::is('atk.*') ? 'menu-open' : '' }}">
+  <a href="#" class="nav-link {{ Route::is('atk.*') ? 'active' : '' }}">
+    <i class="nav-icon bi bi-box-seam"></i>
+    <p>
+      Inventaris Aset
+      <i class="nav-arrow bi bi-chevron-right"></i>
+    </p>
+  </a>
+
+    <ul class="nav nav-treeview">
+    <li class="nav-item">
+      <a href="{{ route('atk.index') }}"
+         class="nav-link {{ Route::is('atk.*') ? 'active' : '' }}">
+        <i class="nav-icon bi bi-hdd-stack"></i>
+        <p>Aset tetap</p>
       </a>
+    </li>
+  </ul>
 
-      <ul class="nav nav-treeview">
-        {{-- Dashboard --}}
+  <ul class="nav nav-treeview">
+    <li class="nav-item">
+      <a href="{{ route('atk.index') }}"
+         class="nav-link {{ Route::is('atk.*') ? 'active' : '' }}">
+        <i class="nav-icon bi bi-pencil-square"></i>
+        <p>ATK</p>
+      </a>
+    </li>
+  </ul>
+</li>
 
 
-        {{-- ATK --}}
-        <li class="nav-item">
-          <a href="{{ route('atk.index') }}"
-             class="nav-link {{ Route::is('atk.*') ? 'active' : '' }}">
-            <i class="nav-icon bi bi-circle"></i>
-            <p>ATK</p>
+          <li class="nav-item">
+          <a href="{{ route('admin.dashboard') }}"
+             class="nav-link {{ Route::is('admin.dashboard') ? 'active' : '' }}">
+            <i class="nav-icon bi bi-clipboard-check"></i>
+            <p>Kelayakan aset</p>
           </a>
         </li>
-      </ul>
-    </li>
-
-        <li class="nav-item {{ Route::is('admin.*') || Route::is('atk.*') ? 'menu-open' : '' }}">
-      <a href="#" class="nav-link {{ Route::is('admin.*') || Route::is('atk.*') ? 'active' : '' }}">
-        <i class="nav-icon bi bi-person-fill"></i>
-        <p>
-          akses akun
-          <i class="nav-arrow bi bi-chevron-right"></i>
-        </p>
-      </a>
-
-      <ul class="nav nav-treeview">
-        {{-- Dashboard --}}
-
-
-        {{-- ATK --}}
+        
         <li class="nav-item">
-          <a href="{{ route('atk.index') }}"
-             class="nav-link {{ Route::is('atk.*') ? 'active' : '' }}">
-            <i class="nav-icon bi bi-circle"></i>
-            <p>Kelola akun</p>
-          </a>
-        </li>
-      </ul>
+        <a href="{{ route('admin.dashboard') }}"
+           class="nav-link {{ Route::is('admin.dashboard') ? 'active' : '' }}">
+          <i class="nav-icon bi bi-tools"></i>
+          <p>Riwayat perawatan</p>
+        </a>
+      </li>
+
+<li class="nav-item {{ Route::is('users.*') ? 'menu-open' : '' }}">
+  <a href="#" class="nav-link {{ Route::is('users.*') ? 'active' : '' }}">
+    <i class="nav-icon bi bi bi-file-earmark-bar-graph"></i>
+    <p>
+      Laporan
+      <i class="nav-arrow bi bi-chevron-right"></i>
+    </p>
+  </a>
+
+  <ul class="nav nav-treeview">
+    <li class="nav-item">
+      <a href="{{ route('users.index') }}"
+         class="nav-link {{ Route::is('users.*') ? 'active' : '' }}">
+        <i class="nav-icon bi bi-box"></i>
+        <p>Inventaris</p>
+      </a>
     </li>
 
+    <li class="nav-item">
+      <a href="{{ route('users.index') }}"
+         class="nav-link {{ Route::is('users.*') ? 'active' : '' }}">
+        <i class="nav-icon bi bi-journal-text"></i>
+        <p>Stok & Pemakaian</p>
+      </a>
+    </li>
 
+    <li class="nav-item">
+      <a href="{{ route('users.index') }}"
+         class="nav-link {{ Route::is('users.*') ? 'active' : '' }}">
+        <i class="nav-icon bi bi-wrench-adjustable-circle"></i>
+        <p>Perbaikan</p>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a href="{{ route('users.index') }}"
+         class="nav-link {{ Route::is('users.*') ? 'active' : '' }}">
+        <i class="nav-icon bi bi bi-clipboard-data"></i>
+        <p>Hasil Kelayakan</p>
+      </a>
+    </li>
+  </ul>
+</li>
+
+        <li class="nav-item {{ Route::is('users.*') ? 'menu-open' : '' }}">
+  <a href="#" class="nav-link {{ Route::is('users.*') ? 'active' : '' }}">
+    <i class="nav-icon bi bi bi-people-fill"></i>
+    <p>
+      Manajemen Akun
+      <i class="nav-arrow bi bi-chevron-right"></i>
+    </p>
+  </a>
+
+  <ul class="nav nav-treeview">
+    <li class="nav-item">
+      <a href="{{ route('users.index') }}"
+         class="nav-link {{ Route::is('users.*') ? 'active' : '' }}">
+        <i class="nav-icon bi bi-person-gear"></i>
+        <p>Kelola akun</p>
+      </a>
+    </li>
+  </ul>
+</li>
 
   </ul>
 </nav>
