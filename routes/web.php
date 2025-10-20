@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\AtkItemController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +19,7 @@ Route::group([
     'middleware' => 'auth'
 ], function() {
     Route::get('/dashboard',[DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::resource('atk', AtkItemController::class);
 });
 
 //routing petugas
@@ -35,4 +37,10 @@ Route::group([
 ], function() {
     Route::get('/dashboard',[DashboardController::class, 'index'])->name('kepdin.dashboard');
 });
+
+Route::middleware(['auth','role:petugas|admin|kepdin'])->group(function(){
+    
+});
+
+
 require __DIR__.'/auth.php';
