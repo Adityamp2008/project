@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('atk_usages', function (Blueprint $table) {
             $table->id();
+            $table->string('barcode')->nullable();
             $table->foreignId('atk_item_id')->constrained('atk_items')->onDelete('cascade');
             $table->foreignId('user_id')->nullable()->constrained('users'); // pemakai / pegawai
             $table->integer('quantity');

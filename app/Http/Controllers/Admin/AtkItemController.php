@@ -27,11 +27,33 @@ class AtkItemController extends Controller
      public function store(Request $r)
      {
         $r->validate([
-           'code'=>'required|unique:atk_items,code',
-           'name'=>'required',
-           'stock'=>'nullable|integer|min:0',
-        ]);
-        AtkItem::create($r->only(['code','name','description','unit','stock','low_stock_threshold','category']));
+   'name'=>'required',
+   'stock'=>'nullable|integer|min:0',
+]);
+
+// ambil kode terakhir
+$lastCode = AtkItem::orderBy('id','desc')->value('code');
+if ($lastCode) {
+    $num = (int) str_replace('ATK-', '', $lastCode) + 1;
+} else {
+    $num = 1;
+}
+$code = 'ATK-' . str_pad($num, 4, '0', STR_PAD_LEFT);
+
+// opsional: generate barcode (pakai teks saja)
+$barcode = $code; // bisa juga generate gambar nanti
+
+AtkItem::create([
+    'code' => $code,
+    'name' => $r->name,
+    'description' => $r->description,
+    'unit' => $r->unit,
+    'stock' => $r->stock ?? 0,
+    'low_stock_threshold' => $r->low_stock_threshold,
+    'category' => $r->category,
+    'barcode' => $barcode ?? null, // pastikan kolom ada di tabel
+]);
+
         return redirect()->route('atk.index')->with('success','Item dibuat');
      }
 
