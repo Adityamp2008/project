@@ -1,12 +1,13 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\AtkItemController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\AsetController;
-use App\Http\Controllers\KategoriController;
-use App\Http\Controllers\KondisiController;
-use App\Http\Controllers\LokasiController;
-use App\Http\Controllers\RiwayatController;
+use App\Http\Controllers\Admin\AssetsController;
+use App\Http\Controllers\Admin\KategoriController;
+use App\Http\Controllers\Admin\KondisiController;
+use App\Http\Controllers\Admin\LokasiController;
+use App\Http\Controllers\Admin\RiwayatController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,6 +24,13 @@ Route::group([
     'middleware' => 'auth'
 ], function() {
     Route::get('/dashboard',[DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::resource('atk', AtkItemController::class);
+    Route::resource('assets', AssetsController::class);
+    Route::resource('kategori', KategoriController::class);
+    Route::resource('kondisi', KondisiController::class);
+    Route::resource('lokasi', LokasiController::class);
+    Route::resource('riwayat', RiwayatController::class);
+
 });
 
 //routing petugas
@@ -41,14 +49,5 @@ Route::group([
     Route::get('/dashboard',[DashboardController::class, 'index'])->name('kepdin.dashboard');
 });
 
-
-Route::middleware(['/dashboard'])->group(function () {
-    Route::resource('assets', AssetsController::class);
-    Route::resource('kategori', KategoriController::class);
-    Route::resource('kondisi', KondisiController::class);
-    Route::resource('lokasi', LokasiController::class);
-    Route::resource('riwayat', RiwayatController::class);
-
-});
 
 require __DIR__.'/auth.php';

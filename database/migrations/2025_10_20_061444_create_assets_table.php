@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->foreignId('kategori_id')->constrained();
+            $table->foreignId('kategoris_id')->constrained();
             $table->foreignId('kondisi_id')->constrained();
             $table->foreignId('lokasi_id')->constrained();
             $table->date('tanggal_perolehan');
