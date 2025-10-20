@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.add')
 
 @section('title', 'Edit ATK')
 
