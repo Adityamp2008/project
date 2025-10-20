@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->foreignId('kategoris_id')->constrained();
-            $table->foreignId('kondisi_id')->constrained();
-            $table->foreignId('lokasi_id')->constrained();
-            $table->date('tanggal_perolehan');
+            $table->string('nama'); // Nama aset, misal "Laptop Asus"
+            $table->foreignId('kategoris_id')->constrained()->onDelete('cascade');
+            $table->foreignId('kondisi_id')->constrained()->onDelete('cascade');
+            $table->foreignId('lokasi_id')->constrained()->onDelete('cascade');
+            $table->date('tanggal_perolehan')->nullable();
+            $table->integer('umur')->nullable(); // umur aset (opsional, bisa dihitung otomatis)
+            $table->text('deskripsi')->nullable();
             $table->timestamps();
         });
     }

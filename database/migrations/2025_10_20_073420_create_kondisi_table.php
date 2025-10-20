@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('riwayat', function (Blueprint $table) {
+        Schema::create('kondisi', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('asset_id')->constrained()->onDelete('cascade');
-            $table->enum('tipe', ['penggunaan', 'perbaikan']);
-            $table->text('deskripsi');
-            $table->date('tanggal');
+            $table->string('nama');
             $table->timestamps();
         });
     }
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('riwayat');
+        Schema::dropIfExists('kondisi');
     }
 };

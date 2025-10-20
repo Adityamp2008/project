@@ -56,7 +56,7 @@ class Assets extends Model
     }
 
     /**
-     * Logika otomatis penilaian kelayakan aset
+     * Logika otomatis penilaian kelayakan assets
      * Contoh sederhana:
      *  - Jika umur lebih dari 5 tahun atau kondisi buruk, maka tidak layak
      */
@@ -66,9 +66,9 @@ class Assets extends Model
 
         $kondisiLayak = ['baik', 'normal']; // contoh kondisi layak
 
-        $umurAset = $this->umur ?? $this->calculateUmur();
+        $umurassets = $this->umur ?? $this->calculateUmur();
 
-        return ($umurAset <= $maxUmur) && in_array(strtolower($this->kondisi->nama ?? ''), $kondisiLayak);
+        return ($umurassets <= $maxUmur) && in_array(strtolower($this->kondisi->nama ?? ''), $kondisiLayak);
     }
 
     /**

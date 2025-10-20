@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Aset;
+use App\Models\Assets;
 use App\Models\Kategori;
 use App\Models\Kondisi;
 use App\Models\Lokasi;
@@ -17,7 +17,7 @@ class AssetsController extends Controller
     public function index()
     {
         $assets = Asset::with(['kategori', 'kondisi', 'lokasi', 'riwayat'])->get();
-        return view('aset.index', compact('assets'));
+        return view('assets.index', compact('assets'));
     }
 
     /**
@@ -28,7 +28,7 @@ class AssetsController extends Controller
         $kategoris = Kategori::all();
         $kondisis = Kondisi::all();
         $lokasis = Lokasi::all();
-        return view('aset.create', compact('kategoris', 'kondisis', 'lokasis'));
+        return view('assets.create', compact('kategoris', 'kondisis', 'lokasis'));
     }
 
     /**
@@ -44,9 +44,9 @@ class AssetsController extends Controller
             'tanggal_perolehan' => 'required|date',
         ]);
 
-        Aset::create($request->all());
+        assets::create($request->all());
 
-        return redirect()->route('aset.index')->with('success', 'Data aset berhasil ditambahkan.');
+        return redirect()->route('assets.index')->with('success', 'Data assets berhasil ditambahkan.');
     }
 
 
@@ -55,8 +55,8 @@ class AssetsController extends Controller
      */
     public function show(Assets $assets)
     {
-        $aset->load('riwayat', 'kategori', 'kondisi', 'lokasi');
-        return view('aset.show', compact('aset'));
+        $assets->load('riwayat', 'kategori', 'kondisi', 'lokasi');
+        return view('assets.show', compact('assets'));
     }
     /**
      * Show the form for editing the specified resource.
@@ -66,7 +66,7 @@ class AssetsController extends Controller
         $kategoris = Kategori::all();
         $kondisis = Kondisi::all();
         $lokasis = Lokasi::all();
-        return view('aset.edit', compact('aset', 'kategoris', 'kondisis', 'lokasis'));
+        return view('assets.edit', compact('assets', 'kategoris', 'kondisis', 'lokasis'));
     }
     
     /**
@@ -82,18 +82,18 @@ class AssetsController extends Controller
             'tanggal_perolehan' => 'required|date',
         ]);
 
-        $aset->update($request->all());
+        $assets->update($request->all());
 
-        return redirect()->route('aset.index')->with('success', 'Data aset berhasil diperbarui.');
+        return redirect()->route('assets.index')->with('success', 'Data assets berhasil diperbarui.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
 
-    public function destroy(Aset $aset)
+    public function destroy(assets $assets)
     {
-        $aset->delete();
-        return redirect()->route('aset.index')->with('success', 'Data aset berhasil dihapus.');
+        $assets->delete();
+        return redirect()->route('assets.index')->with('success', 'Data assets berhasil dihapus.');
     }
 }

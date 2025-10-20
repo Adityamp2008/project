@@ -13,7 +13,7 @@ class RiwayatController extends Controller
      */
     public function index()
     {
-        $riwayats = Riwayat::with('aset')->latest()->get();
+        $riwayats = Riwayat::with('assets')->latest()->get();
         return view('riwayat.index', compact('riwayats'));
     }
 
@@ -22,8 +22,8 @@ class RiwayatController extends Controller
      */
     public function create()
     {
-        $asets = Aset::all();
-        return view('riwayat.create', compact('asets'));
+        $assetss = assets::all();
+        return view('riwayat.create', compact('assetss'));
     }
 
     /**
@@ -32,7 +32,7 @@ class RiwayatController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'aset_id' => 'required|exists:asets,id',
+            'assets_id' => 'required|exists:assetss,id',
             'tipe' => 'required|in:penggunaan,perbaikan',
             'deskripsi' => 'required|string',
             'tanggal' => 'required|date',
@@ -48,7 +48,7 @@ class RiwayatController extends Controller
      */
     public function show(Riwayat $riwayat)
     {
-        $riwayat->load('aset');
+        $riwayat->load('assets');
         return view('riwayat.show', compact('riwayat'));
     }
 
@@ -57,8 +57,8 @@ class RiwayatController extends Controller
      */
     public function edit(Riwayat $riwayat)
     {
-        $asets = Aset::all();
-        return view('riwayat.edit', compact('riwayat', 'asets'));
+        $assetss = assets::all();
+        return view('riwayat.edit', compact('riwayat', 'assetss'));
     }
 
     /**
@@ -67,7 +67,7 @@ class RiwayatController extends Controller
     public function update(Request $request, Riwayat $riwayat)
     {
         $request->validate([
-            'aset_id' => 'required|exists:asets,id',
+            'assets_id' => 'required|exists:assetss,id',
             'tipe' => 'required|in:penggunaan,perbaikan',
             'deskripsi' => 'required|string',
             'tanggal' => 'required|date',
