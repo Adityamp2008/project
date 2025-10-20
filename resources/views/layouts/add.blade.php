@@ -97,7 +97,7 @@
           <!--end::Brand Link-->
         </div>
         <div class="sidebar-wrapper">
- <nav class="mt-2">
+<nav class="mt-2">
   <ul class="nav sidebar-menu flex-column"
       data-lte-toggle="treeview"
       role="navigation"
@@ -105,44 +105,69 @@
       data-accordion="false"
       id="navigation">
 
-    <!-- Dashboard Group -->
-    <li class="nav-item {{ request()->is('dashboard*') ? 'menu-open' : '' }}">
-      <a href="#" class="nav-link {{ request()->is('admin.dashboard*') ? 'active' : '' }}">
-        <i class="nav-icon bi bi-speedometer"></i>
-        <p>
-          Dashboard
-          <i class="nav-arrow bi bi-chevron-right"></i>
-        </p>
-      </a>
-
-      <ul class="nav nav-treeview">
+          {{-- === Menu di luar group === --}}
         <li class="nav-item">
           <a href="{{ route('admin.dashboard') }}"
-             class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}">
+             class="nav-link {{ Route::is('admin.dashboard') ? 'active' : '' }}">
             <i class="nav-icon bi bi-circle"></i>
             <p>Dashboard</p>
           </a>
         </li>
 
+    {{-- === Group: Admin === --}}
+    <li class="nav-item {{ Route::is('admin.*') || Route::is('atk.*') ? 'menu-open' : '' }}">
+      <a href="#" class="nav-link {{ Route::is('admin.*') || Route::is('atk.*') ? 'active' : '' }}">
+        <i class="nav-icon bi bi-speedometer"></i>
+        <p>
+          Admin
+          <i class="nav-arrow bi bi-chevron-right"></i>
+        </p>
+      </a>
+
+      <ul class="nav nav-treeview">
+        {{-- Dashboard --}}
+
+
+        {{-- ATK --}}
         <li class="nav-item">
           <a href="{{ route('atk.index') }}"
-             class="nav-link {{ request()->is('dashboard/atk') ? 'active' : '' }}">
+             class="nav-link {{ Route::is('atk.*') ? 'active' : '' }}">
             <i class="nav-icon bi bi-circle"></i>
             <p>ATK</p>
           </a>
         </li>
-
-        {{-- <li class="nav-item">
-          <a href="{{ route('dashboard.v3') }}"
-             class="nav-link {{ request()->is('dashboard/v3') ? 'active' : '' }}">
-            <i class="nav-icon bi bi-circle"></i>
-            <p>Dashboard v3</p>
-          </a>
-        </li> --}}
       </ul>
     </li>
+
+        <li class="nav-item {{ Route::is('admin.*') || Route::is('atk.*') ? 'menu-open' : '' }}">
+      <a href="#" class="nav-link {{ Route::is('admin.*') || Route::is('atk.*') ? 'active' : '' }}">
+        <i class="nav-icon bi bi-person-fill"></i>
+        <p>
+          akses akun
+          <i class="nav-arrow bi bi-chevron-right"></i>
+        </p>
+      </a>
+
+      <ul class="nav nav-treeview">
+        {{-- Dashboard --}}
+
+
+        {{-- ATK --}}
+        <li class="nav-item">
+          <a href="{{ route('atk.index') }}"
+             class="nav-link {{ Route::is('atk.*') ? 'active' : '' }}">
+            <i class="nav-icon bi bi-circle"></i>
+            <p>Kelola akun</p>
+          </a>
+        </li>
+      </ul>
+    </li>
+
+
+
   </ul>
 </nav>
+
 
         </div>
         <!--end::Sidebar Wrapper-->
