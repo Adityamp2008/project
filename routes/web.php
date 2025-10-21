@@ -40,8 +40,9 @@ Route::get('atk/export/pdf', [AtkItemController::class, 'exportPdf'])->name('atk
 Route::get('atk/{atk}/in', [AtkItemController::class, 'stockInForm'])->name('atk.stockin.form');
 Route::post('atk/{atk}/in', [AtkItemController::class, 'stockIn'])->name('atk.stockin');
 
-Route::get('atk/{atk}/out', [AtkItemController::class, 'stockOutForm'])->name('atk.stockout.form');
-Route::post('atk/{atk}/out', [AtkItemController::class, 'stockOut'])->name('atk.stockout');
+Route::get('/atk/{id}/stock-out', [AtkItemController::class, 'stockOutForm'])->name('atk.stockout.form');
+Route::post('/atk/{id}/stock-out', [AtkItemController::class, 'stockOut'])->name('atk.stockout');
+
 
 
 });

@@ -157,19 +157,21 @@ public function stockIn(Request $r, AtkItem $atk)
     return redirect()->route('atk.index')->with('success', 'Stok berhasil ditambah!');
 }
 
-// FORM Barang Keluar (udah ada fungsi stockOut(), ini form-nya aja)
-public function stockOutForm(Request $request, AtkItem $atk)
-
+public function stockOutForm($id)
 {
+    $atk = AtkItem::findOrFail($id);
+    return view('pages.admin.atk.stock_out', compact('atk'));
+}
 
-            return view('pages.admin.atk.stock_out',compact('atk'));
-
-    $atk = AtkItem::findOrFail($atk);
+// FORM Barang Keluar (udah ada fungsi stockOut(), ini form-nya aja)
+public function stockOut(Request $request, $id)
+{
+    $atk = AtkItem::findOrFail($id);
 
     $request->validate([
         'quantity' => 'required|integer|min:1',
-        'user_id' => 'nullable|exists:users,id',
-        'note' => 'nullable|string'
+        'used_by' => 'nullable|string|max:255',
+        'note' => 'nullable|string|max:255',
     ]);
 
     // Kurangi stok
@@ -185,6 +187,7 @@ public function stockOutForm(Request $request, AtkItem $atk)
 
     return redirect()->route('atk.index')->with('success', 'Stok berhasil dikurangi.');
 }
+
 
     
 
