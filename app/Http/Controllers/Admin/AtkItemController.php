@@ -123,7 +123,7 @@ public function store(Request $r)
      // EXPORT PDF
     public function exportPdf(Request $r){
         $items = AtkItem::all();
-        $pdf = PDF::loadView('atk.pdf_items', compact('items'));
+        $pdf = PDF::loadView('pages.admin.atk.pdf_items', compact('items'));
         return $pdf->download('atk_items.pdf');
     }
 
@@ -155,9 +155,29 @@ public function stockIn(Request $r, AtkItem $atk)
 }
 
 // FORM Barang Keluar (udah ada fungsi stockOut(), ini form-nya aja)
-public function stockOutForm(AtkItem $atk)
+public function stockOutForm(Request $request, AtkItem $atk)
+
 {
-    return view('pages.admin.atk.stock_out', compact('atk'));
+    $atk = AtkItem::findOrFail($atk);
+
+    $request->validate([
+        'quantity' => 'required|integer|min:1',
+        'user_id' => 'nullable|exists:users,id',
+        'note' => 'nullable|string'
+    ]);
+
+    // Kurangi stok
+    $atk->decrement('stock', $request->quantity);
+
+    // Simpan riwayat
+    AtkUsage::create([
+        'atk_item_id' => $atk->id,
+        'used_by' => $request->used_by,
+        'quantity' => $request->quantity,
+        'note' => $request->note,
+    ]);
+
+    return redirect()->route('atk.index')->with('success', 'Stok berhasil dikurangi.');
 }
 
     

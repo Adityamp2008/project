@@ -8,9 +8,14 @@
     <form action="{{ route('atk.stockout', $atk->id) }}" method="POST">
         @csrf
         <div class="mb-3">
-            <label>Jumlah Keluar</label>
-            <input type="number" name="quantity" class="form-control" min="1" required>
-        </div>
+    <label>Dipakai oleh (opsional)</label>
+    <select name="user_id" class="form-control">
+        <option value="">-- Pilih Pegawai --</option>
+        @foreach ($users as $user)
+            <option value="{{ $user->id }}">{{ $user->name }}</option>
+        @endforeach
+    </select>
+</div>
 
         <div class="mb-3">
             <label>Dipakai oleh (opsional)</label>
