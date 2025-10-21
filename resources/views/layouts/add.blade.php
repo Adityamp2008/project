@@ -124,8 +124,8 @@
 
     <ul class="nav nav-treeview">
     <li class="nav-item">
-      <a href="{{ route('atk.index') }}"
-         class="nav-link {{ Route::is('atk.*') ? 'active' : '' }}">
+      <a href="{{ route('assets.index') }}"
+         class="nav-link {{ Route::is('assets.*') ? 'active' : '' }}">
         <i class="nav-icon bi bi-hdd-stack"></i>
         <p>Aset tetap</p>
       </a>

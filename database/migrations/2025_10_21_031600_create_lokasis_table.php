@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('riwayats', function (Blueprint $table) {
+        Schema::create('lokasis', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('assets_id')->constrained('assets')->onDelete('cascade');
-            $table->enum('tipe', ['penggunaan', 'perbaikan']);
-            $table->text('deskripsi');
-            $table->date('tanggal');
             $table->timestamps();
         });
     }
@@ -26,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('riwayats');
+        Schema::dropIfExists('lokasis');
     }
 };

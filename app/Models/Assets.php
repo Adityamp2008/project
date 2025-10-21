@@ -6,15 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
-class Asset extends Model
+class Assets extends Model
 {
     use HasFactory;
 
-    protected $table = 'asset';
+    protected $table = 'assets';
 
     protected $fillable = [
         'nama_asset',
-        'kode_asset',
+        'asset_id',
         'kategori_id',
         'lokasi_id',
         'kondisi_id',
@@ -23,7 +23,7 @@ class Asset extends Model
 
     public function riwayats()
     {
-        return $this->hasMany(Riwayat::class, 'assets_id');
+        return $this->hasMany(Riwayat::class, 'asset_id');
     }
 
     protected $dates = ['tanggal_perolehan'];
@@ -57,7 +57,7 @@ class Asset extends Model
      */
     public function riwayat() 
     {
-        return $this->hasMany(Riwayat::class, 'assets_id');
+        return $this->hasMany(Riwayat::class, 'asset_id');
     }
 
     /**
