@@ -43,6 +43,10 @@ Route::post('atk/{atk}/in', [AtkItemController::class, 'stockIn'])->name('atk.st
 Route::get('atk/{atk}/out', [AtkItemController::class, 'stockOutForm'])->name('atk.stockout.form');
 Route::post('atk/{atk}/out', [AtkItemController::class, 'stockOut'])->name('atk.stockout');
 
+Route::get('/admin/laporan/report', [AtkItemController::class, 'report'])->name('laporan.report');
+Route::get('/admin/laporan/report/pdf', [AtkItemController::class, 'reportPdf'])->name('laporan.report.pdf');
+Route::get('/admin/laporan/report/excel', [AtkItemController::class, 'reportExcel'])->name('laporan.report.excel');
+
 
 });
 

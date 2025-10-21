@@ -9,4 +9,10 @@ class StockTransaction extends Model
     protected $fillable = ['atk_item_id','type','quantity','reference','user_id'];
 
     public function item() { return $this->belongsTo(AtkItem::class,'atk_item_id'); }
+
+    public function user()
+{
+    return $this->belongsTo(User::class, 'user_id');
+}
+
 }
