@@ -3,22 +3,36 @@
 
 @section('content')
 <div class="container py-4">
-    <h3>Tambah Stok: {{ $atk->name }}</h3>
 
-    <form action="{{ route('atk.stockin', $atk->id) }}" method="POST">
-        @csrf
-        <div class="mb-3">
-            <label>Jumlah Masuk</label>
-            <input type="number" name="quantity" class="form-control" min="1" required>
+    <div class="card">
+        {{-- Header Card --}}
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h2 class="card-title mb-0">Tambah Stok: {{ $atk->name }}</h2>
         </div>
 
-        <div class="mb-3">
-            <label>Keterangan / Referensi</label>
-            <input type="text" name="reference" class="form-control" placeholder="Contoh: Pembelian bulan Oktober">
-        </div>
+        {{-- Body Card --}}
+        <div class="card-body">
+            <form action="{{ route('atk.stockin', $atk->id) }}" method="POST">
+                @csrf
 
-        <button class="btn btn-primary">Simpan</button>
-        <a href="{{ route('atk.index') }}" class="btn btn-secondary">Kembali</a>
-    </form>
-</div>
+                {{-- Jumlah Masuk --}}
+                <div class="mb-3">
+                    <label class="form-label">Jumlah Masuk</label>
+                    <input type="number" name="quantity" class="form-control" min="1" required>
+                </div>
+
+                {{-- Keterangan / Referensi --}}
+                <div class="mb-3">
+                    <label class="form-label">Keterangan / Referensi</label>
+                    <input type="text" name="reference" class="form-control" placeholder="Contoh: Pembelian bulan Oktober">
+                </div>
+
+                {{-- Tombol aksi --}}
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary">Simpan</button>
+                    <a href="{{ route('atk.index') }}" class="btn btn-secondary">Batal</a>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection
