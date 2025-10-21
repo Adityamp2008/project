@@ -4,55 +4,47 @@
 <div class="container">
     <h3 class="mb-4">Edit Data Aset</h3>
 
-    <form action="{{ route('assets.update', $assets->id) }}" method="POST">
+    <form action="{{ route('assets.update', $asset->id) }}" method="POST">
         @csrf
         @method('PUT')
 
         <div class="mb-3">
-            <label>Nama Aset</label>
-            <input type="text" name="nama" class="form-control" value="{{ $assets->nama }}" required>
+            <label class="form-label">Nama Aset</label>
+            <input type="text" name="nama" class="form-control" value="{{ old('nama', $asset->nama) }}" required>
         </div>
 
         <div class="mb-3">
-            <label>Kategori</label>
-            <select name="kategori_id" class="form-select" required>
-                @foreach($kategoris as $kategori)
-                    <option value="{{ $kategori->id }}" {{ $assets->kategori_id == $kategori->id ? 'selected' : '' }}>
-                        {{ $kategori->nama }}
-                    </option>
-                @endforeach
+            <label class="form-label">Kategori</label>
+            <input type="text" name="kategori" class="form-control" value="{{ old('kategori', $asset->kategori) }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Kondisi</label>
+            <select name="kondisi" class="form-select" required>
+                <option value="Baik" {{ old('kondisi', $asset->kondisi) == 'Baik' ? 'selected' : '' }}>Baik</option>
+                <option value="Rusak Ringan" {{ old('kondisi', $asset->kondisi) == 'Rusak Ringan' ? 'selected' : '' }}>Rusak Ringan</option>
+                <option value="Rusak Berat" {{ old('kondisi', $asset->kondisi) == 'Rusak Berat' ? 'selected' : '' }}>Rusak Berat</option>
             </select>
         </div>
 
         <div class="mb-3">
-            <label>Kondisi</label>
-            <select name="kondisi_id" class="form-select" required>
-                @foreach($kondisis as $kondisi)
-                    <option value="{{ $kondisi->id }}" {{ $assets->kondisi_id == $kondisi->id ? 'selected' : '' }}>
-                        {{ $kondisi->nama }}
-                    </option>
-                @endforeach
-            </select>
+            <label class="form-label">Lokasi</label>
+            <input type="text" name="lokasi" class="form-control" value="{{ old('lokasi', $asset->lokasi) }}" required>
         </div>
 
         <div class="mb-3">
-            <label>Lokasi</label>
-            <select name="lokasi_id" class="form-select" required>
-                @foreach($lokasis as $lokasi)
-                    <option value="{{ $lokasi->id }}" {{ $assets->lokasi_id == $lokasi->id ? 'selected' : '' }}>
-                        {{ $lokasi->nama }}
-                    </option>
-                @endforeach
-            </select>
+            <label class="form-label">Tanggal Perolehan</label>
+            <input type="date" name="tanggal_perolehan" class="form-control" 
+                value="{{ old('tanggal_perolehan', $asset->tanggal_perolehan ? \Carbon\Carbon::parse($asset->tanggal_perolehan)->format('Y-m-d') : '') }}">
         </div>
 
         <div class="mb-3">
-            <label>Tanggal Perolehan</label>
-            <input type="date" name="tanggal_perolehan" class="form-control" value="{{ $assets->tanggal_perolehan }}" required>
+            <label class="form-label">Deskripsi</label>
+            <textarea name="description" class="form-control" rows="3">{{ old('description', $asset->description) }}</textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary">Update</button>
-        <a href="{{ route('assets.index') }}" class="btn btn-secondary">Batal</a>
+        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+        <a href="{{ route('assets.index') }}" class="btn btn-secondary">Kembali</a>
     </form>
 </div>
 @endsection

@@ -4,9 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Assets;
-use App\Models\Kategori;
-use App\Models\Kondisi;
-use App\Models\Lokasi;
 use Illuminate\Http\Request;
 
 class AssetsController extends Controller
@@ -16,7 +13,8 @@ class AssetsController extends Controller
      */
     public function index()
     {
-        $assets = Assets::with(['kategori', 'kondisi', 'lokasi', 'riwayat'])->get();
+        // Ambil semua data aset tanpa relasi
+        $assets = Assets::all();
         return view('pages.admin.assets.index', compact('assets'));
     }
 
@@ -25,10 +23,8 @@ class AssetsController extends Controller
      */
     public function create()
     {
-        $kategoris = Kategori::all();
-        $kondisis = Kondisi::all();
-        $lokasis = Lokasi::all();
-        return view('pages.admin.assets.create', compact('kategoris', 'kondisis', 'lokasis'));
+        // Tidak perlu kirim data relasi karena input manual
+        return view('pages.admin.assets.create');
     }
 
     /**
@@ -38,62 +34,51 @@ class AssetsController extends Controller
     {
         $request->validate([
             'nama' => 'required|string|max:255',
-            'kategori_id' => 'required|exists:kategoris,id',
-            'kondisi_id' => 'required|exists:kondisis,id',
-            'lokasi_id' => 'required|exists:lokasis,id',
+            'kategori' => 'required|string|max:255',
+            'kondisi' => 'required|string|max:255',
+            'lokasi' => 'required|string|max:255',
             'tanggal_perolehan' => 'required|date',
+            'description' => 'nullable|string',
         ]);
 
-        assets::create($request->all());
+        Assets::create($request->all());
 
-        return redirect()->route('pages.admin.assets.index')->with('success', 'Data assets berhasil ditambahkan.');
+        return redirect()->route('assets.index')->with('success', 'Data aset berhasil ditambahkan.');
     }
 
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Assets $assets)
-    {
-        $assets->load('riwayat', 'kategori', 'kondisi', 'lokasi');
-        return view('pages.admin.assets.show', compact('assets'));
-    }
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Assets $assets)
+    public function edit(Assets $asset)
     {
-        $kategoris = Kategori::all();
-        $kondisis = Kondisi::all();
-        $lokasis = Lokasi::all();
-        return view('pages.admin.assets.edit', compact('assets', 'kategoris', 'kondisis', 'lokasis'));
+        return view('pages.admin.assets.edit', compact('asset'));
     }
-    
+
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Assets $assets)
+    public function update(Request $request, Assets $asset)
     {
         $request->validate([
             'nama' => 'required|string|max:255',
-            'kategori_id' => 'required|exists:kategoris,id',
-            'kondisi_id' => 'required|exists:kondisis,id',
-            'lokasi_id' => 'required|exists:lokasis,id',
+            'kategori' => 'required|string|max:255',
+            'kondisi' => 'required|string|max:255',
+            'lokasi' => 'required|string|max:255',
             'tanggal_perolehan' => 'required|date',
+            'description' => 'nullable|string',
         ]);
 
-        $assets->update($request->all());
+        $asset->update($request->all());
 
-        return redirect()->route('pages.admin.assets.index')->with('success', 'Data assets berhasil diperbarui.');
+        return redirect()->route('assets.index')->with('success', 'Data aset berhasil diperbarui.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-
-    public function destroy(assets $assets)
+    public function destroy(Assets $asset)
     {
-        $assets->delete();
-        return redirect()->route('pages.admin.assets.index')->with('success', 'Data assets berhasil dihapus.');
+        $asset->delete();
+        return redirect()->route('assets.index')->with('success', 'Data aset berhasil dihapus.');
     }
 }

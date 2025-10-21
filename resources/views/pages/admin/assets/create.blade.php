@@ -6,44 +6,40 @@
 
     <form action="{{ route('assets.store') }}" method="POST">
         @csrf
+
         <div class="mb-3">
-            <label>Nama Aset</label>
+            <label class="form-label">Nama Aset</label>
             <input type="text" name="nama" class="form-control" required>
         </div>
 
         <div class="mb-3">
-            <label>Kategori</label>
-            <select name="kategori_id" class="form-select" required>
-                <option value="">-- Pilih Kategori --</option>
-                @foreach($kategoris as $kategori)
-                    <option value="{{ $kategori->id }}">{{ $kategori->nama }}</option>
-                @endforeach
-            </select>
+            <label class="form-label">Kategori</label>
+            <input type="text" name="kategori" class="form-control" required>
         </div>
 
         <div class="mb-3">
-            <label>Kondisi</label>
-            <select name="kondisi_id" class="form-select" required>
+            <label class="form-label">Kondisi</label>
+            <select name="kondisi" class="form-select" required>
                 <option value="">-- Pilih Kondisi --</option>
-                @foreach($kondisis as $kondisi)
-                    <option value="{{ $kondisi->id }}">{{ $kondisi->nama }}</option>
-                @endforeach
+                <option value="Baik">Baik</option>
+                <option value="Rusak Ringan">Rusak Ringan</option>
+                <option value="Rusak Berat">Rusak Berat</option>
             </select>
         </div>
 
         <div class="mb-3">
-            <label>Lokasi</label>
-            <select name="lokasi_id" class="form-select" required>
-                <option value="">-- Pilih Lokasi --</option>
-                @foreach($lokasis as $lokasi)
-                    <option value="{{ $lokasi->id }}">{{ $lokasi->nama }}</option>
-                @endforeach
-            </select>
+            <label class="form-label">Lokasi</label>
+            <input type="text" name="lokasi" class="form-control" required>
         </div>
 
         <div class="mb-3">
-            <label>Tanggal Perolehan</label>
+            <label class="form-label">Tanggal Perolehan</label>
             <input type="date" name="tanggal_perolehan" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Deskripsi</label>
+            <textarea name="description" class="form-control" rows="3"></textarea>
         </div>
 
         <button type="submit" class="btn btn-success">Simpan</button>

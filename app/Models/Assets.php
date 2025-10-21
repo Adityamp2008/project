@@ -13,12 +13,12 @@ class Assets extends Model
     protected $table = 'assets';
 
     protected $fillable = [
-        'nama_asset',
-        'asset_id',
-        'kategori_id',
-        'lokasi_id',
-        'kondisi_id',
-        'deskripsi',
+        'nama',
+        'kategori',
+        'kondisi',
+        'lokasi',
+        'tanggal_perolehan',
+        'description',
     ];
 
     public function riwayats()

@@ -12,7 +12,7 @@ class Riwayat extends Model
     protected $fillable = [
         'assets_id',
         'tipe',
-        'deskripsi',
+        'description',
         'tanggal',
     ];
 
