@@ -16,8 +16,8 @@ class AssetsController extends Controller
      */
     public function index()
     {
-        $assets = Asset::with(['kategori', 'kondisi', 'lokasi', 'riwayat'])->get();
-        return view('assets.index', compact('assets'));
+        $assets = Assets::with(['kategori', 'kondisi', 'lokasi', 'riwayat'])->get();
+        return view('pages.admin.assets.index', compact('assets'));
     }
 
     /**
@@ -28,7 +28,7 @@ class AssetsController extends Controller
         $kategoris = Kategori::all();
         $kondisis = Kondisi::all();
         $lokasis = Lokasi::all();
-        return view('assets.create', compact('kategoris', 'kondisis', 'lokasis'));
+        return view('pages.admin.assets.create', compact('kategoris', 'kondisis', 'lokasis'));
     }
 
     /**
@@ -46,7 +46,7 @@ class AssetsController extends Controller
 
         assets::create($request->all());
 
-        return redirect()->route('assets.index')->with('success', 'Data assets berhasil ditambahkan.');
+        return redirect()->route('pages.admin.assets.index')->with('success', 'Data assets berhasil ditambahkan.');
     }
 
 
@@ -56,7 +56,7 @@ class AssetsController extends Controller
     public function show(Assets $assets)
     {
         $assets->load('riwayat', 'kategori', 'kondisi', 'lokasi');
-        return view('assets.show', compact('assets'));
+        return view('pages.admin.assets.show', compact('assets'));
     }
     /**
      * Show the form for editing the specified resource.
@@ -66,7 +66,7 @@ class AssetsController extends Controller
         $kategoris = Kategori::all();
         $kondisis = Kondisi::all();
         $lokasis = Lokasi::all();
-        return view('assets.edit', compact('assets', 'kategoris', 'kondisis', 'lokasis'));
+        return view('pages.admin.assets.edit', compact('assets', 'kategoris', 'kondisis', 'lokasis'));
     }
     
     /**
@@ -84,7 +84,7 @@ class AssetsController extends Controller
 
         $assets->update($request->all());
 
-        return redirect()->route('assets.index')->with('success', 'Data assets berhasil diperbarui.');
+        return redirect()->route('pages.admin.assets.index')->with('success', 'Data assets berhasil diperbarui.');
     }
 
     /**
@@ -94,6 +94,6 @@ class AssetsController extends Controller
     public function destroy(assets $assets)
     {
         $assets->delete();
-        return redirect()->route('assets.index')->with('success', 'Data assets berhasil dihapus.');
+        return redirect()->route('pages.admin.assets.index')->with('success', 'Data assets berhasil dihapus.');
     }
 }

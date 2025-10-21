@@ -5,10 +5,6 @@ use App\Http\Controllers\Admin\AtkItemController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Admin\AssetsController;
-use App\Http\Controllers\Admin\KategoriController;
-use App\Http\Controllers\Admin\KondisiController;
-use App\Http\Controllers\Admin\LokasiController;
-use App\Http\Controllers\Admin\RiwayatController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,10 +23,6 @@ Route::group([
     Route::get('/dashboard',[DashboardController::class, 'index'])->name('admin.dashboard');
     Route::resource('atk', AtkItemController::class);
     Route::resource('assets', AssetsController::class);
-    Route::resource('kategori', KategoriController::class);
-    Route::resource('kondisi', KondisiController::class);
-    Route::resource('lokasi', LokasiController::class);
-    Route::resource('riwayat', RiwayatController::class);
     Route::resource('users', UserController::class);
 
     Route::get('atk/export/excel', [AtkItemController::class, 'exportExcel'])->name('atk.exportExcel');
