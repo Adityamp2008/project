@@ -153,10 +153,10 @@
 
 
           <li class="nav-item">
-          <a href="{{ route('admin.dashboard') }}"
-             class="nav-link {{ Route::is('admin.dashboard') ? 'active' : '' }}">
+          <a href="{{ route('kelayakanassets.index') }}"
+             class="nav-link {{ Route::is('kelayakanassets.*') ? 'active' : '' }}">
             <i class="nav-icon bi bi-clipboard-check"></i>
-            <p>Kelayakan aset</p>
+            <p>Kelayakan asset</p>
           </a>
         </li>
         

@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AtkItemController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Admin\AssetsController;
+use App\Http\Controllers\Admin\KelayakanAssetsController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,6 +24,8 @@ Route::group([
     Route::get('/dashboard',[DashboardController::class, 'index'])->name('admin.dashboard');
     Route::resource('atk', AtkItemController::class);
     Route::resource('assets', AssetsController::class);
+    Route::resource('kelayakanassets', KelayakanAssetsController::class);
+    Route::get('kelayakan-assets', [KelayakanAssetsController::class, 'index'])->name('kelayakan-assets.index');
     Route::resource('users', UserController::class);
 
     Route::get('atk/export/excel', [AtkItemController::class, 'exportExcel'])->name('atk.exportExcel');

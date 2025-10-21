@@ -21,12 +21,32 @@ class Assets extends Model
         'description',
     ];
 
+    protected $dates = ['tanggal_perolehan'];
+
+
     public function riwayats()
     {
         return $this->hasMany(Riwayat::class, 'asset_id');
     }
 
-    protected $dates = ['tanggal_perolehan'];
+    protected static function booted()
+    {
+        static::creating(function ($asset) {
+            if ($asset->tanggal_perolehan) {
+                $asset->umur_tahun = Carbon::parse($asset->tanggal_perolehan)->diffInYears(now());
+            } else {
+                $asset->umur_tahun = 0;
+            }
+        });
+
+        static::updating(function ($asset) {
+            if ($asset->tanggal_perolehan) {
+                $asset->umur_tahun = Carbon::parse($asset->tanggal_perolehan)->diffInYears(now());
+            } else {
+                $asset->umur_tahun = 0;
+            }
+        });
+    }
 
     /**
      * Relasi ke Kategori
@@ -82,5 +102,9 @@ class Assets extends Model
     {
         if (!$this->tanggal_perolehan) return 0;
         return Carbon::parse($this->tanggal_perolehan)->diffInYears(now());
+    }
+    public function kelayakan()
+    {
+        return $this->hasOne(KelayakanAssets::class, 'asset_id');
     }
 }

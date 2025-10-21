@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('kondisi');
             $table->string('lokasi');
             $table->date('tanggal_perolehan')->nullable();
+            $table->integer('umur_tahun')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
         });
