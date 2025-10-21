@@ -89,6 +89,7 @@ public function store(Request $r)
 
     // STOCK OUT (pemakaian)
     public function stockOut(Request $r, AtkItem $atk){
+
         $r->validate(['quantity'=>'required|integer|min:1']);
         $qty = (int) $r->quantity;
         if ($atk->stock < $qty) return back()->withErrors('Stok tidak cukup');
@@ -160,6 +161,9 @@ public function stockIn(Request $r, AtkItem $atk)
 public function stockOutForm(Request $request, AtkItem $atk)
 
 {
+
+            return view('pages.admin.atk.stock_out',compact('atk'));
+
     $atk = AtkItem::findOrFail($atk);
 
     $request->validate([
