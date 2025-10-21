@@ -74,6 +74,8 @@ public function store(Request $r)
          return view('pages.admin.atk.edit', compact('atk')); 
      }
 
+
+
       public function update(Request $r, AtkItem $atk){
         $r->validate(['name'=>'required']);
         $atk->update($r->only(['name','description','unit','low_stock_threshold','category','active']));
