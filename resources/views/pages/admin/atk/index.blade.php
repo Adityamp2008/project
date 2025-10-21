@@ -74,20 +74,20 @@
                             </td>
                             <td class="text-center">
                                 <a href="{{ route('atk.edit', $item->id) }}" class="btn btn-sm btn-warning mb-1">
-                                    <i class="bi bi-pencil"></i> Edit
+                                    <i class="bi bi-pencil"></i>
                                 </a>
                                 <form action="{{ route('atk.destroy', $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus item ini?')">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-sm btn-danger mb-1">
-                                        <i class="bi bi-trash"></i> Hapus
+                                        <i class="bi bi-trash"></i>
                                     </button>
                                 </form>
                                 <a href="{{ route('atk.stockin.form', $item->id) }}" class="btn btn-sm btn-success mb-1">
-                                    <i class="bi bi-plus-circle"></i> Masuk
+                                    <i class="bi bi-plus-circle"></i>
                                 </a>
                                 <a href="{{ route('atk.stockout.form', $item->id) }}" class="btn btn-sm btn-dark mb-1">
-                                    <i class="bi bi-dash-circle"></i> Keluar
+                                    <i class="bi bi-dash-circle"></i>
                                 </a>
                             </td>
                         </tr>
