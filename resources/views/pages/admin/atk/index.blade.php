@@ -66,12 +66,14 @@
                             <td class="text-center">{{ $item->unit ?? '-' }}</td>
                             <td class="text-center">{{ $item->stock }}</td>
                             <td class="text-center">
-                                @if($item->active)
-                                    <span class="badge bg-success">Aktif</span>
-                                @else
-                                    <span class="badge bg-secondary">Nonaktif</span>
-                                @endif
-                            </td>
+    @if($item->stock == 0)
+        <span class="badge bg-danger">Stok Kosong</span>
+    @elseif($item->stock < 5)
+        <span class="badge bg-warning">Stok Menipis</span>
+    @else
+        <span class="badge bg-success">Aman</span>
+    @endif
+</td>
                             <td class="text-center">
                                 <a href="{{ route('atk.edit', $item->id) }}" class="btn btn-sm btn-warning mb-1">
                                     <i class="bi bi-pencil"></i>

@@ -130,8 +130,8 @@ public function stockOut(Request $r, AtkItem $atk)
         $transactions = StockTransaction::with('item')
             ->whereBetween('created_at', [$from.' 00:00:00', $to.' 23:59:59'])
             ->orderBy('created_at','desc')
-            ->get();
-        return view('atk.report', compact('transactions','from','to'));
+             ->paginate(20);
+        return view('pages.admin.laporan.report', compact('transactions','from','to'));
     }
 
     // EXPORT EXCEL (contoh sederhana)
@@ -180,6 +180,26 @@ public function stockOutForm(AtkItem $atk)
 {
     return view('pages.admin.atk.stock_out', compact('atk'));
 }
+
+
+
+public function reportPdf(Request $r)
+{
+    $from = $r->from ?: now()->subMonth()->format('Y-m-d');
+    $to = $r->to ?: now()->format('Y-m-d');
+
+    $transactions = \App\Models\StockTransaction::with(['item', 'user'])
+        ->whereBetween('created_at', [$from.' 00:00:00', $to.' 23:59:59'])
+        ->when($r->search, function ($q) use ($r) {
+            $q->whereHas('item', fn($qq) => $qq->where('name', 'like', '%'.$r->search.'%'));
+        })
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    $pdf = \PDF::loadView('pages.admin.laporan.reportpdf', compact('transactions', 'from', 'to'));
+    return $pdf->download('laporan_stok_atk.pdf');
+}
+
 
     
 
