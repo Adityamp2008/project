@@ -30,17 +30,14 @@ class LokasiController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(['nama_lokasi' => 'required|string|max:255']);
-        Lokasi::create($request->all());
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
+        ]);
+
+        Lokasi::create($request->only(['nama', 'deskripsi']));
 
         return redirect()->route('lokasi.index')->with('success', 'Lokasi berhasil ditambahkan.');
-    }
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
     }
 
     /**
@@ -56,12 +53,15 @@ class LokasiController extends Controller
      */
     public function update(Request $request, Lokasi $lokasi)
     {
-        $request->validate(['nama_lokasi' => 'required|string|max:255']);
-        $lokasi->update($request->all());
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
+        ]);
+
+        $lokasi->update($request->only(['nama', 'deskripsi']));
 
         return redirect()->route('lokasi.index')->with('success', 'Lokasi berhasil diperbarui.');
     }
-
 
     /**
      * Remove the specified resource from storage.

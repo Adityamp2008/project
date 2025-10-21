@@ -30,18 +30,14 @@ class KondisiController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(['nama_kondisi' => 'required|string|max:255']);
-        Kondisi::create($request->all());
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
+        ]);
+
+        Kondisi::create($request->only(['nama', 'deskripsi']));
 
         return redirect()->route('kondisi.index')->with('success', 'Kondisi berhasil ditambahkan.');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
     }
 
     /**
@@ -57,8 +53,12 @@ class KondisiController extends Controller
      */
     public function update(Request $request, Kondisi $kondisi)
     {
-        $request->validate(['nama_kondisi' => 'required|string|max:255']);
-        $kondisi->update($request->all());
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
+        ]);
+
+        $kondisi->update($request->only(['nama', 'deskripsi']));
 
         return redirect()->route('kondisi.index')->with('success', 'Kondisi berhasil diperbarui.');
     }

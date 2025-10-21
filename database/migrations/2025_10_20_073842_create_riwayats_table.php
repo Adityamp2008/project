@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('riwayats', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('aset_id')->constrained('assets')->onDelete('cascade');
-            $table->enum('tipe', ['penggunaan', 'perbaikan']); // jenis riwayat
+            $table->foreignId('assets_id')->constrained('assets')->onDelete('cascade');
+            $table->enum('tipe', ['penggunaan', 'perbaikan']);
             $table->text('deskripsi');
             $table->date('tanggal');
             $table->timestamps();

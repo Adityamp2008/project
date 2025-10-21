@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Model\assets;
+use App\Models\Assets;
+use App\Models\Riwayat;
 use Illuminate\Http\Request;
 
 class RiwayatController extends Controller
@@ -22,8 +23,8 @@ class RiwayatController extends Controller
      */
     public function create()
     {
-        $assetss = assets::all();
-        return view('riwayat.create', compact('assetss'));
+        $assets = Assets::all();
+        return view('riwayat.create', compact('assets'));
     }
 
     /**
@@ -32,7 +33,7 @@ class RiwayatController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'assets_id' => 'required|exists:assetss,id',
+            'assets_id' => 'required|exists:assets,id',
             'tipe' => 'required|in:penggunaan,perbaikan',
             'deskripsi' => 'required|string',
             'tanggal' => 'required|date',
@@ -57,8 +58,8 @@ class RiwayatController extends Controller
      */
     public function edit(Riwayat $riwayat)
     {
-        $assetss = assets::all();
-        return view('riwayat.edit', compact('riwayat', 'assetss'));
+        $assets = Assets::all();
+        return view('riwayat.edit', compact('riwayat', 'assets'));
     }
 
     /**
@@ -67,7 +68,7 @@ class RiwayatController extends Controller
     public function update(Request $request, Riwayat $riwayat)
     {
         $request->validate([
-            'assets_id' => 'required|exists:assetss,id',
+            'assets_id' => 'required|exists:assets,id',
             'tipe' => 'required|in:penggunaan,perbaikan',
             'deskripsi' => 'required|string',
             'tanggal' => 'required|date',
@@ -78,13 +79,12 @@ class RiwayatController extends Controller
         return redirect()->route('riwayat.index')->with('success', 'Riwayat berhasil diperbarui.');
     }
 
-
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Riwayat $riwayat)
     {
         $riwayat->delete();
-        return back()->with('success', 'Riwayat berhasil dihapus.');
+        return redirect()->route('riwayat.index')->with('success', 'Riwayat berhasil dihapus.');
     }
 }

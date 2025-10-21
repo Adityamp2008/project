@@ -30,18 +30,14 @@ class KategoriController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(['nama_kategori' => 'required|string|max:255']);
-        Kategori::create($request->all());
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
+        ]);
+
+        Kategori::create($request->only(['nama', 'deskripsi']));
 
         return redirect()->route('kategori.index')->with('success', 'Kategori berhasil ditambahkan.');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Kategori $kategori)
-    {
-        //
     }
 
     /**
@@ -51,14 +47,18 @@ class KategoriController extends Controller
     {
         return view('kategori.edit', compact('kategori'));
     }
- 
+
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Kategori $kategori)
     {
-        $request->validate(['nama_kategori' => 'required|string|max:255']);
-        $kategori->update($request->all());
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
+        ]);
+
+        $kategori->update($request->only(['nama', 'deskripsi']));
 
         return redirect()->route('kategori.index')->with('success', 'Kategori berhasil diperbarui.');
     }
@@ -69,6 +69,7 @@ class KategoriController extends Controller
     public function destroy(Kategori $kategori)
     {
         $kategori->delete();
+
         return redirect()->route('kategori.index')->with('success', 'Kategori berhasil dihapus.');
     }
 }

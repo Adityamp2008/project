@@ -14,12 +14,14 @@ return new class extends Migration
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
             $table->string('nama'); // Nama aset, misal "Laptop Asus"
-            $table->foreignId('kategoris_id')->constrained()->onDelete('cascade');
-            $table->foreignId('kondisi_id')->constrained()->onDelete('cascade');
-            $table->foreignId('lokasi_id')->constrained()->onDelete('cascade');
+            // Relasi ke tabel kategori, kondisi, dan lokasi
+            $table->foreignId('kategori_id')->constrained('kategoris')->onDelete('cascade');
+            $table->foreignId('kondisi_id')->constrained('kondisis')->onDelete('cascade');
+            $table->foreignId('lokasi_id')->constrained('lokasis')->onDelete('cascade');
             $table->date('tanggal_perolehan')->nullable();
-            $table->integer('umur')->nullable(); // umur aset (opsional, bisa dihitung otomatis)
+            $table->integer('umur')->nullable();
             $table->text('deskripsi')->nullable();
+
             $table->timestamps();
         });
     }
