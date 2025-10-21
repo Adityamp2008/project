@@ -74,6 +74,8 @@ public function store(Request $r)
          return view('pages.admin.atk.edit', compact('atk')); 
      }
 
+
+
       public function update(Request $r, AtkItem $atk){
         $r->validate(['name'=>'required']);
         $atk->update($r->only(['name','description','unit','low_stock_threshold','category','active']));
@@ -86,21 +88,40 @@ public function store(Request $r)
     }
 
     // STOCK OUT (pemakaian)
-    public function stockOut(Request $r, AtkItem $atk){
-        $r->validate(['quantity'=>'required|integer|min:1']);
-        $qty = (int) $r->quantity;
-        if ($atk->stock < $qty) return back()->withErrors('Stok tidak cukup');
-        $atk->decrement('stock', $qty);
-        StockTransaction::create([
-            'atk_item_id'=>$atk->id,'type'=>'out','quantity'=>$qty,
-            'reference'=>$r->reference,'user_id'=>auth()->id()
-        ]);
-        // optional: catat pemakaian per pegawai
-        if ($r->filled('used_by')) {
-            AtkUsage::create(['atk_item_id'=>$atk->id,'user_id'=>$r->used_by,'quantity'=>$qty,'note'=>$r->note]);
-        }
-        return back()->with('success','Stok dikurangi');
+public function stockOut(Request $r, AtkItem $atk)
+{
+    $r->validate([
+        'quantity' => 'required|integer|min:1',
+        'user_id' => 'nullable|exists:users,id',
+        'note' => 'nullable|string'
+    ]);
+
+    if ($atk->stock < $r->quantity) {
+        return back()->withErrors('Stok tidak cukup');
     }
+
+    $atk->decrement('stock', $r->quantity);
+
+    StockTransaction::create([
+        'atk_item_id' => $atk->id,
+        'type' => 'out',
+        'quantity' => $r->quantity,
+        'reference' => $r->reference,
+        'user_id' => auth()->id(),
+    ]);
+
+    if ($r->filled('user_id')) {
+        AtkUsage::create([
+            'atk_item_id' => $atk->id,
+            'user_id' => $r->user_id,
+            'quantity' => $r->quantity,
+            'note' => $r->note,
+        ]);
+    }
+
+    return redirect()->route('atk.index')->with('success', 'Stok berhasil dikurangi.');
+}
+
 
     // LAPORAN sederhana (filter by date, item, category)
     public function report(Request $r){
@@ -155,29 +176,9 @@ public function stockIn(Request $r, AtkItem $atk)
 }
 
 // FORM Barang Keluar (udah ada fungsi stockOut(), ini form-nya aja)
-public function stockOutForm(Request $request, AtkItem $atk)
-
+public function stockOutForm(AtkItem $atk)
 {
-    $atk = AtkItem::findOrFail($atk);
-
-    $request->validate([
-        'quantity' => 'required|integer|min:1',
-        'user_id' => 'nullable|exists:users,id',
-        'note' => 'nullable|string'
-    ]);
-
-    // Kurangi stok
-    $atk->decrement('stock', $request->quantity);
-
-    // Simpan riwayat
-    AtkUsage::create([
-        'atk_item_id' => $atk->id,
-        'used_by' => $request->used_by,
-        'quantity' => $request->quantity,
-        'note' => $request->note,
-    ]);
-
-    return redirect()->route('atk.index')->with('success', 'Stok berhasil dikurangi.');
+    return view('pages.admin.atk.stock_out', compact('atk'));
 }
 
     

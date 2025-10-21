@@ -67,7 +67,15 @@
               <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                 <li class="user-footer">
                   <a href="#" class="btn btn-default btn-flat">setting</a>
-                  <a href="#" class="btn btn-default btn-flat float-end">logout</a>
+                <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                    @csrf
+                    <button 
+                        type="submit" 
+                        class="btn btn-default btn-flat float-end"
+                        onclick="return confirm('Yakin ingin logout?')">
+                        Logout
+                    </button>
+                </form>
                 </li>
               </ul>
             </li>
