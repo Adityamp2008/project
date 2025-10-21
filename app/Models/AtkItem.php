@@ -15,4 +15,5 @@ class AtkItem extends Model
     public function isLowStock() {
         return $this->stock <= $this->low_stock_threshold;
     }
+    
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\AtkItemsExport;
 use App\Models\AtkItem;
 use App\Models\AtkUsage;
 use App\Models\StockTransaction;
@@ -125,5 +126,40 @@ public function store(Request $r)
         $pdf = PDF::loadView('atk.pdf_items', compact('items'));
         return $pdf->download('atk_items.pdf');
     }
+
+    // FORM Barang Masuk
+public function stockInForm(AtkItem $atk)
+{
+    return view('pages.admin.atk.stock_in', compact('atk'));
+}
+
+// PROSES Barang Masuk
+public function stockIn(Request $r, AtkItem $atk)
+{
+    $r->validate([
+        'quantity' => 'required|integer|min:1',
+        'reference' => 'nullable|string|max:100'
+    ]);
+
+    $atk->increment('stock', $r->quantity);
+
+    \App\Models\StockTransaction::create([
+        'atk_item_id' => $atk->id,
+        'type' => 'in',
+        'quantity' => $r->quantity,
+        'reference' => $r->reference,
+        'user_id' => auth()->id(),
+    ]);
+
+    return redirect()->route('atk.index')->with('success', 'Stok berhasil ditambah!');
+}
+
+// FORM Barang Keluar (udah ada fungsi stockOut(), ini form-nya aja)
+public function stockOutForm(AtkItem $atk)
+{
+    return view('pages.admin.atk.stock_out', compact('atk'));
+}
+
+    
 
 }

@@ -5,6 +5,13 @@
 @section('content')
 <div class="container py-4">
 
+    <a href="{{ route('atk.exportExcel') }}" class="btn btn-success">
+    <i class="bi bi-file-earmark-excel"></i> Export Excel
+</a>
+<a href="{{ route('atk.exportPdf') }}" class="btn btn-danger">
+    <i class="bi bi-file-earmark-pdf"></i> Export PDF
+</a>
+
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2>Data ATK</h2>
         <a href="{{ route('atk.create') }}" class="btn btn-primary">+ Tambah Item</a>
@@ -73,6 +80,13 @@
                             <button class="btn btn-sm btn-danger">
                                 <i class="bi bi-trash"></i> Hapus
                             </button>
+                            <a href="{{ route('atk.stockin.form', $item->id) }}" class="btn btn-sm btn-success mb-1">
+    <i class="bi bi-plus-circle"></i> Masuk
+</a>
+<a href="{{ route('atk.stockout.form', $item->id) }}" class="btn btn-sm btn-dark">
+    <i class="bi bi-dash-circle"></i> Keluar
+</a>
+
                         </form>
                     </td>
                 </tr>
