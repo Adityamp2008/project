@@ -3,27 +3,44 @@
 
 @section('content')
 <div class="container py-4">
-    <h3>Kurangi Stok: {{ $atk->name }}</h3>
 
-    <form action="{{ route('atk.stockout', $atk->id) }}" method="POST">
-    @csrf
-    <div class="mb-3">
-        <label>Jumlah Keluar</label>
-        <input type="number" name="quantity" class="form-control" min="1" required>
+    <div class="card">
+        {{-- Header Card --}}
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h2 class="card-title mb-0">Kurangi Stok: {{ $atk->name }}</h2>
+        </div>
+
+        {{-- Body Card --}}
+        <div class="card-body">
+            <form action="{{ route('atk.stockout', $atk->id) }}" method="POST">
+                @csrf
+
+                {{-- Jumlah Keluar --}}
+                <div class="mb-3">
+                    <label class="form-label">Jumlah Keluar</label>
+                    <input type="number" name="quantity" class="form-control" min="1" required>
+                </div>
+
+                {{-- Dipakai Oleh --}}
+                <div class="mb-3">
+                    <label class="form-label">Dipakai oleh (opsional)</label>
+                    <input type="text" name="used_by" class="form-control" placeholder="Nama pegawai">
+                </div>
+
+                {{-- Keterangan --}}
+                <div class="mb-3">
+                    <label class="form-label">Keterangan</label>
+                    <input type="text" name="note" class="form-control" placeholder="Contoh: Untuk keperluan kantor">
+                </div>
+
+                {{-- Tombol aksi --}}
+                <div class="d-flex gap-2">
+                    <button class="btn btn-danger">Kurangi Stok</button>
+                    <a href="{{ route('atk.index') }}" class="btn btn-secondary">Batal</a>
+                </div>
+            </form>
+        </div>
     </div>
 
-    <div class="mb-3">
-        <label>Dipakai oleh (opsional)</label>
-        <input type="text" name="used_by" class="form-control" placeholder="Nama pegawai">
-    </div>
-
-    <div class="mb-3">
-        <label>Keterangan</label>
-        <input type="text" name="note" class="form-control" placeholder="Contoh: Untuk keperluan kantor">
-    </div>
-
-    <button class="btn btn-danger">Kurangi Stok</button>
-    <a href="{{ route('atk.index') }}" class="btn btn-secondary">Kembali</a>
-</form>
 </div>
 @endsection
