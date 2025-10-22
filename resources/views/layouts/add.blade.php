@@ -242,7 +242,8 @@
       <!--end::Sidebar-->
       <!--begin::App Main-->
       <main class="app-main">
-            @yield('content')
+        @yield('content')
+        @yield('script')
       </main>
       <footer class="app-footer">
         <div class="float-end d-none d-sm-inline">Selalu ada untuk warga</div>
