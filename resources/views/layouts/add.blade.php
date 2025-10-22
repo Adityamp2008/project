@@ -168,8 +168,8 @@
         </a>
       </li>
 
-<li class="nav-item {{ Route::is('users.*') ? 'menu-open' : '' }}">
-  <a href="#" class="nav-link {{ Route::is('users.*') ? 'active' : '' }}">
+<li class="nav-item {{ Route::is('laporan.*') ? 'menu-open' : '' }}">
+  <a href="#" class="nav-link {{ Route::is('userlaporan.*') ? 'active' : '' }}">
     <i class="nav-icon bi bi bi-file-earmark-bar-graph"></i>
     <p>
       Laporan

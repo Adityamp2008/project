@@ -1,64 +1,78 @@
 <?php
 
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\AtkItemController;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\Admin\AssetsController;
-use App\Http\Controllers\Admin\KelayakanAssetsController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Admin\{
+    DashboardController as AdminDashboard,
+    AssetsController,
+    AtkItemController,
+    KelayakanAssetsController,
+    UserController
+};
+use App\Http\Controllers\petugas\DashboardController as PetugasDashboard;
+use App\Http\Controllers\kepdin\DashboardController as KepdinDashboard;
 
+
+// === Auth ===
 Route::get('/', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'loginAction'])->name('login.action');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
-// Semua route yang butuh login
-
-//routing admin
+// =================================================
+// ============== SUPER ADMIN ROUTE ================
+// =================================================
 Route::group([
     'prefix' => 'admin',
-    'middleware' => 'auth'
+    'middleware' => ['auth', 'role:super_admin']
 ], function() {
-    Route::get('/dashboard',[DashboardController::class, 'index'])->name('admin.dashboard');
-    Route::resource('atk', AtkItemController::class);
+
+    Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('admin.dashboard');
+
+    // --- Modul utama ---
     Route::resource('assets', AssetsController::class);
+    Route::resource('atk', AtkItemController::class);
     Route::resource('kelayakanassets', KelayakanAssetsController::class);
-    Route::get('kelayakan-assets', [KelayakanAssetsController::class, 'index'])->name('kelayakan-assets.index');
     Route::resource('users', UserController::class);
 
+    // --- Export / Report ---
     Route::get('atk/export/excel', [AtkItemController::class, 'exportExcel'])->name('atk.exportExcel');
-Route::get('atk/export/pdf', [AtkItemController::class, 'exportPdf'])->name('atk.exportPdf');
+    Route::get('atk/export/pdf', [AtkItemController::class, 'exportPdf'])->name('atk.exportPdf');
 
-// Barang Masuk & Keluar
-Route::get('atk/{atk}/in', [AtkItemController::class, 'stockInForm'])->name('atk.stockin.form');
-Route::post('atk/{atk}/in', [AtkItemController::class, 'stockIn'])->name('atk.stockin');
+    // --- Barang Masuk & Keluar ---
+    Route::get('atk/{atk}/in', [AtkItemController::class, 'stockInForm'])->name('atk.stockin.form');
+    Route::post('atk/{atk}/in', [AtkItemController::class, 'stockIn'])->name('atk.stockin');
+    Route::get('atk/{atk}/out', [AtkItemController::class, 'stockOutForm'])->name('atk.stockout.form');
+    Route::post('atk/{atk}/out', [AtkItemController::class, 'stockOut'])->name('atk.stockout');
 
-Route::get('atk/{atk}/out', [AtkItemController::class, 'stockOutForm'])->name('atk.stockout.form');
-Route::post('atk/{atk}/out', [AtkItemController::class, 'stockOut'])->name('atk.stockout');
-
-Route::get('/admin/laporan/report', [AtkItemController::class, 'report'])->name('laporan.report');
-Route::get('/admin/laporan/report/pdf', [AtkItemController::class, 'reportPdf'])->name('laporan.report.pdf');
-Route::get('/admin/laporan/report/excel', [AtkItemController::class, 'reportExcel'])->name('laporan.report.excel');
-
-
+    // --- Laporan ---
+    Route::get('laporan/report', [AtkItemController::class, 'report'])->name('laporan.report');
+    Route::get('laporan/report/pdf', [AtkItemController::class, 'reportPdf'])->name('laporan.report.pdf');
+    Route::get('laporan/report/excel', [AtkItemController::class, 'exportExcel'])->name('laporan.report.excel');
 });
 
-//routing petugas
+
+// =================================================
+// ============== PETUGAS ROUTE ====================
+// =================================================
 Route::group([
     'prefix' => 'petugas',
-    'middleware' => 'auth'
+    'middleware' => ['auth', 'role:petugas']
 ], function() {
-    Route::get('/dashboard',[DashboardController::class, 'index'])->name('petugas.dashboard');
+    Route::get('/dashboard', [PetugasDashboard::class, 'index'])->name('petugas.dashboard');
+    // nanti bisa ditambah modul khusus petugas (input aset, stok, laporan pribadi, dst)
 });
 
-//routing kepdin
+
+// =================================================
+// ============== KEPALA DINAS ROUTE ===============
+// =================================================
 Route::group([
     'prefix' => 'kepdin',
-    'middleware' => 'auth'
+    'middleware' => ['auth', 'role:kepdin']
 ], function() {
-    Route::get('/dashboard',[DashboardController::class, 'index'])->name('kepdin.dashboard');
+    Route::get('/dashboard', [KepdinDashboard::class, 'index'])->name('kepdin.dashboard');
+    // nanti tambahin modul laporan & kelayakan aset
 });
 
 
