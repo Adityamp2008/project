@@ -15,10 +15,12 @@ class Assets extends Model
     protected $fillable = [
         'nama',
         'kategori',
-        'kondisi',
         'lokasi',
         'tanggal_perolehan',
-        'description',
+        'umur_tahun',
+        'kondisi',
+        'kelayakan',
+        'description'
     ];
 
     protected $dates = ['tanggal_perolehan'];

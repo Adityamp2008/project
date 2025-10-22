@@ -26,17 +26,15 @@ class AssetsController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'kategori' => 'nullable|string|max:255',
-            'kondisi' => 'nullable|string|max:255',
             'lokasi' => 'nullable|string|max:255',
             'tanggal_perolehan' => 'nullable|date',
             'description' => 'nullable|string',
         ]);
 
         $asset = Assets::create($request->only([
-            'nama','kategori','kondisi','lokasi','tanggal_perolehan','description'
+            'nama', 'kategori', 'lokasi', 'tanggal_perolehan', 'description'
         ]));
 
-        // langsung hitung umur dan kelayakan otomatis
         $this->syncKelayakanForAsset($asset);
 
         return redirect()->route('assets.index')->with('success', 'Data aset berhasil ditambahkan.');
@@ -52,17 +50,15 @@ class AssetsController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'kategori' => 'nullable|string|max:255',
-            'kondisi' => 'nullable|string|max:255',
             'lokasi' => 'nullable|string|max:255',
             'tanggal_perolehan' => 'nullable|date',
             'description' => 'nullable|string',
         ]);
 
         $asset->update($request->only([
-            'nama','kategori','kondisi','lokasi','tanggal_perolehan','description'
+            'nama', 'kategori', 'lokasi', 'tanggal_perolehan', 'description'
         ]));
 
-        // update umur (booted akan set saat updating) and update kelayakan
         $this->syncKelayakanForAsset($asset);
 
         return redirect()->route('assets.index')->with('success', 'Data aset berhasil diperbarui.');
@@ -75,33 +71,40 @@ class AssetsController extends Controller
     }
 
     /**
-     * Hitung & simpan kelayakan untuk 1 asset
+     * Hitung otomatis umur, kondisi, dan kelayakan
      */
     protected function syncKelayakanForAsset(Assets $asset)
     {
-        // pastikan umur_tahun sudah ter-update (booted hook)
-        $umur = $asset->umur_tahun ?? ( $asset->tanggal_perolehan ? Carbon::parse($asset->tanggal_perolehan)->diffInYears(now()) : 0 );
+        $umur = $asset->tanggal_perolehan
+            ? Carbon::parse($asset->tanggal_perolehan)->diffInYears(now())
+            : 0;
 
-        $kondisi = strtolower($asset->kondisi ?? '');
-
-        $status = 'Tidak Diketahui';
-        $keterangan = '';
-
-        // LOGIKA contoh (bisa disesuaikan)
-        if ($kondisi === 'baik' && $umur <= 5) {
+        if ($umur >= 0 && $umur <= 1) {
+            $kondisi = 'Baik';
             $status = 'Layak';
-            $keterangan = 'Aset masih berfungsi baik, usia <= 5 tahun.';
-        } elseif ($kondisi === 'rusak ringan' || ($umur > 5 && $umur <= 8)) {
+            $keterangan = 'Aset masih baru dan berfungsi baik.';
+        } elseif ($umur >= 2 && $umur <= 3) {
+            $kondisi = 'Cukup';
             $status = 'Kurang Layak';
-            $keterangan = 'Perlu perawatan; kondisi atau usia mengindikasikan menurun.';
-        } elseif ($kondisi === 'rusak berat' || $umur > 8) {
+            $keterangan = 'Aset mulai menurun, perlu perhatian.';
+        } else {
+            $kondisi = 'Rusak';
             $status = 'Tidak Layak';
-            $keterangan = 'Tidak layak pakai, pertimbangkan penggantian.';
+            $keterangan = 'Aset sudah tua dan perlu diganti.';
         }
+
+        $asset->update([
+            'umur_tahun' => $umur,
+            'kondisi' => $kondisi,
+            'kelayakan' => $status,
+        ]);
 
         KelayakanAssets::updateOrCreate(
             ['asset_id' => $asset->id],
-            ['status_kelayakan' => $status, 'keterangan' => $keterangan]
+            [
+                'status_kelayakan' => $status,
+                'keterangan' => $keterangan
+            ]
         );
     }
 }

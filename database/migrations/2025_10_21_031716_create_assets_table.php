@@ -14,15 +14,15 @@ return new class extends Migration
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->string('kategori');
-            $table->string('kondisi');
-            $table->string('lokasi');
+            $table->string('kategori')->nullable();
+            $table->string('lokasi')->nullable();
             $table->date('tanggal_perolehan')->nullable();
             $table->integer('umur_tahun')->nullable();
+            $table->string('kondisi')->nullable(); // dihitung otomatis
+            $table->string('kelayakan')->nullable(); // dihitung otomatis
             $table->text('description')->nullable();
             $table->timestamps();
         });
-        
     }
 
     /**
