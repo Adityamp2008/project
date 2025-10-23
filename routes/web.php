@@ -24,7 +24,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 // =================================================
 Route::group([
     'prefix' => 'admin',
-    'middleware' => ['auth', 'role:super_admin']
+    'middleware' => ['auth', 'role:admin']
 ], function() {
 
     Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('admin.dashboard');
