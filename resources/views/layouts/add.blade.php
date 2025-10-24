@@ -120,6 +120,14 @@
           </a>
         </li>
 
+        <li class="nav-item">
+          <a href="{{ route('riwayat.index') }}"
+             class="nav-link {{ Route::is('admin.dashboard') ? 'active' : '' }}">
+            <i class="nav-icon bi bi-gir"></i>
+            <p>riwayat perawatan</p>
+          </a>
+        </li>
+
     {{-- === Group: Admin === --}}
 <li class="nav-item {{ Route::is('laporan.*') ? 'menu-open' : '' }}">
   <a href="#" class="nav-link {{ Route::is('userlaporan.*') ? 'active' : '' }}">
@@ -148,7 +156,7 @@
     </li>
 
     <li class="nav-item">
-      <a href="{{ route('users.index') }}"
+      <a href="{{ route('laporan.perbaikan') }}"
          class="nav-link {{ Route::is('users.*') ? 'active' : '' }}">
         <i class="nav-icon bi bi-wrench-adjustable-circle"></i>
         <p>Perbaikan</p>

@@ -5,7 +5,8 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Admin\{
     DashboardController as AdminDashboard,
     UserController,
-    LaporanInventarisController
+    LaporanInventarisController,
+    RiwayatPerbaikanController
 };
 use App\Http\Controllers\petugas\{
     DashboardController as PetugasDashboard,
@@ -40,11 +41,25 @@ Route::group([
     Route::get('laporan/report/pdf', [AtkItemController::class, 'reportPdf'])->name('laporan.report.pdf');
     Route::get('laporan/report/excel', [AtkItemController::class, 'exportExcel'])->name('laporan.report.excel');
 
+    Route::get('admin/riwayat-perbaikan', [RiwayatPerbaikanController::class, 'index'])->name('riwayat.index');
+        Route::get('/riwayat-perbaikan/create', [RiwayatPerbaikanController::class, 'create'])->name('riwayat.create');
+    Route::post('/riwayat-perbaikan', [RiwayatPerbaikanController::class, 'store'])->name('riwayat.store');
+    Route::get('/get-items/{type}', [RiwayatPerbaikanController::class, 'getItems'])->name('get.items');
+
       // Laporan Inventaris
 Route::get('laporan/inventaris', [LaporanInventarisController::class, 'index'])->name('laporan.inventaris');
 Route::get('laporan/inventaris/pdf', [LaporanInventarisController::class, 'pdf'])->name('laporan.inventaris.pdf');
 Route::get('laporan/inventaris/excel', [LaporanInventarisController::class, 'excel'])->name('laporan.inventaris.excel');
+
+    //Laporan perbaikan
+// LAPORAN PERBAIKAN
+Route::get('laporan/perbaikan', [RiwayatPerbaikanController::class, 'laporan'])->name('laporan.perbaikan');
+Route::get('laporan/perbaikan/pdf', [RiwayatPerbaikanController::class, 'laporanPdf'])->name('laporan.perbaikan.pdf');
+Route::get('laporan/perbaikan/excel', [RiwayatPerbaikanController::class, 'laporanExcel'])->name('laporan.perbaikan.excel');
+
 });
+
+
 
 
 // =================================================

@@ -108,4 +108,9 @@ class AssetsController extends Controller
             ]
         );
     }
+
+    public function riwayatPerbaikan()
+{
+    return $this->hasMany(RiwayatPerbaikan::class, 'asset_id');
+}
 }
