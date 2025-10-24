@@ -12,7 +12,7 @@ class AssetsController extends Controller
 {
     public function index()
     {
-        $assets = Assets::orderBy('nama')->get();
+        $assets = Assets::with('KelayakanAssets')->orderBy('nama')->get();
         return view('pages.admin.assets.index', compact('assets'));
     }
 
@@ -33,7 +33,7 @@ class AssetsController extends Controller
         ]);
 
         $asset = Assets::create($request->only([
-            'nama','kategori','lokasi','tanggal_perolehan','kondisi','description'
+            'nama', 'kategori', 'lokasi', 'tanggal_perolehan', 'kondisi', 'description'
         ]));
 
         $this->syncKelayakanForAsset($asset);
@@ -58,7 +58,7 @@ class AssetsController extends Controller
         ]);
 
         $asset->update($request->only([
-            'nama','kategori','lokasi','tanggal_perolehan','kondisi','description'
+            'nama', 'kategori', 'lokasi', 'tanggal_perolehan', 'kondisi', 'description'
         ]));
 
         $this->syncKelayakanForAsset($asset);
@@ -68,47 +68,38 @@ class AssetsController extends Controller
 
     public function destroy(Assets $asset)
     {
+        $asset->KelayakanAssets()?->delete(); // hapus relasi juga
         $asset->delete();
+
         return redirect()->route('assets.index')->with('success', 'Data aset berhasil dihapus.');
     }
 
     /**
-     * Tentukan kelayakan berdasarkan kondisi aset
+     * Tentukan kelayakan berdasarkan umur & kondisi
      */
     protected function syncKelayakanForAsset(Assets $asset)
     {
-        $umur = $asset->tanggal_perolehan
-            ? Carbon::parse($asset->tanggal_perolehan)->diffInYears(now())
-            : 0;
-
-        $status = 'Tidak Diketahui';
-        $keterangan = '';
-
-        switch (strtolower($asset->kondisi)) {
-            case 'baik':
-                $status = 'Layak';
-                $keterangan = 'Aset masih berfungsi dengan baik.';
-                break;
-
-            case 'cukup':
-                $status = 'Kurang Layak';
-                $keterangan = 'Aset mulai berkurang performanya.';
-                break;
-
-            case 'rusak':
-                $status = 'Tidak Layak';
-                $keterangan = 'Aset tidak dapat digunakan, perlu diganti.';
-                break;
-
-            default:
-                $status = 'Tidak Diketahui';
-                $keterangan = 'Kondisi aset belum ditentukan.';
-        }
-
-        // Update umur aset di tabel
+        $umur = $asset->calculateUmur();
         $asset->update(['umur_tahun' => $umur]);
 
-        // Simpan status kelayakan otomatis
+        // Hitung status kelayakan berdasarkan umur
+        if ($umur <= 2) {
+            $status = 'Layak';
+            $keterangan = 'Aset dalam kondisi sangat baik.';
+        } elseif ($umur <= 4) {
+            $status = 'Kurang Layak';
+            $keterangan = 'Aset mulai berkurang performanya.';
+        } else {
+            $status = 'Tidak Layak';
+            $keterangan = 'Aset sudah tua dan perlu diganti.';
+        }
+
+        // Sesuaikan kondisi manual jika rusak
+        if (strtolower($asset->kondisi) === 'rusak') {
+            $status = 'Tidak Layak';
+            $keterangan = 'Aset rusak dan tidak berfungsi.';
+        }
+
         KelayakanAssets::updateOrCreate(
             ['asset_id' => $asset->id],
             [
@@ -118,4 +109,3 @@ class AssetsController extends Controller
         );
     }
 }
-    

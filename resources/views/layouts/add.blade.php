@@ -188,7 +188,7 @@
 
     <li class="nav-item">
       <a href="{{ route('laporan.report') }}"
-         class="nav-link {{ Route::is('users.*') ? 'active' : '' }}">
+         class="nav-link {{ Route::is('laporan.*') ? 'active' : '' }}">
         <i class="nav-icon bi bi-journal-text"></i>
         <p>Stok & Pemakaian</p>
       </a>

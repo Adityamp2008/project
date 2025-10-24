@@ -9,6 +9,8 @@ class KelayakanAssets extends Model
 {
     use HasFactory;
 
+    protected $table = 'kelayakan_assets';
+
     protected $fillable = [
         'asset_id',
         'status_kelayakan',

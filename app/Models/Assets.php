@@ -14,99 +14,87 @@ class Assets extends Model
 
     protected $fillable = [
         'nama',
-        'kategori',
-        'lokasi',
+        'kategori_id',
+        'lokasi_id',
+        'kondisi_id',
         'tanggal_perolehan',
         'umur_tahun',
-        'kondisi',
         'kelayakan',
-        'description'
+        'description',
     ];
 
     protected $dates = ['tanggal_perolehan'];
 
+    public function kategori()
+    {
+        return $this->belongsTo(kategori::class, 'kategori_id');
+    }
+
+    public function lokasi()
+    {
+        return $this->belongsTo(lokasi::class, 'lokasi_id');
+    }
+
+    public function kondisi()
+    {
+        return $this->belongsTo(kondisi::class, 'kondisi_id');
+    }
 
     public function riwayats()
     {
-        return $this->hasMany(Riwayat::class, 'asset_id');
-    }
+        return $this->hasMany(riwayat::class, 'asset_id');
+    }   
 
     protected static function booted()
     {
         static::creating(function ($asset) {
-            if ($asset->tanggal_perolehan) {
-                $asset->umur_tahun = Carbon::parse($asset->tanggal_perolehan)->diffInYears(now());
-            } else {
-                $asset->umur_tahun = 0;
-            }
+            $asset->hitungUmur();
+            $asset->tentukanKelayakan();
         });
 
         static::updating(function ($asset) {
-            if ($asset->tanggal_perolehan) {
-                $asset->umur_tahun = Carbon::parse($asset->tanggal_perolehan)->diffInYears(now());
-            } else {
-                $asset->umur_tahun = 0;
-            }
+            $asset->hitungUmur();
+            $asset->tentukanKelayakan();
         });
     }
 
-    /**
-     * Relasi ke Kategori
-     */
-    public function kategori()
+    public function hitungUmur()
     {
-        return $this->belongsTo(Kategori::class, 'kategori_id');
+        $this->umur_tahun = $this->tanggal_perolehan
+            ? Carbon::parse($this->tanggal_perolehan)->diffInYears(now())
+            : 0;
     }
 
     /**
-     * Relasi ke Lokasi
+     * Tentukan kelayakan otomatis berdasarkan umur aset
      */
-    public function lokasi()
+    public function tentukanKelayakan()
     {
-        return $this->belongsTo(Lokasi::class, 'lokasi_id');
+        $umur = $this->calculateUmur();
+
+        if ($umur <= 2) {
+            $this->kelayakan = 'Layak';
+        } elseif ($umur > 2 && $umur <= 4) {
+            $this->kelayakan = 'Kurang Layak';
+        } else {
+            $this->kelayakan = 'Tidak Layak';
+        }
     }
 
-    /**
-     * Relasi ke Kondisi
-     */
-    public function kondisi()
-    {
-        return $this->belongsTo(Kondisi::class, 'kondisi_id');
-    }
-
-    /**
-     * Relasi ke Riwayat Penggunaan & Perbaikan
-     */
-    public function riwayat() 
-    {
-        return $this->hasMany(Riwayat::class, 'asset_id');
-    }
-
-    /**
-     * Logika otomatis penilaian kelayakan aset
-     * - Tidak layak jika umur > 5 tahun atau kondisi buruk
-     */
-    public function isLayak()
-    {
-        $maxUmur = 5; // contoh batas usia layak (tahun)
-        $kondisiLayak = ['baik', 'normal']; // kondisi yang dianggap layak
-
-        $umurAset = $this->umur ?? $this->calculateUmur();
-
-        return ($umurAset <= $maxUmur)
-            && in_array(strtolower($this->kondisi->nama ?? ''), $kondisiLayak);
-    }
-
-    /**
-     * Hitung umur otomatis berdasarkan tanggal_perolehan
-     */
     public function calculateUmur()
     {
         if (!$this->tanggal_perolehan) return 0;
         return Carbon::parse($this->tanggal_perolehan)->diffInYears(now());
     }
-    public function kelayakan()
+
+    public function isLayak()
+    {
+        return $this->kelayakan === 'Layak';
+    }
+
+        public function KelayakanAssets()
     {
         return $this->hasOne(KelayakanAssets::class, 'asset_id');
     }
+
 }
