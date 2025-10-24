@@ -137,7 +137,7 @@
 
   <ul class="nav nav-treeview">
     <li class="nav-item">
-      <a href="{{ route('users.index') }}"
+      <a href="{{ route('laporan.inventaris') }}"
          class="nav-link {{ Route::is('users.*') ? 'active' : '' }}">
         <i class="nav-icon bi bi-box"></i>
         <p>Inventaris</p>

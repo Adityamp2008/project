@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Admin\{
     DashboardController as AdminDashboard,
-    UserController
+    UserController,
+    LaporanInventarisController
 };
 use App\Http\Controllers\petugas\{
     DashboardController as PetugasDashboard,
@@ -38,6 +39,11 @@ Route::group([
     Route::get('laporan/report', [AtkItemController::class, 'report'])->name('laporan.report');
     Route::get('laporan/report/pdf', [AtkItemController::class, 'reportPdf'])->name('laporan.report.pdf');
     Route::get('laporan/report/excel', [AtkItemController::class, 'exportExcel'])->name('laporan.report.excel');
+
+      // Laporan Inventaris
+Route::get('laporan/inventaris', [LaporanInventarisController::class, 'index'])->name('laporan.inventaris');
+Route::get('laporan/inventaris/pdf', [LaporanInventarisController::class, 'pdf'])->name('laporan.inventaris.pdf');
+Route::get('laporan/inventaris/excel', [LaporanInventarisController::class, 'excel'])->name('laporan.inventaris.excel');
 });
 
 
