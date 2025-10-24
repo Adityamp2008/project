@@ -17,7 +17,7 @@ class AtkItemController extends Controller
         $items = AtkItem::query()
             ->when($req->search, fn($q)=>$q->where('name','like','%'.$req->search.'%'))
             ->paginate(15);
-        return view('pages.admin.atk.index', compact('items'));
+        return view('pages.petugas.atk.index', compact('items'));
     }
 
      public function create()
@@ -36,7 +36,7 @@ class AtkItemController extends Controller
     $newCode = 'ID-' . str_pad($num, 3, '0', STR_PAD_LEFT);
 
     // kirim ke view
-    return view('pages.admin.atk.create', compact('newCode'));
+    return view('pages.petugas.atk.create', compact('newCode'));
 }
 
 public function store(Request $r)
@@ -71,7 +71,7 @@ public function store(Request $r)
 
      public function edit(AtkItem $atk)
      {
-         return view('pages.admin.atk.edit', compact('atk')); 
+         return view('pages.petugas.atk.edit', compact('atk')); 
      }
 
 
@@ -131,7 +131,7 @@ public function stockOut(Request $r, AtkItem $atk)
             ->whereBetween('created_at', [$from.' 00:00:00', $to.' 23:59:59'])
             ->orderBy('created_at','desc')
              ->paginate(20);
-        return view('pages.admin.laporan.report', compact('transactions','from','to'));
+        return view('pages.petugas.laporan.report', compact('transactions','from','to'));
     }
 
     // EXPORT EXCEL (contoh sederhana)
@@ -144,14 +144,14 @@ public function stockOut(Request $r, AtkItem $atk)
      // EXPORT PDF
     public function exportPdf(Request $r){
         $items = AtkItem::all();
-        $pdf = PDF::loadView('pages.admin.atk.pdf_items', compact('items'));
+        $pdf = PDF::loadView('pages.petugas.atk.pdf_items', compact('items'));
         return $pdf->download('atk_items.pdf');
     }
 
     // FORM Barang Masuk
 public function stockInForm(AtkItem $atk)
 {
-    return view('pages.admin.atk.stock_in', compact('atk'));
+    return view('pages.petugas.atk.stock_in', compact('atk'));
 }
 
 // PROSES Barang Masuk
@@ -178,7 +178,7 @@ public function stockIn(Request $r, AtkItem $atk)
 // FORM Barang Keluar (udah ada fungsi stockOut(), ini form-nya aja)
 public function stockOutForm(AtkItem $atk)
 {
-    return view('pages.admin.atk.stock_out', compact('atk'));
+    return view('pages.petugas.atk.stock_out', compact('atk'));
 }
 
 
@@ -196,7 +196,7 @@ public function reportPdf(Request $r)
         ->orderBy('created_at', 'desc')
         ->get();
 
-    $pdf = \PDF::loadView('pages.admin.laporan.reportpdf', compact('transactions', 'from', 'to'));
+    $pdf = \PDF::loadView('pages.petugas.laporan.reportpdf', compact('transactions', 'from', 'to'));
     return $pdf->download('laporan_stok_atk.pdf');
 }
 

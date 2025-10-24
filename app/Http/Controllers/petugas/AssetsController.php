@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\petugas;
 
 use App\Http\Controllers\Controller;
 use App\Models\Assets;
@@ -13,12 +13,12 @@ class AssetsController extends Controller
     public function index()
     {
         $assets = Assets::with('KelayakanAssets')->orderBy('nama')->get();
-        return view('pages.admin.assets.index', compact('assets'));
+        return view('pages.petugas.assets.index', compact('assets'));
     }
 
     public function create()
     {
-        return view('pages.admin.assets.create');
+        return view('pages.petugas.assets.create');
     }
 
     public function store(Request $request)
@@ -43,7 +43,7 @@ class AssetsController extends Controller
 
     public function edit(Assets $asset)
     {
-        return view('pages.admin.assets.edit', compact('asset'));
+        return view('pages.petugas.assets.edit', compact('asset'));
     }
 
     public function update(Request $request, Assets $asset)

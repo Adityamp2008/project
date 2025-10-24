@@ -64,13 +64,13 @@
 
               <li class="nav-item">
                 <a href="{{ route('petugas.dashboard') }}"
-                   class="nav-link {{ Route::is('petugas.dashboard') ? 'active' : '' }}">
+                   class="nav-link {{ Route::is('dashboard') ? 'active' : '' }}">
                   <i class="nav-icon bi bi-speedometer2"></i>
                   <p>Dashboard</p>
                 </a>
               </li>
 
-              <li class="nav-item {{ Route::is('petugas.assets.*') ? 'menu-open' : '' }}">
+              <li class="nav-item {{ Route::is('assets.*') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link">
                   <i class="nav-icon bi bi-box-seam"></i>
                   <p>Inventaris<i class="nav-arrow bi bi-chevron-right"></i></p>
@@ -78,12 +78,12 @@
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
                     <a href="{{ route('assets.index') }}" class="nav-link">
-                      <i class="nav-icon bi bi-hdd-stack"></i><p>Aset Tetap</p>
+                      <i class="nav-icon bi bi-hdd-stack" ></i><p>Aset Tetap</p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="{{ route('atk.index') }}" class="nav-link">
-                      <i class="nav-icon bi bi-pencil-square"></i><p>Barang ATK</p>
+                      <i class="nav-icon bi bi-pencil-square" {{ Route::is('atk.*') ? 'active' : '' }}></i><p>Barang ATK</p>
                     </a>
                   </li>
                 </ul>
@@ -91,7 +91,7 @@
 
               <li class="nav-item">
                 <a href="{{ route('kelayakanassets.index') }}" class="nav-link">
-                  <i class="nav-icon bi bi-clipboard-check"></i>
+                  <i class="nav-icon bi bi-clipboard-check" {{ Route::is('kelayakanassets.*') ? 'active' : '' }}></i>
                   <p>Kelayakan Aset</p>
                 </a>
               </li>
