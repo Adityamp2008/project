@@ -14,7 +14,10 @@ use App\Http\Controllers\petugas\{
     AtkItemController,
     KelayakanAssetsController,
 };
-use App\Http\Controllers\kepdin\DashboardController as KepdinDashboard;
+use App\Http\Controllers\kepdin\{
+    DashboardController as KepdinDashboard,
+    LaporanKelayakanController,
+};
 
 
 // === Auth ===
@@ -74,6 +77,7 @@ Route::group([
     Route::resource('assets', AssetsController::class);
     Route::resource('atk', AtkItemController::class);
     Route::resource('kelayakanassets', KelayakanAssetsController::class);
+    Route::post('/kelayakanassets/{id}/laporkan', [KelayakanAssetsController::class, 'laporkan'])->name('kelayakanassets.laporkan');
 
     
     // --- Export / Report ---
@@ -96,7 +100,9 @@ Route::group([
     'middleware' => ['auth', 'role:kepdin']
 ], function() {
     Route::get('/dashboard', [KepdinDashboard::class, 'index'])->name('kepdin.dashboard');
-    // nanti tambahin modul laporan & kelayakan aset
+    Route::get('/laporan-kelayakan', [LaporanKelayakanController::class, 'index'])->name('kepdin.laporan.index');
+    Route::post('/laporan-kelayakan/{id}/approve', [LaporanKelayakanController::class, 'approve'])->name('kepdin.laporan.approve');
+    Route::post('/laporan-kelayakan/{id}/reject', [LaporanKelayakanController::class, 'reject'])->name('kepdin.laporan.reject');
 });
 
 

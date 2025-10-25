@@ -141,7 +141,7 @@
   <ul class="nav nav-treeview">
     <li class="nav-item">
       <a href="{{ route('laporan.inventaris') }}"
-         class="nav-link {{ Route::is('users.*') ? 'active' : '' }}">
+         class="nav-link {{ Route::is('laporan.inventaris*') ? 'active' : '' }}">
         <i class="nav-icon bi bi-box"></i>
         <p>Inventaris</p>
       </a>
@@ -149,7 +149,7 @@
 
     <li class="nav-item">
       <a href="{{ route('laporan.report') }}"
-         class="nav-link {{ Route::is('laporan.*') ? 'active' : '' }}">
+         class="nav-link {{ Route::is('laporan.report*') ? 'active' : '' }}">
         <i class="nav-icon bi bi-journal-text"></i>
         <p>Stok & Pemakaian</p>
       </a>
@@ -157,7 +157,7 @@
 
     <li class="nav-item">
       <a href="{{ route('laporan.perbaikan') }}"
-         class="nav-link {{ Route::is('users.*') ? 'active' : '' }}">
+         class="nav-link {{ Route::is('laporan.perbaikan*') ? 'active' : '' }}">
         <i class="nav-icon bi bi-wrench-adjustable-circle"></i>
         <p>Perbaikan</p>
       </a>
@@ -165,7 +165,7 @@
 
     <li class="nav-item">
       <a href="{{ route('users.index') }}"
-         class="nav-link {{ Route::is('users.*') ? 'active' : '' }}">
+         class="nav-link {{ Route::is('laporan.index*') ? 'active' : '' }}">
         <i class="nav-icon bi bi bi-clipboard-data"></i>
         <p>Hasil Kelayakan</p>
       </a>
