@@ -113,15 +113,6 @@
               </a>
             </li>
 
-            {{-- Laporan --}}
-            <li class="nav-item">
-              <a href="{{ route('laporan.report') }}"
-                 class="nav-link {{ Route::is('laporan.*') ? 'active' : '' }}">
-                <i class="nav-icon bi bi-journal-text"></i>
-                <p>Laporan Pemakaian</p>
-              </a>
-            </li>
-
           </ul>
         </nav>
       </div>

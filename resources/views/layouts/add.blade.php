@@ -122,9 +122,9 @@
 
         <li class="nav-item">
           <a href="{{ route('riwayat.index') }}"
-             class="nav-link {{ Route::is('admin.dashboard') ? 'active' : '' }}">
-            <i class="nav-icon bi bi-gir"></i>
-            <p>riwayat perawatan</p>
+             class="nav-link {{ Route::is('riwayat-perbaikan') ? 'active' : '' }}">
+            <i class="nav-icon bi bi-gear"></i>
+            <p>riwayat perbaikan</p>
           </a>
         </li>
 

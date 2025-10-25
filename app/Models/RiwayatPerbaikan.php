@@ -23,11 +23,17 @@ class RiwayatPerbaikan extends Model
 
     public function asset()
     {
-        return $this->belongsTo(Asset::class, 'asset_id');
+        return $this->belongsTo(Assets::class, 'asset_id');
     }
 
     public function atk()
     {
         return $this->belongsTo(AtkItem::class, 'atk_id');
     }
+
+    public function riwayatPerbaikan()
+    {
+        return $this->hasMany(RiwayatPerbaikan::class, 'asset_id');
+    }
+
 }

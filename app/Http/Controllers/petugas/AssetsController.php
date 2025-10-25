@@ -5,6 +5,7 @@ namespace App\Http\Controllers\petugas;
 use App\Http\Controllers\Controller;
 use App\Models\Assets;
 use App\Models\KelayakanAssets;
+use App\Models\RiwayatPerbaikan;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -109,8 +110,5 @@ class AssetsController extends Controller
         );
     }
 
-    public function riwayatPerbaikan()
-{
-    return $this->hasMany(RiwayatPerbaikan::class, 'asset_id');
-}
+
 }
