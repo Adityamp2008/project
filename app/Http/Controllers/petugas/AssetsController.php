@@ -4,7 +4,8 @@ namespace App\Http\Controllers\petugas;
 
 use App\Http\Controllers\Controller;
 use App\Models\Assets;
-use App\Models\KelayakanAssets;
+use App\Models\KelayakanAssets; 
+use App\Models\User;
 use App\Models\RiwayatPerbaikan;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -132,7 +133,7 @@ class AssetsController extends Controller
         ]);
     
         $asset = Assets::findOrFail($id);
-    
+
         RiwayatPerbaikan::create([
             'asset_id' => $asset->id,
             'tanggal_perbaikan' => $request->tanggal_perbaikan,
