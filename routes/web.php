@@ -6,13 +6,13 @@ use App\Http\Controllers\Admin\{
     DashboardController as AdminDashboard,
     UserController,
     LaporanInventarisController,
-    RiwayatPerbaikanController
 };
 use App\Http\Controllers\petugas\{
     DashboardController as PetugasDashboard,
     AssetsController,
     AtkItemController,
     KelayakanAssetsController,
+    RiwayatPerbaikanController
 };
 use App\Http\Controllers\kepdin\{
     DashboardController as KepdinDashboard,
@@ -89,6 +89,19 @@ Route::group([
     Route::post('atk/{atk}/in', [AtkItemController::class, 'stockIn'])->name('atk.stockin');
     Route::get('atk/{atk}/out', [AtkItemController::class, 'stockOutForm'])->name('atk.stockout.form');
     Route::post('atk/{atk}/out', [AtkItemController::class, 'stockOut'])->name('atk.stockout');
+    
+    Route::get('/perbaikan/{asset}/create', [RiwayatPerbaikanController::class, 'create'])->name('perbaikan.create');
+    Route::post('/perbaikan/{asset}', [RiwayatPerbaikanController::class, 'store'])->name('perbaikan.store');
+    
+    Route::get('/assets/{id}/perbaikan', [AssetsController::class, 'formPerbaikan'])
+        ->name('assets.formPerbaikan');
+    
+    // Proses Simpan Perbaikan
+    Route::post('/assets/{id}/perbaikan', [AssetsController::class, 'simpanPerbaikan'])
+        ->name('assets.simpanPerbaikan');
+        
+        Route::get('/riwayat-perbaikan', [RiwayatPerbaikanController::class, 'index'])
+            ->name('riwayat-perbaikan.index');
 });
 
 

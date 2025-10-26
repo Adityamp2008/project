@@ -113,6 +113,13 @@
               </a>
             </li>
 
+            <li class="nav-item">
+                <a href="{{ route('riwayat-perbaikan.index') }}" class="nav-link">
+                    <i class="bi bi-wrench"></i>
+                    <p>Riwayat Perbaikan</p>
+                </a>
+            </li>
+
           </ul>
         </nav>
       </div>

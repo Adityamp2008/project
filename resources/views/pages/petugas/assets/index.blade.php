@@ -12,8 +12,8 @@
         </a>
     </div>
 
-    <div class="card mb-4">
-        <div class="card-header d-flex justify-content-between align-items-center">
+    <div class="card mb-4 shadow-sm border-0">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
             <h2 class="card-title mb-0">Data Aset</h2>
         </div>
 
@@ -45,8 +45,8 @@
                 <div class="alert alert-secondary text-center">Belum ada data aset.</div>
             @else
                 <div class="table-responsive">
-                    <table class="table table-bordered align-middle">
-                        <thead class="table-dark text-center">
+                    <table class="table table-bordered align-middle text-center">
+                        <thead class="table-dark">
                             <tr>
                                 <th>#</th>
                                 <th>Nama</th>
@@ -62,24 +62,37 @@
                         <tbody>
                             @foreach ($assets as $asset)
                                 @php
-                                    // Hitung kelayakan berdasarkan umur
+                                    // Hitung umur
                                     $umur = (int)($asset->umur_tahun ?? 0);
-
-                                    if ($umur < 2) {
+                            
+                                    // Tentukan status kelayakan
+                                    if ($asset->pernah_diperbaiki) {
                                         $status = 'Layak';
                                         $badge = 'success';
-                                    }  elseif ($umur <5) {
+                                        $icon = 'bi-check-circle';
+                                    } elseif ($umur < 2) {
+                                        $status = 'Layak';
+                                        $badge = 'success';
+                                        $icon = 'bi-check-circle';
+                                    } elseif ($umur < 5) {
                                         $status = 'Kurang Layak';
-                                        $badge = 'danger';
+                                        $badge = 'warning';
+                                        $icon = 'bi-exclamation-triangle';
                                     } else {
                                         $status = 'Tidak Layak';
                                         $badge = 'danger';
+                                        $icon = 'bi-x-circle';
                                     }
                                 @endphp
-
-                                <tr class="align-middle text-center">
+                            
+                                <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td class="text-start">{{ $asset->nama }}</td>
+                                    <td class="text-start">
+                                        {{ $asset->nama }}
+                                        @if($asset->pernah_diperbaiki)
+                                            <i class="bi bi-star-fill text-warning ms-1" title="Sudah Pernah Diperbaiki"></i>
+                                        @endif
+                                    </td>
                                     <td>{{ $asset->kategori ?? '-' }}</td>
                                     <td>{{ $asset->lokasi ?? '-' }}</td>
                                     <td>
@@ -89,11 +102,22 @@
                                     </td>
                                     <td>{{ ucfirst($asset->kondisi ?? '-') }}</td>
                                     <td>{{ $umur }}</td>
-                                    <td><span class="badge bg-{{ $badge }}">{{ $status }}</span></td>
                                     <td>
-                                        <a href="{{ route('assets.edit', $asset->id) }}" class="btn btn-sm btn-warning">
+                                        <span class="badge bg-{{ $badge }}">
+                                            <i class="bi {{ $icon }}"></i> {{ $status }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('assets.edit', $asset->id) }}" 
+                                           class="btn btn-sm btn-warning" title="Edit Data">
                                             <i class="bi bi-pencil"></i>
                                         </a>
+                            
+                                        @php
+                                            $laporanTerakhir = $asset->laporanKelayakanTerakhir;
+                                            $isApproved = $laporanTerakhir && $laporanTerakhir->status === 'approved';
+                                        @endphp
+                                        
                                         <form 
                                             action="{{ route('assets.destroy', $asset->id) }}" 
                                             method="POST" 
@@ -101,13 +125,22 @@
                                             onsubmit="return confirm('Yakin ingin menghapus aset ini?')">
                                             @csrf
                                             @method('DELETE')
-                                            <button class="btn btn-sm btn-danger">
+                                            <button class="btn btn-sm btn-danger" title="Hapus Data">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </form>
+                            
+                                        {{-- Tombol Perbaikan muncul hanya jika status tidak layak/kurang layak dan disetujui --}}
+                                        @if(in_array($status, ['Kurang Layak', 'Tidak Layak']) && $isApproved)
+                                            <a href="{{ route('assets.formPerbaikan', $asset->id) }}" 
+                                               class="btn btn-sm btn-primary" title="Perbaiki">
+                                                <i class="bi bi-tools"></i>
+                                            </a>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
+
                         </tbody>
                     </table>
                 </div>

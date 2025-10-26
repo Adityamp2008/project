@@ -20,7 +20,7 @@ class LaporanKelayakanController extends Controller
         $laporan->update([
             'status' => 'approved',
             'approved_at' => now(),
-            'catatan_kepdin' => 'Aset layak digunakan.'
+            'catatan_kepdin' => 'Laporan di setujui'
         ]);
 
         return back()->with('success', 'Laporan telah disetujui.');
@@ -31,7 +31,7 @@ class LaporanKelayakanController extends Controller
         $laporan = LaporanKelayakan::findOrFail($id);
         $laporan->update([
             'status' => 'rejected',
-            'catatan_kepdin' => $request->catatan_kepdin ?? 'Aset tidak layak digunakan.'
+            'catatan_kepdin' => $request->catatan_kepdin ?? 'Laporan Ditolak'
         ]);
 
         return back()->with('error', 'Laporan telah ditolak.');

@@ -44,4 +44,26 @@ class Assets extends Model
     {
         return $this->KelayakanAssets->keterangan ?? '-';
     }
+    
+    public function kelayakanAsset()
+    {
+        return $this->hasOne(\App\Models\KelayakanAssets::class, 'asset_id');
+    }
+    
+    public function laporanKelayakan()
+    {
+        return $this->hasMany(\App\Models\LaporanKelayakan::class, 'asset_id');
+    }
+    
+    public function riwayatPerbaikan()
+    {
+        return $this->hasMany(\App\Models\RiwayatPerbaikan::class, 'asset_id');
+    }
+    
+    public function laporanKelayakanTerakhir()
+    {
+        return $this->hasOne(\App\Models\LaporanKelayakan::class, 'asset_id')->latest();
+    }
+
+
 }

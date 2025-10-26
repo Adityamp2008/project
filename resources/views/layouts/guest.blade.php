@@ -72,7 +72,7 @@
               </li>
 
               {{-- Laporan & Analisis --}}
-              <li class="nav-item {{ Route::is('laporan.*') ? 'menu-open' : '' }}">
+              {{-- <li class="nav-item {{ Route::is('laporan.*') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link">
                   <i class="nav-icon bi bi-clipboard-data"></i>
                   <p>Laporan<i class="nav-arrow bi bi-chevron-right"></i></p>
@@ -91,7 +91,7 @@
                     </a>
                   </li>
                 </ul>
-              </li>
+              </li> --}}
 
               {{-- Data Aset --}}
               <li class="nav-item">
@@ -101,6 +101,12 @@
                 </a>
               </li>
 
+              <li class="nav-item">
+                <a href="{{ route('kepdin.laporan.index') }}" class="nav-link">
+                  <i class="nav-icon bi bi-clipboard-check"></i>
+                  <p>Laporan kelayakan</p>
+                </a>
+              </li>
               {{-- Data ATK --}}
               <li class="nav-item">
                 <a href="{{ route('atk.index') }}" class="nav-link">

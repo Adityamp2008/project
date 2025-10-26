@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('lokasi')->nullable();
             $table->date('tanggal_perolehan')->nullable();
             $table->integer('umur_tahun')->nullable();
-            $table->string('kondisi')->nullable(); // dihitung otomatis
+            $table->string('kondisi')->nullable();
+            $table->boolean('pernah_diperbaiki')->default(false); // dihitung otomatis
             $table->string('kelayakan')->nullable(); // dihitung otomatis
             $table->text('description')->nullable();
             $table->timestamps();

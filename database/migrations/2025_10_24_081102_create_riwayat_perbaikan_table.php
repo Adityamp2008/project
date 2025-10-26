@@ -9,18 +9,12 @@ return new class extends Migration {
     {
         Schema::create('riwayat_perbaikan', function (Blueprint $table) {
             $table->id();
-            $table->date('tanggal');
-            $table->text('deskripsi');
-            $table->integer('biaya');
-            $table->string('teknisi');
-            $table->enum('asset_type', ['aset_tetap', 'atk']);
-            $table->unsignedBigInteger('asset_id')->nullable();
-            $table->unsignedBigInteger('atk_id')->nullable();
+            $table->foreignId('asset_id')->constrained('assets')->onDelete('cascade');
+            $table->string('deskripsi');
+            $table->decimal('biaya', 15, 2)->default(0);
+            $table->string('diperbaiki_oleh')->nullable();
+            $table->date('tanggal_perbaikan')->nullable();
             $table->timestamps();
-
-            // foreign key opsional (kalau tabelnya sudah ada)
-            $table->foreign('asset_id')->references('id')->on('assets')->onDelete('cascade');
-            $table->foreign('atk_id')->references('id')->on('atk_items')->onDelete('cascade');
         });
     }
 

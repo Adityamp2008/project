@@ -17,5 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         //memanggil seeder di sini
     $this->call(UserSeeder::class);
+    // $this->call(AssetsTableSeeder::class);
+    // $this->call(AtkItemsTableSeeder::class);
     }
 }

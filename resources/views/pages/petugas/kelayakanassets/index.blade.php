@@ -6,6 +6,7 @@
 <div class="container py-4">
     <h3 class="mb-4">Daftar Kelayakan Aset</h3>
 
+    {{-- Alert session messages --}}
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @elseif (session('warning'))
@@ -29,6 +30,7 @@
             <tbody>
                 @forelse($kelayakanassets as $i => $data)
                     @php
+                        // Ambil laporan terakhir berdasarkan asset_id
                         $laporan = \App\Models\LaporanKelayakan::where('asset_id', $data->asset_id)->latest()->first();
                     @endphp
                     <tr>
@@ -48,7 +50,9 @@
                         </td>
                         <td>{{ $laporan->catatan_kepdin ?? '-' }}</td>
                         <td>
-                            @if(!$laporan || $laporan->status != 'pending')
+                            {{-- Tombol aksi berdasarkan status laporan --}}
+                            @if(!$laporan)
+                                {{-- Belum pernah dilaporkan --}}
                                 <form action="{{ route('kelayakanassets.laporkan', $data->id) }}" method="POST">
                                     @csrf
                                     <button type="submit" class="btn btn-primary btn-sm"
@@ -56,10 +60,21 @@
                                         <i class="bi bi-send"></i> Laporkan
                                     </button>
                                 </form>
-                            @else
+                            @elseif($laporan->status == 'pending')
+                                {{-- Masih menunggu persetujuan --}}
                                 <button class="btn btn-secondary btn-sm" disabled>
                                     <i class="bi bi-hourglass-split"></i> Menunggu
                                 </button>
+                            @elseif($laporan->status == 'approved')
+                                {{-- Sudah disetujui --}}
+                                <span class="badge bg-success">
+                                    <i class="bi bi-check-circle"></i> Sudah Disetujui
+                                </span>
+                            @elseif($laporan->status == 'rejected')
+                                {{-- Ditolak --}}
+                                <span class="badge bg-danger">
+                                    <i class="bi bi-x-circle"></i> Ditolak
+                                </span>
                             @endif
                         </td>
                     </tr>

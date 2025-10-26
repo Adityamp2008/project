@@ -110,5 +110,44 @@ class AssetsController extends Controller
         );
     }
 
+    /**
+     * Form perbaikan untuk aset
+     */
+    public function formPerbaikan($id)
+    {
+        $asset = Assets::findOrFail($id);
+        return view('pages.petugas.perbaikan.create', compact('asset'));
+    }
+    
+    /**
+     * Simpan data perbaikan ke tabel riwayat_perbaikan
+     */
+    public function simpanPerbaikan(Request $request, $id)
+    {
+        $request->validate([
+            'tanggal_perbaikan' => 'required|date',
+            'deskripsi' => 'required|string|max:1000',
+            'biaya' => 'nullable|numeric|min:0',
+            'diperbaiki_oleh' => 'nullable|string|max:255',
+        ]);
+    
+        $asset = Assets::findOrFail($id);
+    
+        RiwayatPerbaikan::create([
+            'asset_id' => $asset->id,
+            'tanggal_perbaikan' => $request->tanggal_perbaikan,
+            'deskripsi' => $request->deskripsi,
+            'biaya' => $request->biaya ?? 0,
+            'diperbaiki_oleh' => $request->diperbaiki_oleh ?? (auth()->user()->name ?? 'Petugas'),
+        ]);
+        
+        $asset->update([
+            'kondisi' => 'baik',
+            'pernah_diperbaiki' => true,
+        ]);
+    
+        return redirect()->route('assets.index')->with('success', 'Data perbaikan berhasil disimpan.');
+    }
+
 
 }
