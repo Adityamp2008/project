@@ -37,14 +37,15 @@ class LaporanInventarisController extends Controller
         $assetType = $request->asset_type;
 
         if ($assetType === 'aset_tetap') {
-            return Assets::all()->map(fn($a) => (object)[
-                'jenis' => 'Aset Tetap',
-                'nama' => $a->nama,
-                'kategori' => $a->kategori,
-                'kondisi' => $a->kondisi->nama ?? '-',
-                'lokasi' => $a->lokasi->nama ?? '-',
-                'stok' => '-'
-            ]);
+    return Assets::with(['kondisi', 'lokasi'])->get()->map(fn($a) => (object)[
+        'jenis' => 'Aset Tetap',
+        'nama' => $a->nama,
+        'kategori' => $a->kategori,
+        'kondisi' => $a->kondisi->nama ?? '-',
+        'lokasi' => $a->lokasi->nama ?? '-',
+        'stok' => '-'
+    ]);
+
         } elseif ($assetType === 'atk') {
             return AtkItem::all()->map(fn($a) => (object)[
                 'jenis' => 'ATK',
@@ -55,7 +56,7 @@ class LaporanInventarisController extends Controller
                 'stok' => $a->stock
             ]);
         } else {
-            $aset = Assets::all()->map(fn($a) => (object)[
+           $aset = Assets::with(['kondisi', 'lokasi'])->get()->map(fn($a) => (object)[
                 'jenis' => 'Aset Tetap',
                 'nama' => $a->nama,
                 'kategori' => $a->kategori,

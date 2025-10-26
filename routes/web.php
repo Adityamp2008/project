@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\{
     DashboardController as AdminDashboard,
     UserController,
     LaporanInventarisController,
+    
 };
 use App\Http\Controllers\petugas\{
     DashboardController as PetugasDashboard,

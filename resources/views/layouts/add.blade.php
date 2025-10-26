@@ -120,13 +120,13 @@
           </a>
         </li>
 
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a href="{{ route('riwayat.index') }}"
              class="nav-link {{ Route::is('riwayat-perbaikan') ? 'active' : '' }}">
             <i class="nav-icon bi bi-gear"></i>
             <p>riwayat perbaikan</p>
           </a>
-        </li>
+        </li> -->
 
     {{-- === Group: Admin === --}}
 <li class="nav-item {{ Route::is('laporan.*') ? 'menu-open' : '' }}">

@@ -65,5 +65,16 @@ class Assets extends Model
         return $this->hasOne(\App\Models\LaporanKelayakan::class, 'asset_id')->latest();
     }
 
+    public function kondisi()
+{
+    return $this->belongsTo(Kondisi::class, 'kondisi_id');
+}
+
+public function lokasi()
+{
+    return $this->belongsTo(Lokasi::class, 'lokasi_id');
+}
+
+
 
 }

@@ -21,31 +21,62 @@
         </div>
     </form>
 
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Jenis</th>
-                <th>Nama</th>
-                <th>Kategori</th>
-                <th>Kondisi</th>
-                <th>Lokasi</th>
-                <th>Stok</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($items as $item)
+    {{-- ===================== ASET TETAP ===================== --}}
+    @if($assetType == '' || $assetType == 'aset_tetap')
+        <h5 class="mt-4 mb-2">Aset Tetap</h5>
+        <table class="table table-bordered">
+            <thead class="table-secondary">
                 <tr>
-                    <td>{{ $item->jenis }}</td>
-                    <td>{{ $item->nama }}</td>
-                    <td>{{ $item->kategori }}</td>
-                    <td>{{ $item->kondisi }}</td>
-                    <td>{{ $item->lokasi }}</td>
-                    <td>{{ $item->stok }}</td>
+                    <th>Nama</th>
+                    <th>Kategori</th>
+                    <th>Kondisi</th>
+                    <th>Lokasi</th>
                 </tr>
-            @empty
-                <tr><td colspan="6" class="text-center">Tidak ada data</td></tr>
-            @endforelse
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @php
+                    $asetItems = $items->where('jenis', 'Aset Tetap');
+                @endphp
+                @forelse($asetItems as $item)
+                    <tr>
+                        <td>{{ $item->nama }}</td>
+                        <td>{{ $item->kategori }}</td>
+                        <td>{{ $item->kondisi }}</td>
+                        <td>{{ $item->lokasi }}</td>
+                    </tr>
+                @empty
+                    <tr><td colspan="4" class="text-center">Tidak ada data aset tetap</td></tr>
+                @endforelse
+            </tbody>
+        </table>
+    @endif
+
+    {{-- ===================== ATK ===================== --}}
+    @if($assetType == '' || $assetType == 'atk')
+        <h5 class="mt-4 mb-2">Alat Tulis Kantor (ATK)</h5>
+        <table class="table table-bordered">
+            <thead class="table-secondary">
+                <tr>
+                    <th>Nama</th>
+                    <th>Kategori</th>
+                    <th>Stok</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                    $atkItems = $items->where('jenis', 'ATK');
+                @endphp
+                @forelse($atkItems as $item)
+                    <tr>
+                        <td>{{ $item->nama }}</td>
+                        <td>{{ $item->kategori }}</td>
+                        <td>{{ $item->stok }}</td>
+                    </tr>
+                @empty
+                    <tr><td colspan="3" class="text-center">Tidak ada data ATK</td></tr>
+                @endforelse
+            </tbody>
+        </table>
+    @endif
 </div>
 @endsection
