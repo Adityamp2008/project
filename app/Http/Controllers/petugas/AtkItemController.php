@@ -6,6 +6,7 @@ use App\Exports\AtkItemsExport;
 use App\Models\AtkItem;
 use App\Models\AtkUsage;
 use App\Models\StockTransaction;
+use App\Models\PenghapusanAtk;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel; // jika pake maatwebsite/excel
@@ -199,6 +200,22 @@ public function reportPdf(Request $r)
     $pdf = \PDF::loadView('pages.petugas.laporan.reportpdf', compact('transactions', 'from', 'to'));
     return $pdf->download('laporan_stok_atk.pdf');
 }
+
+// Ajukan Penghapusan
+public function ajukanHapus(Request $r, AtkItem $atk)
+{
+    $r->validate(['alasan' => 'required|string|min:5']);
+
+    \App\Models\PenghapusanAtk::create([
+        'atk_item_id' => $atk->id,
+        'user_id' => auth()->id(),
+        'alasan' => $r->alasan,
+        'status' => 'menunggu'
+    ]);
+
+    return redirect()->route('atk.index')->with('success', 'Pengajuan hapus item berhasil dikirim ke kepala dinas.');
+}
+
 
 
     

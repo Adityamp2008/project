@@ -78,13 +78,33 @@
                                 <a href="{{ route('atk.edit', $item->id) }}" class="btn btn-sm btn-warning mb-1">
                                     <i class="bi bi-pencil"></i>
                                 </a>
-                                <form action="{{ route('atk.destroy', $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus item ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-sm btn-danger mb-1">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </form>
+                                <button type="button" class="btn btn-sm btn-danger mb-1"
+                                        data-bs-toggle="modal" data-bs-target="#hapusModal{{ $item->id }}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                                
+                                <div class="modal fade" id="hapusModal{{ $item->id }}" tabindex="-1">
+                                  <div class="modal-dialog">
+                                    <div class="modal-content">
+                                      <div class="modal-header bg-danger text-white">
+                                        <h5 class="modal-title">Ajukan Penghapusan Item</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                      </div>
+                                      <form method="POST" action="{{ route('atk.ajukanHapus', $item->id) }}">
+                                        @csrf
+                                        <div class="modal-body">
+                                          <p>Masukkan alasan penghapusan untuk item <strong>{{ $item->name }}</strong>:</p>
+                                          <textarea name="alasan" class="form-control" rows="3" required></textarea>
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                          <button type="submit" class="btn btn-danger">Ajukan</button>
+                                        </div>
+                                      </form>
+                                    </div>
+                                  </div>
+                                </div>
+                                
                                 <a href="{{ route('atk.stockin.form', $item->id) }}" class="btn btn-sm btn-success mb-1">
                                     <i class="bi bi-plus-circle"></i>
                                 </a>

@@ -107,11 +107,19 @@
                   <p>Laporan kelayakan</p>
                 </a>
               </li>
+              
+              <li class="nav-item">
+                <a href="{{ route('kepdin.penghapusan.index') }}" class="nav-link">
+                  <i class="nav-icon bi bi-clipboard-check"></i>
+                  <p>Laporan izin</p>
+                </a>
+              </li>
+              
               {{-- Data ATK --}}
               <li class="nav-item">
-                <a href="{{ route('atk.index') }}" class="nav-link">
+                <a href="{{ route('penghapusan_atk.index') }}" class="nav-link">
                   <i class="nav-icon bi bi-pencil-square"></i>
-                  <p>Data Barang ATK</p>
+                  <p>Laporam ATK</p>
                 </a>
               </li>
 

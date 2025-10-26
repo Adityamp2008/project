@@ -18,6 +18,8 @@ use App\Http\Controllers\petugas\{
 use App\Http\Controllers\kepdin\{
     DashboardController as KepdinDashboard,
     LaporanKelayakanController,
+    KepdinController,
+    KepdinAtkController,
 };
 
 
@@ -103,6 +105,11 @@ Route::group([
         
         Route::get('/riwayat-perbaikan', [RiwayatPerbaikanController::class, 'index'])
             ->name('riwayat-perbaikan.index');
+            
+            Route::get('/assets/hapus/{id}', [AssetsController::class, 'formHapus'])->name('assets.formHapus');
+            Route::post('/assets/hapus/{id}', [AssetsController::class, 'ajukanHapus'])->name('assets.ajukanHapus');
+            
+            Route::post('/atk/{atk}/ajukan-hapus', [AtkItemController::class, 'ajukanHapus'])->name('atk.ajukanHapus');
 });
 
 
@@ -114,9 +121,18 @@ Route::group([
     'middleware' => ['auth', 'role:kepdin']
 ], function() {
     Route::get('/dashboard', [KepdinDashboard::class, 'index'])->name('kepdin.dashboard');
+        
     Route::get('/laporan-kelayakan', [LaporanKelayakanController::class, 'index'])->name('kepdin.laporan.index');
     Route::post('/laporan-kelayakan/{id}/approve', [LaporanKelayakanController::class, 'approve'])->name('kepdin.laporan.approve');
     Route::post('/laporan-kelayakan/{id}/reject', [LaporanKelayakanController::class, 'reject'])->name('kepdin.laporan.reject');
+    
+    Route::get('/kepdin/penghapusan', [KepdinController::class, 'indexPenghapusan'])->name('kepdin.penghapusan.index');
+    Route::post('/penghapusan/{id}/setujui', [KepdinController::class, 'setujuiHapus'])->name('kepdin.penghapusan.setujui');
+    Route::post('/penghapusan/{id}/tolak', [KepdinController::class, 'tolakHapus'])->name('kepdin.penghapusan.tolak');
+    
+    Route::get('penghapusan-atk', [KepdinAtkController::class, 'index'])->name('penghapusan_atk.index');
+    Route::post('/penghapusan-atk/{id}/setujui', [KepdinAtkController::class, 'setujui'])->name('penghapusan_atk.setujui');
+    Route::post('/penghapusan-atk/{id}/tolak', [KepdinAtkController::class, 'tolak'])->name('penghapusan_atk.tolak');
 });
 
 

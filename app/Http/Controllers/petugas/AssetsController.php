@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Assets;
 use App\Models\KelayakanAssets; 
 use App\Models\User;
+use App\Models\PengajuanPenghapusanAset;
 use App\Models\RiwayatPerbaikan;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -148,6 +149,30 @@ class AssetsController extends Controller
         ]);
     
         return redirect()->route('assets.index')->with('success', 'Data perbaikan berhasil disimpan.');
+    }
+    
+    public function formHapus($id)
+    {
+        $asset = Assets::findOrFail($id);
+        return view('pages.petugas.assets.formHapus', compact('asset'));
+    }
+    
+    public function ajukanHapus(Request $request, $id)
+    {
+        $request->validate([
+            'alasan' => 'required|string|min:5',
+        ]);
+    
+        $asset = Assets::findOrFail($id);
+    
+        PengajuanPenghapusanAset::create([
+            'asset_id' => $id,
+            'diajukan_oleh' => auth()->user()->name ?? 'Petugas Tidak Dikenal',
+            'alasan' => $request->alasan,
+            'status' => 'pending',
+        ]);
+    
+        return redirect()->route('assets.index')->with('success', 'Pengajuan penghapusan telah dikirim ke Kepdin untuk ditinjau.');
     }
 
 

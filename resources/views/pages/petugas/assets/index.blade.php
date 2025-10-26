@@ -118,17 +118,11 @@
                                             $isApproved = $laporanTerakhir && $laporanTerakhir->status === 'approved';
                                         @endphp
                                         
-                                        <form 
-                                            action="{{ route('assets.destroy', $asset->id) }}" 
-                                            method="POST" 
-                                            class="d-inline"
-                                            onsubmit="return confirm('Yakin ingin menghapus aset ini?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-sm btn-danger" title="Hapus Data">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </form>
+                                        <a href="{{ route('assets.formHapus', $asset->id) }}" 
+                                           class="btn btn-sm btn-danger" title="Ajukan Penghapusan">
+                                           <i class="bi bi-trash"></i>
+                                        </a>
+
                             
                                         {{-- Tombol Perbaikan muncul hanya jika status tidak layak/kurang layak dan disetujui --}}
                                         @if(in_array($status, ['Kurang Layak', 'Tidak Layak']) && $isApproved)
