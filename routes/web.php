@@ -22,7 +22,8 @@ use App\Http\Controllers\kepdin\{
     KepdinController,
     KepdinAtkController,
     LaporanInventarisController,
-    LaporanPerbaikanController
+    LaporanPerbaikanController,
+    LaporanAtkController
     
 };
 
@@ -46,10 +47,7 @@ Route::group([
     // --- Modul utama ---
     Route::resource('users', UserController::class);
     
-    // --- Laporan ---
-    Route::get('laporan/report', [AtkItemController::class, 'report'])->name('laporan.report');
-    Route::get('laporan/report/pdf', [AtkItemController::class, 'reportPdf'])->name('laporan.report.pdf');
-    Route::get('laporan/report/excel', [AtkItemController::class, 'exportExcel'])->name('laporan.report.excel');
+   
 
     Route::get('admin/riwayat-perbaikan', [RiwayatPerbaikanController::class, 'index'])->name('riwayat.index');
         Route::get('/riwayat-perbaikan/create', [RiwayatPerbaikanController::class, 'create'])->name('riwayat.create');
@@ -142,6 +140,11 @@ Route::get('laporan/inventaris/excel', [LaporanInventarisController::class, 'exc
 Route::get('laporan/perbaikan', [LaporanPerbaikanController::class, 'laporan'])->name('laporan.perbaikan');
 Route::get('laporan/perbaikan/pdf', [LaporanPerbaikanController::class, 'laporanPdf'])->name('laporan.perbaikan.pdf');
 Route::get('laporan/perbaikan/excel', [LaporanPerbaikanController::class, 'laporanExcel'])->name('laporan.perbaikan.excel');
+
+ // --- Laporan atk ---
+    Route::get('laporan/report', [LaporanAtkController::class, 'report'])->name('laporan.report');
+    Route::get('laporan/report/pdf', [LaporanAtkController::class, 'reportPdf'])->name('laporan.report.pdf');
+    Route::get('laporan/report/excel', [LaporanAtkController::class, 'exportExcel'])->name('laporan.report.excel');
 });
 
 

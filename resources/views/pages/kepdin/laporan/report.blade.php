@@ -1,4 +1,4 @@
-@extends('layouts.add')
+@extends('layouts.guest')
 @section('title', 'Laporan Stok ATK')
 
 @section('content')
@@ -57,7 +57,7 @@
                             @endif
                         </td>
                         <td>{{ $trx->quantity }}</td>
-                        <td>{{ $trx->reference ?? '-' }}</td>
+                        <td>{{ $trx->note_reference ?? '-' }}</td>
                         <td>{{ $trx->user->name ?? '-' }}</td>
                     </tr>
                 @empty

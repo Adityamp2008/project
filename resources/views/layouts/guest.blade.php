@@ -118,6 +118,15 @@
                 </a>
               </li>
 
+              {{-- laporan stok atk --}}
+              <li class="nav-item">
+                <a href="{{ route('laporan.report') }}"
+                   class="nav-link {{ Route::is('report.*') ? 'active' : '' }}">
+                  <i class="nav-icon bi bi-box-seam"></i>
+                  <p>laporan stok atk</p>
+                </a>
+              </li>
+
 
             </ul>
           </nav>

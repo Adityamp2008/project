@@ -124,32 +124,6 @@ public function stockOut(Request $r, AtkItem $atk)
 }
 
 
-    // LAPORAN sederhana (filter by date, item, category)
-    public function report(Request $r){
-        $from = $r->from ?: now()->subMonth()->format('Y-m-d');
-        $to = $r->to ?: now()->format('Y-m-d');
-        $transactions = StockTransaction::with('item')
-            ->whereBetween('created_at', [$from.' 00:00:00', $to.' 23:59:59'])
-            ->orderBy('created_at','desc')
-             ->paginate(20);
-        return view('pages.petugas.laporan.report', compact('transactions','from','to'));
-    }
-
-    // EXPORT EXCEL (contoh sederhana)
-    public function exportExcel(Request $r){
-        $items = AtkItem::all();
-        // gunakan maatwebsite/excel -> pembuatan export class lebih rapi, ini contoh cepat:
-        return Excel::download(new \App\Exports\AtkItemsExport($items), 'atk_items.xlsx');
-    }
-
-     // EXPORT PDF
-    public function exportPdf(Request $r){
-        $items = AtkItem::all();
-        $pdf = PDF::loadView('pages.petugas.atk.pdf_items', compact('items'));
-        return $pdf->download('atk_items.pdf');
-    }
-
-    // FORM Barang Masuk
 public function stockInForm(AtkItem $atk)
 {
     return view('pages.petugas.atk.stock_in', compact('atk'));
@@ -184,22 +158,22 @@ public function stockOutForm(AtkItem $atk)
 
 
 
-public function reportPdf(Request $r)
-{
-    $from = $r->from ?: now()->subMonth()->format('Y-m-d');
-    $to = $r->to ?: now()->format('Y-m-d');
+// public function reportPdf(Request $r)
+// {
+//     $from = $r->from ?: now()->subMonth()->format('Y-m-d');
+//     $to = $r->to ?: now()->format('Y-m-d');
 
-    $transactions = \App\Models\StockTransaction::with(['item', 'user'])
-        ->whereBetween('created_at', [$from.' 00:00:00', $to.' 23:59:59'])
-        ->when($r->search, function ($q) use ($r) {
-            $q->whereHas('item', fn($qq) => $qq->where('name', 'like', '%'.$r->search.'%'));
-        })
-        ->orderBy('created_at', 'desc')
-        ->get();
+//     $transactions = \App\Models\StockTransaction::with(['item', 'user'])
+//         ->whereBetween('created_at', [$from.' 00:00:00', $to.' 23:59:59'])
+//         ->when($r->search, function ($q) use ($r) {
+//             $q->whereHas('item', fn($qq) => $qq->where('name', 'like', '%'.$r->search.'%'));
+//         })
+//         ->orderBy('created_at', 'desc')
+//         ->get();
 
-    $pdf = \PDF::loadView('pages.petugas.laporan.reportpdf', compact('transactions', 'from', 'to'));
-    return $pdf->download('laporan_stok_atk.pdf');
-}
+//     $pdf = \PDF::loadView('pages.petugas.laporan.reportpdf', compact('transactions', 'from', 'to'));
+//     return $pdf->download('laporan_stok_atk.pdf');
+// }
 
 // Ajukan Penghapusan
 public function ajukanHapus(Request $r, AtkItem $atk)
