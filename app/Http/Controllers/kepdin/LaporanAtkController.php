@@ -56,7 +56,7 @@ class LaporanAtkController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $pdf = PDF::loadView('pages.pkepdin.laporan.reportpdf', compact('transactions', 'from', 'to'))
+        $pdf = PDF::loadView('pages.kepdin.laporan.reportpdf', compact('transactions', 'from', 'to'))
             ->setPaper('a4', 'landscape');
 
         return $pdf->download('laporan_stok_atk.pdf');

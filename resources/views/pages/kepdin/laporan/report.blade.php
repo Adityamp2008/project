@@ -57,7 +57,7 @@
                             @endif
                         </td>
                         <td>{{ $trx->quantity }}</td>
-                        <td>{{ $trx->note_reference ?? '-' }}</td>
+                        <td>{{ $trx->reference ?? '-' }}</td>
                         <td>{{ $trx->user->name ?? '-' }}</td>
                     </tr>
                 @empty

@@ -30,7 +30,7 @@
                 {{-- Keterangan --}}
                 <div class="mb-3">
                     <label class="form-label">Keterangan</label>
-                    <input type="text" name="note" class="form-control" placeholder="Contoh: Untuk keperluan kantor">
+                    <input type="text" name="reference" class="form-control" placeholder="Contoh: Untuk keperluan kantor">
                 </div>
 
                 {{-- Tombol aksi --}}
