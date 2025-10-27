@@ -74,7 +74,7 @@
               
               {{-- Data Aset --}}
               <li class="nav-item">
-                <a href="{{ route('assets.index') }}"
+                <a href="{{ route('laporan.inventaris') }}"
                    class="nav-link {{ Route::is('assets.*') ? 'active' : '' }}">
                   <i class="nav-icon bi bi-box-seam"></i>
                   <p>Data Aset</p>
