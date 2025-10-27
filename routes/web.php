@@ -13,6 +13,7 @@ use App\Http\Controllers\petugas\{
     AssetsController,
     AtkItemController,
     KelayakanAssetsController,
+    RiwayatPerbaikanController
     
 };
 use App\Http\Controllers\kepdin\{
@@ -21,7 +22,8 @@ use App\Http\Controllers\kepdin\{
     KepdinController,
     KepdinAtkController,
     LaporanInventarisController,
-    RiwayatPerbaikanController
+    LaporanPerbaikanController
+    
 };
 
 
@@ -58,9 +60,7 @@ Route::group([
 
     //Laporan perbaikan
 // LAPORAN PERBAIKAN
-Route::get('laporan/perbaikan', [RiwayatPerbaikanController::class, 'laporan'])->name('laporan.perbaikan');
-Route::get('laporan/perbaikan/pdf', [RiwayatPerbaikanController::class, 'laporanPdf'])->name('laporan.perbaikan.pdf');
-Route::get('laporan/perbaikan/excel', [RiwayatPerbaikanController::class, 'laporanExcel'])->name('laporan.perbaikan.excel');
+
 
 });
 
@@ -137,6 +137,11 @@ Route::group([
 Route::get('laporan/inventaris', [LaporanInventarisController::class, 'index'])->name('laporan.inventaris');
 Route::get('laporan/inventaris/pdf', [LaporanInventarisController::class, 'pdf'])->name('laporan.inventaris.pdf');
 Route::get('laporan/inventaris/excel', [LaporanInventarisController::class, 'excel'])->name('laporan.inventaris.excel');
+
+//laporan perbaikan
+Route::get('laporan/perbaikan', [LaporanPerbaikanController::class, 'laporan'])->name('laporan.perbaikan');
+Route::get('laporan/perbaikan/pdf', [LaporanPerbaikanController::class, 'laporanPdf'])->name('laporan.perbaikan.pdf');
+Route::get('laporan/perbaikan/excel', [LaporanPerbaikanController::class, 'laporanExcel'])->name('laporan.perbaikan.excel');
 });
 
 

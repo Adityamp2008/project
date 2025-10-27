@@ -5,37 +5,37 @@ namespace App\Exports;
 use App\Models\RiwayatPerbaikan;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-use Illuminate\Http\Request;
+use Maatwebsite\Excel\Concerns\WithMapping;
 
-class LaporanPerbaikanExport implements FromCollection, WithHeadings
+class LaporanPerbaikanExport implements FromCollection, WithHeadings, WithMapping
 {
-    protected $request;
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
-    }
-
     public function collection()
     {
-        $query = RiwayatPerbaikan::query();
-
-        if ($this->request->filled('dari') && $this->request->filled('sampai')) {
-            $query->whereBetween('tanggal', [$this->request->dari, $this->request->sampai]);
-        }
-
-        if ($this->request->filled('asset_type')) {
-            $query->where('asset_type', $this->request->asset_type);
-        }
-
-        if ($this->request->filled('teknisi')) {
-            $query->where('teknisi', 'like', "%{$this->request->teknisi}%");
-        }
-
-        return $query->get(['tanggal', 'deskripsi', 'biaya', 'teknisi', 'asset_type']);
+        return RiwayatPerbaikan::with('asset')->latest()->get();
     }
 
     public function headings(): array
     {
-        return ['Tanggal', 'Deskripsi', 'Biaya', 'Teknisi', 'Tempat Data'];
+        return [
+            'No',
+            'Nama Aset',
+            'Deskripsi Perbaikan',
+            'Biaya',
+            'Diperbaiki Oleh',
+            'Tanggal Perbaikan',
+        ];
+    }
+
+    public function map($riwayat): array
+    {
+        static $no = 1;
+        return [
+            $no++,
+            $riwayat->asset->nama ?? '-',
+            $riwayat->deskripsi_perbaikan,
+            'Rp ' . number_format($riwayat->biaya, 0, ',', '.'),
+            $riwayat->diperbaiki_oleh,
+            $riwayat->tanggal_perbaikan ? $riwayat->tanggal_perbaikan->format('d-m-Y') : '-',
+        ];
     }
 }

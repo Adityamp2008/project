@@ -4,34 +4,39 @@
     <meta charset="utf-8">
     <title>Laporan Perbaikan</title>
     <style>
-        table { width: 100%; border-collapse: collapse; }
+        body { font-family: sans-serif; font-size: 12px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th, td { border: 1px solid #000; padding: 6px; text-align: left; }
+        th { background: #f2f2f2; }
+        h3 { text-align: center; margin-bottom: 10px; }
     </style>
 </head>
 <body>
-    <h3>Laporan Perbaikan</h3>
+    <h3>LAPORAN RIWAYAT PERBAIKAN ASET</h3>
+
     <table>
         <thead>
             <tr>
-                <th>Tanggal</th>
-                <th>Deskripsi</th>
+                <th>No</th>
+                <th>Nama Aset</th>
+                <th>Deskripsi Perbaikan</th>
                 <th>Biaya</th>
-                <th>Teknisi</th>
-                <th>Tempat Data</th>
+                <th>Diperbaiki Oleh</th>
+                <th>Tanggal Perbaikan</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($riwayat as $r)
-                <tr>
-                    <td>{{ $r->tanggal }}</td>
-                    <td>{{ $r->deskripsi }}</td>
-                    <td>Rp{{ number_format($r->biaya, 0, ',', '.') }}</td>
-                    <td>{{ $r->teknisi }}</td>
-                    <td>{{ ucfirst(str_replace('_',' ',$r->asset_type)) }}</td>
-                </tr>
+            @foreach ($riwayats as $key => $r)
+            <tr>
+                <td>{{ $key + 1 }}</td>
+                <td>{{ $r->asset->nama ?? '-' }}</td>
+                <td>{{ $r->deskripsi_perbaikan }}</td>
+                <td>Rp {{ number_format($r->biaya, 0, ',', '.') }}</td>
+                <td>{{ $r->diperbaiki_oleh }}</td>
+                <td>{{ \Carbon\Carbon::parse($r->tanggal_perbaikan)->format('d-m-Y') }}</td>
+            </tr>
             @endforeach
         </tbody>
     </table>
-    <h4>Total Biaya: Rp{{ number_format($total_biaya, 0, ',', '.') }}</h4>
 </body>
 </html>
