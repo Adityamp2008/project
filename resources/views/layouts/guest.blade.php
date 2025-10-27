@@ -109,6 +109,16 @@
               </li>
 
 
+              {{-- laporan perbaikan --}}
+              <li class="nav-item">
+                <a href="{{ route('laporan.perbaikan') }}"
+                   class="nav-link {{ Route::is('perbaikan.*') ? 'active' : '' }}">
+                  <i class="nav-icon bi bi-box-seam"></i>
+                  <p>laporan perbaikan</p>
+                </a>
+              </li>
+
+
             </ul>
           </nav>
         </div>
