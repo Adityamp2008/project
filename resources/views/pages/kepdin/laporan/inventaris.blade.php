@@ -1,4 +1,4 @@
-@extends('layouts.add')
+@extends('layouts.guest')
 @section('title','Laporan Inventaris')
 
 @section('content')

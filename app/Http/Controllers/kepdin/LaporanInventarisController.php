@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\kepdin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -17,13 +17,13 @@ class LaporanInventarisController extends Controller
         $items = $this->ambilData($request);
         $assetType = $request->asset_type ?? '';
 
-        return view('pages.admin.laporan.inventaris', compact('items', 'assetType'));
+        return view('pages.kepdin.laporan.inventaris', compact('items', 'assetType'));
     }
 
     public function pdf(Request $request)
     {
         $items = $this->ambilData($request);
-        $pdf = PDF::loadView('pages.admin.laporan.inventaris_pdf', compact('items'));
+        $pdf = PDF::loadView('pages.kepdin.laporan.inventaris_pdf', compact('items'));
         return $pdf->download('laporan_inventaris.pdf');
     }
 

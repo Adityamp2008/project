@@ -5,7 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Admin\{
     DashboardController as AdminDashboard,
     UserController,
-    LaporanInventarisController,
+    
     
 };
 use App\Http\Controllers\petugas\{
@@ -13,13 +13,15 @@ use App\Http\Controllers\petugas\{
     AssetsController,
     AtkItemController,
     KelayakanAssetsController,
-    RiwayatPerbaikanController
+    
 };
 use App\Http\Controllers\kepdin\{
     DashboardController as KepdinDashboard,
     LaporanKelayakanController,
     KepdinController,
     KepdinAtkController,
+    LaporanInventarisController,
+    RiwayatPerbaikanController
 };
 
 
@@ -52,10 +54,7 @@ Route::group([
     Route::post('/riwayat-perbaikan', [RiwayatPerbaikanController::class, 'store'])->name('riwayat.store');
     Route::get('/get-items/{type}', [RiwayatPerbaikanController::class, 'getItems'])->name('get.items');
 
-      // Laporan Inventaris
-Route::get('laporan/inventaris', [LaporanInventarisController::class, 'index'])->name('laporan.inventaris');
-Route::get('laporan/inventaris/pdf', [LaporanInventarisController::class, 'pdf'])->name('laporan.inventaris.pdf');
-Route::get('laporan/inventaris/excel', [LaporanInventarisController::class, 'excel'])->name('laporan.inventaris.excel');
+
 
     //Laporan perbaikan
 // LAPORAN PERBAIKAN
@@ -133,6 +132,11 @@ Route::group([
     Route::get('penghapusan-atk', [KepdinAtkController::class, 'index'])->name('penghapusan_atk.index');
     Route::post('/penghapusan-atk/{id}/setujui', [KepdinAtkController::class, 'setujui'])->name('penghapusan_atk.setujui');
     Route::post('/penghapusan-atk/{id}/tolak', [KepdinAtkController::class, 'tolak'])->name('penghapusan_atk.tolak');
+
+          // Laporan Inventaris
+Route::get('laporan/inventaris', [LaporanInventarisController::class, 'index'])->name('laporan.inventaris');
+Route::get('laporan/inventaris/pdf', [LaporanInventarisController::class, 'pdf'])->name('laporan.inventaris.pdf');
+Route::get('laporan/inventaris/excel', [LaporanInventarisController::class, 'excel'])->name('laporan.inventaris.excel');
 });
 
 

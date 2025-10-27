@@ -95,7 +95,7 @@
 
               {{-- Data Aset --}}
               <li class="nav-item">
-                <a href="{{ route('assets.index') }}" class="nav-link">
+                <a href="{{ route('laporan.inventaris') }}" class="nav-link">
                   <i class="nav-icon bi bi-box-seam"></i>
                   <p>Data Aset</p>
                 </a>
@@ -120,6 +120,13 @@
                 <a href="{{ route('penghapusan_atk.index') }}" class="nav-link">
                   <i class="nav-icon bi bi-pencil-square"></i>
                   <p>Laporam ATK</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{ route('laporan.perbaikan') }}" class="nav-link">
+                  <i class="nav-icon bi bi-clipboard-check"></i>
+                  <p>Laporan perbaikan</p>
                 </a>
               </li>
 
