@@ -63,6 +63,7 @@
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview">
 
               {{-- Dashboard --}}
+              {{-- Dashboard --}}
               <li class="nav-item">
                 <a href="{{ route('kepdin.dashboard') }}"
                    class="nav-link {{ Route::is('kepdin.dashboard') ? 'active' : '' }}">
@@ -70,65 +71,43 @@
                   <p>Dashboard</p>
                 </a>
               </li>
-
-              {{-- Laporan & Analisis --}}
-              {{-- <li class="nav-item {{ Route::is('laporan.*') ? 'menu-open' : '' }}">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon bi bi-clipboard-data"></i>
-                  <p>Laporan<i class="nav-arrow bi bi-chevron-right"></i></p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="{{ route('laporan.report') }}" class="nav-link">
-                      <i class="nav-icon bi bi-journal-text"></i>
-                      <p>Stok & Pemakaian ATK</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="{{ route('kelayakanassets.index') }}" class="nav-link">
-                      <i class="nav-icon bi bi-clipboard-check"></i>
-                      <p>Hasil Kelayakan Aset</p>
-                    </a>
-                  </li>
-                </ul>
-              </li> --}}
-
+              
               {{-- Data Aset --}}
               <li class="nav-item">
-                <a href="{{ route('laporan.inventaris') }}" class="nav-link">
+                <a href="{{ route('assets.index') }}"
+                   class="nav-link {{ Route::is('assets.*') ? 'active' : '' }}">
                   <i class="nav-icon bi bi-box-seam"></i>
                   <p>Data Aset</p>
                 </a>
               </li>
-
+              
+              {{-- Laporan Kelayakan --}}
               <li class="nav-item">
-                <a href="{{ route('kepdin.laporan.index') }}" class="nav-link">
+                <a href="{{ route('kepdin.laporan.index') }}"
+                   class="nav-link {{ Route::is('kepdin.laporan.*') ? 'active' : '' }}">
                   <i class="nav-icon bi bi-clipboard-check"></i>
-                  <p>Laporan kelayakan</p>
+                  <p>Laporan Kelayakan</p>
                 </a>
               </li>
               
+              {{-- Laporan Izin --}}
               <li class="nav-item">
-                <a href="{{ route('kepdin.penghapusan.index') }}" class="nav-link">
-                  <i class="nav-icon bi bi-clipboard-check"></i>
-                  <p>Laporan izin</p>
+                <a href="{{ route('kepdin.penghapusan.index') }}"
+                   class="nav-link {{ Route::is('kepdin.penghapusan.*') ? 'active' : '' }}">
+                  <i class="nav-icon bi bi-clipboard-minus"></i>
+                  <p>Laporan Izin</p>
                 </a>
               </li>
               
-              {{-- Data ATK --}}
+              {{-- Laporan ATK --}}
               <li class="nav-item">
-                <a href="{{ route('penghapusan_atk.index') }}" class="nav-link">
+                <a href="{{ route('penghapusan_atk.index') }}"
+                   class="nav-link {{ Route::is('penghapusan_atk.*') ? 'active' : '' }}">
                   <i class="nav-icon bi bi-pencil-square"></i>
-                  <p>Laporam ATK</p>
+                  <p>Laporan ATK</p>
                 </a>
               </li>
 
-              <li class="nav-item">
-                <a href="{{ route('laporan.perbaikan') }}" class="nav-link">
-                  <i class="nav-icon bi bi-clipboard-check"></i>
-                  <p>Laporan perbaikan</p>
-                </a>
-              </li>
 
             </ul>
           </nav>
