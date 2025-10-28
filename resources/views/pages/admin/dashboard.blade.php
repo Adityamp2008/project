@@ -1,192 +1,85 @@
 @extends('layouts.add')
-@section('title', 'Dashboard Super Admin')
+@section('title', 'Dashboard Admin - Manajemen Akun')
 
 @section('content')
 <div class="container-fluid py-3">
 
   {{-- === HEADER === --}}
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h4 class="fw-bold mb-0">Dashboard Super Admin</h4>
+    <h4 class="fw-bold mb-0">Dashboard Admin</h4>
     <small class="text-muted">Selamat datang, {{ Auth::user()->name }}</small>
   </div>
 
-  {{-- === STATISTIK KOTAK UTAMA === --}}
+  {{-- === STATISTIK PENGGUNA === --}}
   <div class="row g-3">
-    {{-- Total Aset --}}
+    {{-- Total Pengguna --}}
     <div class="col-md-3 col-sm-6">
-      <div class="small-box text-bg-primary">
+      <div class="small-box text-bg-primary shadow-sm">
         <div class="inner">
-          <h3>{{ $total_aset ?? 0 }}</h3>
-          <p>Total Aset</p>
+          <h3>{{ $total_users ?? 0 }}</h3>
+          <p>Total Pengguna</p>
         </div>
         <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M3 3h18v2H3V3zm2 4h14v2H5V7zm-2 4h18v2H3v-2zm2 4h14v2H5v-2zm-2 4h18v2H3v-2z"/>
-        </svg>
-        <a href="{{ route('assets.index') }}"
-           class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover">
-          More info <i class="bi bi-link-45deg"></i>
-        </a>
-      </div>
-    </div>
-
-    {{-- Aset Layak --}}
-    <div class="col-md-3 col-sm-6">
-      <div class="small-box text-bg-success">
-        <div class="inner">
-          <h3>{{ $aset_layak ?? 0 }}</h3>
-          <p>Aset Layak</p>
-        </div>
-        <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M9 16.17l-3.88-3.88L4 13.41 9 18.41l12-12-1.41-1.41z"/>
+          <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 
+          1.34-3 3 1.34 3 3 3zM8 11c1.66 0 2.99-1.34 
+          2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 
+          3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5C15 
+          14.17 10.33 13 8 13zm8 0c-.29 0-.62.02-.97.05 
+          1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
         </svg>
       </div>
     </div>
 
-    {{-- Aset Tidak Layak --}}
+    {{-- Admin --}}
     <div class="col-md-3 col-sm-6">
-      <div class="small-box text-bg-danger">
+      <div class="small-box text-bg-success shadow-sm">
         <div class="inner">
-          <h3>{{ $aset_tidak_layak ?? 0 }}</h3>
-          <p>Aset Tidak Layak</p>
+          <h3>{{ $total_admin ?? 0 }}</h3>
+          <p>Admin</p>
         </div>
         <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10
-          10-4.48 10-10S17.52 2 12 2zm0 15h-.01M12 7v6"/>
+          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 
+          1.79-4 4 1.79 4 4 4zm0 2c-2.67 
+          0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
         </svg>
       </div>
     </div>
 
-    {{-- Stok Rendah --}}
+    {{-- Petugas --}}
     <div class="col-md-3 col-sm-6">
-      <div class="small-box text-bg-warning">
+      <div class="small-box text-bg-warning shadow-sm">
         <div class="inner">
-          <h3>{{ $stok_rendah ?? 0 }}</h3>
-          <p>Stok ATK Menipis</p>
+          <h3>{{ $total_petugas ?? 0 }}</h3>
+          <p>Petugas</p>
         </div>
         <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 22c1.1 0 2-.9 2-2H10c0 1.1.9 2 2 2zm6-6v-5
-          c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5S10.5 3.17
-          10.5 4v.68C7.63 5.36 6 7.92 6 11v5l-1.7 1.7c-.1.1-.3.3-.3.6v.2c0
-          .5.4.9.9.9h14.2c.5 0 .9-.4.9-.9v-.2c0-.3-.2-.5-.3-.6L18 16z"/>
+          <path d="M12 12c2.21 0 4-1.79 
+          4-4s-1.79-4-4-4-4 1.79-4 
+          4 1.79 4 4 4zm0 2c-2.67 0-8 
+          1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
         </svg>
-        <a href="{{ route('atk.index') }}"
-           class="small-box-footer link-dark link-underline-opacity-0 link-underline-opacity-50-hover">
-          More info <i class="bi bi-link-45deg"></i>
-        </a>
+      </div>
+    </div>
+
+    {{-- Kepdin --}}
+    <div class="col-md-3 col-sm-6">
+      <div class="small-box text-bg-danger shadow-sm">
+        <div class="inner">
+          <h3>{{ $total_kepdin ?? 0 }}</h3>
+          <p>Kepala Dinas</p>
+        </div>
+        <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 12c2.21 0 4-1.79 
+          4-4s-1.79-4-4-4-4 1.79-4 
+          4 1.79 4 4 4zm0 2c-2.67 0-8 
+          1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+        </svg>
       </div>
     </div>
   </div>
 
-  {{-- === GRAFIK DAN NOTIFIKASI === --}}
-  <div class="row g-3 mt-2">
-    {{-- Grafik Kelayakan --}}
-    <div class="col-lg-8">
-      <div class="card shadow-sm">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          <h6 class="mb-0"><i class="bi bi-graph-up"></i> Statistik Kelayakan Aset</h6>
-          <small class="text-muted">Per Tahun</small>
-        </div>
-        <div class="card-body">
-          <div id="chartKelayakan" style="height: 300px;"></div>
-        </div>
-      </div>
-    </div>
+  {{-- Tombol Navigasi ke Manajemen Akun --}}
 
-    {{-- Notifikasi Aset --}}
-    <div class="col-lg-4">
-      <div class="card shadow-sm">
-        <div class="card-header">
-          <h6 class="mb-0"><i class="bi bi-bell-fill"></i> Notifikasi Aset Bermasalah</h6>
-        </div>
-        <div class="card-body p-0">
-          <ul class="list-group list-group-flush">
-            @forelse ($notif_aset ?? [] as $n)
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span>{{ $n['nama'] }}</span>
-                <span class="badge bg-danger">{{ $n['status'] }}</span>
-              </li>
-            @empty
-              <li class="list-group-item text-center text-muted">Tidak ada notifikasi</li>
-            @endforelse
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  {{-- === Grafik Pemakaian ATK === --}}
-  <div class="card mt-3 shadow-sm">
-    <div class="card-header">
-      <h6 class="mb-0"><i class="bi bi-pencil-square"></i> Pemakaian ATK per Bulan</h6>
-    </div>
-    <div class="card-body">
-      <div id="chartAtk" style="height: 300px;"></div>
-    </div>
-  </div>
-
-  {{-- === Riwayat Perbaikan Terbaru === --}}
-  <div class="card shadow-sm mt-3">
-    <div class="card-header">
-      <h6 class="mb-0"><i class="bi bi-tools"></i> Riwayat Perbaikan Terbaru</h6>
-    </div>
-    <div class="card-body table-responsive">
-      <table class="table table-striped align-middle">
-        <thead class="table-dark">
-          <tr>
-            <th>No</th>
-            <th>Nama Aset</th>
-            <th>Tanggal</th>
-            <th>Deskripsi</th>
-            <th>Biaya</th>
-          </tr>
-        </thead>
-        <tbody>
-          @forelse ($riwayat_perbaikan ?? [] as $i => $r)
-          <tr>
-            <td>{{ $i + 1 }}</td>
-            <td>{{ $r->nama_aset ?? '-' }}</td>
-            <td>{{ $r->tanggal ?? '-' }}</td>
-            <td>{{ $r->deskripsi ?? '-' }}</td>
-            <td>Rp {{ number_format($r->biaya ?? 0, 0, ',', '.') }}</td>
-          </tr>
-          @empty
-          <tr><td colspan="5" class="text-center text-muted">Belum ada data</td></tr>
-          @endforelse
-        </tbody>
-      </table>
-    </div>
-  </div>
 
 </div>
-
-{{-- === SCRIPT CHART === --}}
-@push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  // === Donut Kelayakan ===
-  const chartKelayakan = new ApexCharts(document.querySelector("#chartKelayakan"), {
-    chart: { type: 'donut', height: 300 },
-    labels: ['Layak', 'Kurang Layak', 'Tidak Layak'],
-    series: [{{ $aset_layak ?? 0 }}, {{ $aset_kurang_layak ?? 0 }}, {{ $aset_tidak_layak ?? 0 }}],
-    colors: ['#198754', '#ffc107', '#dc3545'],
-    legend: { position: 'bottom' }
-  });
-  chartKelayakan.render();
-
-  // === Area Chart Pemakaian ATK ===
-  const bulan = {!! json_encode(array_keys($grafik_atk->toArray() ?? [])) !!};
-  const total = {!! json_encode(array_values($grafik_atk->toArray() ?? [])) !!};
-
-  const chartAtk = new ApexCharts(document.querySelector("#chartAtk"), {
-    chart: { type: 'area', height: 300 },
-    series: [{ name: 'Pemakaian ATK', data: total }],
-    xaxis: { categories: bulan.map(b => 'Bulan ' + b) },
-    stroke: { curve: 'smooth' },
-    colors: ['#0d6efd']
-  });
-  chartAtk.render();
-});
-</script>
-@endpush
 @endsection
