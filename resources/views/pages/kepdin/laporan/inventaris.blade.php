@@ -5,27 +5,36 @@
 <div class="container">
     <h3 class="mb-4">Laporan Inventaris</h3>
 
-    <form method="GET" class="row g-3 mb-4">
-        <div class="col-md-3">
-            <label>Jenis</label>
-            <select name="asset_type" class="form-select">
-                <option value="">Semua</option>
-                <option value="aset_tetap" {{ request('asset_type')=='aset_tetap'?'selected':'' }}>Aset Tetap</option>
-                <option value="atk" {{ request('asset_type')=='atk'?'selected':'' }}>ATK</option>
-            </select>
-        </div>
-        <div class="col-12">
-            <button class="btn btn-primary">Tampilkan</button>
-            <a href="{{ route('laporan.inventaris.pdf', request()->all()) }}" class="btn btn-danger">Export PDF</a>
-            <a href="{{ route('laporan.inventaris.excel', request()->all()) }}" class="btn btn-success">Export Excel</a>
-        </div>
+    <form method="GET" class="row g-3 mb-4 align-items-end">
+      <div class="col-md-3">
+        <label class="form-label">Jenis</label>
+        <select name="asset_type" class="form-select">
+          <option value="">Semua</option>
+          <option value="aset_tetap" {{ request('asset_type')=='aset_tetap'?'selected':'' }}>Aset Tetap</option>
+          <option value="atk" {{ request('asset_type')=='atk'?'selected':'' }}>ATK</option>
+        </select>
+      </div>
+    
+      {{-- Tombol di kanan --}}
+      <div class="col-md-9 d-flex justify-content-end gap-2">
+        <button class="btn btn-primary">
+          <i class="fas fa-eye"></i> Tampilkan
+        </button>
+        <a href="{{ route('laporan.inventaris.pdf', request()->all()) }}" class="btn btn-danger">
+          <i class="fas fa-file-pdf"></i> Export PDF
+        </a>
+        <a href="{{ route('laporan.inventaris.excel', request()->all()) }}" class="btn btn-success">
+          <i class="fas fa-file-excel"></i> Export Excel
+        </a>
+      </div>
     </form>
+
 
     {{-- ===================== ASET TETAP ===================== --}}
     @if($assetType == '' || $assetType == 'aset_tetap')
         <h5 class="mt-4 mb-2">Aset Tetap</h5>
         <table class="table table-bordered">
-            <thead class="table-secondary">
+            <thead class="table-dark">
                 <tr>
                     <th>Nama</th>
                     <th>Kategori</th>
@@ -55,7 +64,7 @@
     @if($assetType == '' || $assetType == 'atk')
         <h5 class="mt-4 mb-2">Alat Tulis Kantor (ATK)</h5>
         <table class="table table-bordered">
-            <thead class="table-secondary">
+            <thead class="table-dark">
                 <tr>
                     <th>Nama</th>
                     <th>Kategori</th>

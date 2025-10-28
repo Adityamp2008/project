@@ -114,11 +114,13 @@
             </li>
 
             <li class="nav-item">
-                <a href="{{ route('riwayat-perbaikan.index') }}" class="nav-link">
-                    <i class="bi bi-wrench"></i>
+                <a href="{{ route('riwayat-perbaikan.index') }}"
+                   class="nav-link {{ Route::is('riwayat-perbaikan.*') ? 'active' : '' }}">
+                    <i class="bi bi-wrench nav-icon"></i>
                     <p>Riwayat Perbaikan</p>
                 </a>
             </li>
+
 
           </ul>
         </nav>

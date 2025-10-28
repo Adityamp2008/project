@@ -15,7 +15,7 @@
     <div class="card shadow-sm">
         <div class="card-body">
             <table class="table table-hover align-middle">
-                <thead class="table-light">
+                <thead class="table-dark">
                     <tr>
                         <th>#</th>
                         <th>Nama Item</th>

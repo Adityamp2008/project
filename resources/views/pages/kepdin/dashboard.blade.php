@@ -82,12 +82,7 @@
     </div>
   </div>
 
-  {{-- TOMBOL AKSI --}}
-  <div class="mt-4 text-end">
-    <a href="{{ route('laporan.perbaikan') }}" class="btn btn-outline-primary btn-sm">
-      <i class="bi bi-file-earmark-text"></i> Lihat Laporan Perbaikan
-    </a>
-  </div>
+
 
 </div>
 @endsection
