@@ -23,7 +23,8 @@ use App\Http\Controllers\kepdin\{
     KepdinAtkController,
     LaporanInventarisController,
     LaporanPerbaikanController,
-    LaporanAtkController
+    LaporanAtkController,
+    PengajuanStokController
     
 };
 
@@ -145,6 +146,13 @@ Route::get('laporan/perbaikan/excel', [LaporanPerbaikanController::class, 'lapor
     Route::get('laporan/report', [LaporanAtkController::class, 'report'])->name('laporan.report');
     Route::get('laporan/report/pdf', [LaporanAtkController::class, 'reportPdf'])->name('laporan.report.pdf');
     Route::get('laporan/report/excel', [LaporanAtkController::class, 'exportExcel'])->name('laporan.report.excel');
+
+    // routes/kepdin.php
+Route::get('pengajuan-stok', [PengajuanStokController::class, 'index'])->name('kepdin.pengajuan.index');
+Route::post('pengajuan-stok/{pengajuan}/setujui', [PengajuanStokController::class, 'setujui'])->name('kepdin.pengajuan.setujui');
+Route::post('pengajuan-stok/{pengajuan}/tolak', [PengajuanStokController::class, 'tolak'])->name('kepdin.pengajuan.tolak');
+
+    
 });
 
 

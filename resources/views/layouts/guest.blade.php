@@ -127,6 +127,15 @@
                 </a>
               </li>
 
+              {{-- laporan izin stok atk --}}
+              <li class="nav-item">
+                <a href="{{ route('kepdin.pengajuan.index') }}"
+                   class="nav-link {{ Route::is('report.*') ? 'active' : '' }}">
+                  <i class="nav-icon bi bi-box-seam"></i>
+                  <p>pengajuan stok atk</p>
+                </a>
+              </li>
+
 
             </ul>
           </nav>
