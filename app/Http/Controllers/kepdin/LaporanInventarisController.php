@@ -20,12 +20,15 @@ class LaporanInventarisController extends Controller
         return view('pages.kepdin.laporan.inventaris', compact('items', 'assetType'));
     }
 
-    public function pdf(Request $request)
-    {
-        $items = $this->ambilData($request);
-        $pdf = PDF::loadView('pages.kepdin.laporan.inventaris_pdf', compact('items'));
-        return $pdf->download('laporan_inventaris.pdf');
-    }
+public function pdf(Request $request)
+{
+    $items = $this->ambilData($request);
+    $assetType = $request->asset_type ?? ''; // ⬅️ tambahkan ini
+
+    $pdf = PDF::loadView('pages.kepdin.laporan.inventaris_pdf', compact('items', 'assetType')); // ⬅️ kirim ke view
+    return $pdf->download('laporan_inventaris.pdf');
+}
+
 
     public function excel(Request $request)
     {

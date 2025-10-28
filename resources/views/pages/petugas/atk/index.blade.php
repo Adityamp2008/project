@@ -75,9 +75,7 @@
     @endif
 </td>
                             <td class="text-center">
-                                <a href="{{ route('atk.edit', $item->id) }}" class="btn btn-sm btn-warning mb-1">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
+                              
                                 <button type="button" class="btn btn-sm btn-danger mb-1"
                                         data-bs-toggle="modal" data-bs-target="#hapusModal{{ $item->id }}">
                                     <i class="bi bi-trash"></i>

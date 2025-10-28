@@ -11,6 +11,16 @@
             <i class="fas fa-plus"></i> Tambah Akun
         </a>
     </div>
+    <div class="d-flex justify-content-between mb-3">
+    <h3>Daftar Akun Pengguna</h3>
+    <form action="{{ route('users.import') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    <input type="file" name="file" class="form-control" required>
+    <button type="submit" class="btn btn-success mt-2">Import Excel</button>
+</form>
+
+</div>
+
 
     {{-- Notifikasi Sukses --}}
     @if(session('success'))

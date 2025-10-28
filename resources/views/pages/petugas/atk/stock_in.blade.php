@@ -2,6 +2,10 @@
 @section('title', 'Barang Masuk')
 
 @section('content')
+
+@php
+use Illuminate\Support\Facades\Auth;
+@endphp
 <div class="container py-4">
 
     <div class="card">
@@ -20,6 +24,19 @@
                     <label class="form-label">Jumlah Masuk</label>
                     <input type="number" name="quantity" class="form-control" min="1" required>
                 </div>
+
+                  {{-- Dipakai Oleh --}}
+<div class="mb-3">
+    <label class="form-label">ditambahkan oleh</label>
+    <input 
+        type="text" 
+        name="used_by" 
+        class="form-control" 
+        value="{{ Auth::user()->name }}" 
+        readonly
+    >
+</div>
+
 
                 {{-- Keterangan / Referensi --}}
                 <div class="mb-3">

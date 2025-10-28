@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\UserImport;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -97,4 +99,23 @@ class UserController extends Controller
         $user->delete();
         return redirect()->route('users.index')->with('success', 'Akun berhasil dihapus!');
     }
+
+
+
+
+public function import(Request $request)
+{
+    $request->validate([
+        'file' => 'required|mimes:xlsx,xls,csv',
+    ]);
+
+    try {
+        Excel::import(new UserImport, $request->file('file'));
+        return redirect()->route('users.index')->with('success', 'Data user berhasil diimport!');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Gagal import: ' . $e->getMessage());
+    }
+}
+
+
 }

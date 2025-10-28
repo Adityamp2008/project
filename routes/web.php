@@ -47,6 +47,9 @@ Route::group([
 
     // --- Modul utama ---
     Route::resource('users', UserController::class);
+
+    Route::post('/users/import', [App\Http\Controllers\Admin\UserController::class, 'import'])->name('users.import');
+
     
    
 

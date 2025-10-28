@@ -141,10 +141,7 @@
                                             <button class="btn btn-sm btn-secondary" disabled>
                                                 <i class="bi bi-hourglass-split"></i> 
                                             </button>
-                                        @else
-                                            <a href="{{ route('assets.ajukanIzinPerbaikan', $asset->id) }}" class="btn btn-sm btn-outline-primary">
-                                                <i class="bi bi-envelope"></i> Ajukan Izin
-                                            </a>
+
                                         @endif
                                     </td>
 
