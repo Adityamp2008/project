@@ -59,41 +59,46 @@
                                 @php
                                     $umur = (int)($asset->umur_tahun ?? 0);
 
-                                    // Laporan kelayakan terakhir
                                     $laporanTerakhir = $asset->laporanKelayakanTerakhir;
                                     $isApproved = $laporanTerakhir && $laporanTerakhir->status === 'approved';
                                     $isPending = $laporanTerakhir && $laporanTerakhir->status === 'pending';
-
-                                    // Tombol perbaikan hanya muncul jika aset belum pernah diperbaiki dan laporan pending
                                     $bisaPerbaiki = !$asset->pernah_diperbaiki && $isPending;
 
-                                    // Status Kelayakan
+                                    // Status kelayakan
                                     if ($asset->pernah_diperbaiki || $isApproved) {
                                         $status = 'Layak';
                                         $badge = 'success';
                                         $icon = 'bi-check-circle';
-                                        $note = 'Sudah Diperbaiki';
                                     } elseif ($umur < 2) {
                                         $status = 'Layak';
                                         $badge = 'success';
                                         $icon = 'bi-check-circle';
-                                        $note = null;
                                     } elseif ($umur < 5) {
                                         $status = 'Kurang Layak';
                                         $badge = 'warning';
                                         $icon = 'bi-exclamation-triangle';
-                                        $note = null;
                                     } else {
                                         $status = 'Tidak Layak';
                                         $badge = 'danger';
                                         $icon = 'bi-x-circle';
-                                        $note = null;
                                     }
                                 @endphp
 
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td class="text-start">{{ $asset->nama }}</td>
+
+                                    {{-- Kolom Nama dengan ikon "Sudah Diperbaiki" --}}
+                                    <td class="text-start">
+                                        <div class="d-inline-flex align-items-center gap-1">
+                                            <span>{{ $asset->nama }}</span>
+                                            @if ($asset->pernah_diperbaiki || $isApproved)
+                                                    <i class="bi bi-wrench text-primary" title="Sudah Diperbaiki" style="font-size: 1rem;"></i>
+                                            @endif
+                                        </div>
+                                    </td>
+                                    
+
+
                                     <td>{{ $asset->kategori ?? '-' }}</td>
                                     <td>{{ $asset->lokasi ?? '-' }}</td>
                                     <td>{{ $asset->tanggal_perolehan ? \Carbon\Carbon::parse($asset->tanggal_perolehan)->format('d-m-Y') : '-' }}</td>
@@ -101,16 +106,12 @@
                                     <td>{{ $umur }}</td>
                                     <td>{{ $asset->description ?? '-' }}</td>
 
-                                    {{-- Status Kelayakan --}}
+                                    {{-- Kolom Status Kelayakan --}}
                                     <td>
                                         <span class="badge bg-{{ $badge }}">
                                             <i class="bi {{ $icon }}"></i> {{ $status }}
                                         </span>
-                                        @if($note)
-                                            <span class="badge bg-info ms-1" title="{{ $note }}">
-                                                <i class="bi bi-wrench"></i> {{ $note }}
-                                            </span>
-                                        @elseif($isPending)
+                                        @if($isPending)
                                             <span class="badge bg-secondary ms-1" title="Izin Perbaikan Pending">
                                                 <i class="bi bi-hourglass-split"></i> Pending
                                             </span>
@@ -122,17 +123,31 @@
                                         <a href="{{ route('assets.edit', $asset->id) }}" class="btn btn-sm btn-warning" title="Edit Data">
                                             <i class="bi bi-pencil"></i>
                                         </a>
+                                    
                                         <a href="{{ route('assets.formHapus', $asset->id) }}" class="btn btn-sm btn-danger" title="Ajukan Penghapusan">
                                             <i class="bi bi-trash"></i>
                                         </a>
-
-                                        {{-- Tombol Perbaiki --}}
-                                        @if($bisaPerbaiki)
-                                            <a href="{{ route('assets.formPerbaikan', $asset->id) }}" class="btn btn-sm btn-primary" title="Perbaiki Aset">
-                                                <i class="bi bi-tools"></i> Perbaiki
+                                    
+                                        {{-- Tombol logika izin & perbaikan --}}
+                                        @php
+                                            $izin = $asset->izinPerbaikanTerakhir;
+                                        @endphp
+                                    
+                                        @if ($izin && $izin->status === 'approved')
+                                            <a href="{{ route('assets.formPerbaikan', $asset->id) }}" class="btn btn-sm btn-primary">
+                                                <i class="bi bi-tools"></i> 
+                                            </a>
+                                        @elseif ($izin && $izin->status === 'pending')
+                                            <button class="btn btn-sm btn-secondary" disabled>
+                                                <i class="bi bi-hourglass-split"></i> 
+                                            </button>
+                                        @else
+                                            <a href="{{ route('assets.ajukanIzinPerbaikan', $asset->id) }}" class="btn btn-sm btn-outline-primary">
+                                                <i class="bi bi-envelope"></i> Ajukan Izin
                                             </a>
                                         @endif
                                     </td>
+
                                 </tr>
                             @endforeach
                         </tbody>
