@@ -37,14 +37,15 @@ class LaporanInventarisController extends Controller
         $assetType = $request->asset_type;
 
         if ($assetType === 'aset_tetap') {
-    return Assets::with(['kondisi', 'lokasi'])->get()->map(fn($a) => (object)[
-        'jenis' => 'Aset Tetap',
-        'nama' => $a->nama,
-        'kategori' => $a->kategori,
-        'kondisi' => $a->kondisi->nama ?? '-',
-        'lokasi' => $a->lokasi->nama ?? '-',
-        'stok' => '-'
-    ]);
+            // ✅ Ambil langsung dari field aset (bukan relasi)
+            return Assets::all()->map(fn($a) => (object)[
+                'jenis' => 'Aset Tetap',
+                'nama' => $a->nama,
+                'kategori' => $a->kategori,
+                'kondisi' => $a->kondisi ?? '-', 
+                'lokasi' => $a->lokasi ?? '-',   
+                'stok' => '-'
+            ]);
 
         } elseif ($assetType === 'atk') {
             return AtkItem::all()->map(fn($a) => (object)[
@@ -56,14 +57,16 @@ class LaporanInventarisController extends Controller
                 'stok' => $a->stock
             ]);
         } else {
-           $aset = Assets::with(['kondisi', 'lokasi'])->get()->map(fn($a) => (object)[
+            // ✅ Gabungan dua jenis aset
+            $aset = Assets::all()->map(fn($a) => (object)[
                 'jenis' => 'Aset Tetap',
                 'nama' => $a->nama,
                 'kategori' => $a->kategori,
-                'kondisi' => $a->kondisi->nama ?? '-',
-                'lokasi' => $a->lokasi->nama ?? '-',
+                'kondisi' => $a->kondisi ?? '-',
+                'lokasi' => $a->lokasi ?? '-',  
                 'stok' => '-'
             ]);
+
             $atk = AtkItem::all()->map(fn($a) => (object)[
                 'jenis' => 'ATK',
                 'nama' => $a->name,
@@ -72,6 +75,7 @@ class LaporanInventarisController extends Controller
                 'lokasi' => '-',
                 'stok' => $a->stock
             ]);
+
             return $aset->merge($atk);
         }
     }

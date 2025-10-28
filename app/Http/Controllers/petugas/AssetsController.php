@@ -15,9 +15,10 @@ class AssetsController extends Controller
 {
     public function index()
     {
-        $assets = Assets::with('KelayakanAssets')->orderBy('nama')->get();
+        $assets = Assets::with(['KelayakanAssets', 'laporanKelayakanTerakhir', 'izinPerbaikanTerakhir'])->orderBy('nama')->get();
         return view('pages.petugas.assets.index', compact('assets'));
     }
+    
 
     public function create()
     {
@@ -112,18 +113,15 @@ class AssetsController extends Controller
         );
     }
 
-    /**
-     * Form perbaikan untuk aset
-     */
     public function formPerbaikan($id)
-    {
-        $asset = Assets::findOrFail($id);
-        return view('pages.petugas.perbaikan.create', compact('asset'));
-    }
-    
-    /**
-     * Simpan data perbaikan ke tabel riwayat_perbaikan
-     */
+{
+    $asset = Assets::findOrFail($id);
+    return view('pages.petugas.perbaikan.create', compact('asset'));
+}
+
+/**
+ * Simpan data perbaikan ke tabel riwayat_perbaikan
+ */
     public function simpanPerbaikan(Request $request, $id)
     {
         $request->validate([
@@ -132,7 +130,7 @@ class AssetsController extends Controller
             'biaya' => 'nullable|numeric|min:0',
             'diperbaiki_oleh' => 'nullable|string|max:255',
         ]);
-    
+
         $asset = Assets::findOrFail($id);
 
         RiwayatPerbaikan::create([
@@ -142,13 +140,22 @@ class AssetsController extends Controller
             'biaya' => $request->biaya ?? 0,
             'diperbaiki_oleh' => $request->diperbaiki_oleh ?? (auth()->user()->name ?? 'Petugas'),
         ]);
-        
+
         $asset->update([
             'kondisi' => 'baik',
             'pernah_diperbaiki' => true,
         ]);
-    
-        return redirect()->route('assets.index')->with('success', 'Data perbaikan berhasil disimpan.');
+
+        // Update kelayakan jadi Layak
+        KelayakanAssets::updateOrCreate(
+            ['asset_id' => $asset->id],
+            [
+                'status_kelayakan' => 'Layak',
+                'keterangan' => 'Aset telah diperbaiki dan kembali berfungsi dengan baik.',
+            ]
+        );
+
+        return redirect()->route('assets.index')->with('success', 'Data perbaikan berhasil disimpan dan status aset diperbarui menjadi Layak.');
     }
     
     public function formHapus($id)
@@ -174,6 +181,4 @@ class AssetsController extends Controller
     
         return redirect()->route('assets.index')->with('success', 'Pengajuan penghapusan telah dikirim ke Kepdin untuk ditinjau.');
     }
-
-
 }

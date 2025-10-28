@@ -13,6 +13,8 @@
                     <tr>
                         <th>#</th>
                         <th>Nama Aset</th>
+                        <th>Kategori</th>
+                        <th>Lokasi</th>
                         <th>Alasan</th>
                         <th>Diajukan Oleh</th>
                         <th>Status</th>
@@ -23,40 +25,56 @@
                     @forelse ($pengajuan as $p)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $p->asset->nama }}</td>
-                            <td>{{ $p->alasan }}</td>
-                            <td>{{ $p->diajukan_oleh }}</td>
+                            <td>{{ $p->asset->nama ?? '-' }}</td>
+                            <td>{{ $p->asset->kategori ?? '-' }}</td>
+                            <td>{{ $p->asset->lokasi ?? '-' }}</td>
+                            <td>{{ $p->alasan ?? '-' }}</td>
+                            <td>{{ $p->diajukan_oleh ?? '-' }}</td>
                             <td>
                                 @if ($p->status === 'pending')
-                                    <span class="badge bg-warning">Menunggu</span>
-                                @elseif ($p->status === 'disetujui')
+                                    <span class="badge bg-warning text-dark">Menunggu</span>
+                                @elseif ($p->status === 'approved')
                                     <span class="badge bg-success">Disetujui</span>
-                                @else
+                                @elseif ($p->status === 'rejected')
                                     <span class="badge bg-danger">Ditolak</span>
+                                @else
+                                    <span class="badge bg-secondary">Tidak Diketahui</span>
                                 @endif
                             </td>
                             <td>
                                 @if ($p->status === 'pending')
-                                <form method="POST"
-                                      action="{{ route('kepdin.penghapusan.setujui', $p->id) }}"
-                                      class="d-inline"
-                                      onsubmit="return confirm('Apakah Anda yakin ingin MENYETUJUI penghapusan data ini?')">
-                                    @csrf
-                                    <button class="btn btn-success btn-sm">
-                                        <i class="bi bi-check-circle"></i> Setujui
-                                    </button>
-                                </form>
-                                    <form method="POST" action="{{ route('kepdin.penghapusan.tolak', $p->id) }}" class="d-inline">
+                                    {{-- Tombol Setujui --}}
+                                    <form method="POST"
+                                          action="{{ route('kepdin.penghapusan.setujui', $p->id) }}"
+                                          class="d-inline"
+                                          onsubmit="return confirm('Yakin ingin MENYETUJUI penghapusan aset ini?')">
                                         @csrf
-                                        <button class="btn btn-danger btn-sm"><i class="bi bi-x-circle"></i> Tolak</button>
+                                        <button class="btn btn-success btn-sm">
+                                            <i class="bi bi-check-circle"></i> Setujui
+                                        </button>
+                                    </form>
+
+                                    {{-- Tombol Tolak --}}
+                                    <form method="POST"
+                                          action="{{ route('kepdin.penghapusan.tolak', $p->id) }}"
+                                          class="d-inline"
+                                          onsubmit="return confirm('Yakin ingin MENOLAK penghapusan aset ini?')">
+                                        @csrf
+                                        <button class="btn btn-danger btn-sm">
+                                            <i class="bi bi-x-circle"></i> Tolak
+                                        </button>
                                     </form>
                                 @else
-                                    <i>-</i>
+                                    <i class="text-muted">Tidak ada aksi</i>
                                 @endif
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="6" class="text-center text-muted">Belum ada pengajuan.</td></tr>
+                        <tr>
+                            <td colspan="8" class="text-center text-muted">
+                                Belum ada pengajuan penghapusan aset.
+                            </td>
+                        </tr>
                     @endforelse
                 </tbody>
             </table>
