@@ -5,7 +5,7 @@
 <div class="container py-4">
     <h3 class="mb-4">Edit Data Aset</h3>
 
-    <form action="{{ route('assets.update', $asset->id) }}" method="POST">
+    <form action="{{ route('assets.update', $asset->id) }}" method="POST" id="formEditAset">
         @csrf
         @method('PUT')
 
@@ -55,6 +55,7 @@
             <input 
                 type="date" 
                 name="tanggal_perolehan" 
+                id="tanggal_perolehan"
                 class="form-control" 
                 value="{{ old('tanggal_perolehan', is_object($asset->tanggal_perolehan) ? $asset->tanggal_perolehan->format('Y-m-d') : $asset->tanggal_perolehan) }}">
             @error('tanggal_perolehan')
@@ -67,6 +68,7 @@
             <label class="form-label">Kondisi</label>
             <select 
                 name="kondisi" 
+                id="kondisi"
                 class="form-select @error('kondisi') is-invalid @enderror" 
                 required>
                 <option value="">-- Pilih Kondisi --</option>
@@ -91,6 +93,31 @@
             @enderror
         </div>
 
+        {{-- Status Kelayakan Otomatis --}}
+        @php
+            use Carbon\Carbon;
+            $umur = $asset->tanggal_perolehan ? Carbon::parse($asset->tanggal_perolehan)->diffInYears(Carbon::now()) : 0;
+
+            if ($asset->pernah_diperbaiki) {
+                $status = 'Layak'; $badge = 'success'; $icon = 'bi-check-circle';
+            } elseif ($umur < 2 && $asset->kondisi == 'Baik') {
+                $status = 'Layak'; $badge = 'success'; $icon = 'bi-check-circle';
+            } elseif ($umur < 5 && in_array($asset->kondisi, ['Baik','Cukup'])) {
+                $status = 'Kurang Layak'; $badge = 'warning'; $icon = 'bi-exclamation-triangle';
+            } else {
+                $status = 'Tidak Layak'; $badge = 'danger'; $icon = 'bi-x-circle';
+            }
+        @endphp
+
+        <div class="mb-3">
+            <label class="form-label">Status Kelayakan (Otomatis)</label>
+            <div>
+                <span id="statusBadge" class="badge bg-{{ $badge }}">
+                    <i class="bi {{ $icon }}"></i> {{ $status }}
+                </span>
+            </div>
+        </div>
+
         {{-- Tombol --}}
         <div class="d-flex justify-content-end gap-2">
             <a href="{{ route('assets.index') }}" class="btn btn-secondary">
@@ -102,4 +129,37 @@
         </div>
     </form>
 </div>
+
+{{-- Script untuk update status kelayakan otomatis --}}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const kondisi = document.getElementById('kondisi');
+    const tanggal = document.getElementById('tanggal_perolehan');
+    const badge = document.getElementById('statusBadge');
+
+    function hitungStatus() {
+        const tgl = new Date(tanggal.value);
+        const umur = tgl instanceof Date && !isNaN(tgl) ? (new Date().getFullYear() - tgl.getFullYear()) : 0;
+        const kondisiValue = kondisi.value;
+
+        let status = 'Tidak Layak';
+        let kelas = 'danger';
+        let icon = 'bi-x-circle';
+
+        if (kondisiValue === 'Baik' && umur < 2) {
+            status = 'Layak'; kelas = 'success'; icon = 'bi-check-circle';
+        } else if ((kondisiValue === 'Baik' || kondisiValue === 'Cukup') && umur < 5) {
+            status = 'Kurang Layak'; kelas = 'warning'; icon = 'bi-exclamation-triangle';
+        } else if (kondisiValue === 'Rusak' || umur >= 5) {
+            status = 'Tidak Layak'; kelas = 'danger'; icon = 'bi-x-circle';
+        }
+
+        badge.className = `badge bg-${kelas}`;
+        badge.innerHTML = `<i class="bi ${icon}"></i> ${status}`;
+    }
+
+    kondisi.addEventListener('change', hitungStatus);
+    tanggal.addEventListener('change', hitungStatus);
+});
+</script>
 @endsection

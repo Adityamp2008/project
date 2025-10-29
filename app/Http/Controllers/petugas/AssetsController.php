@@ -78,15 +78,18 @@ class AssetsController extends Controller
         return redirect()->route('assets.index')->with('success', 'Data aset berhasil dihapus.');
     }
 
-    /**
-     * Tentukan kelayakan berdasarkan umur & kondisi
+        /**
+         * Tentukan kelayakan berdasarkan umur & kondisi
+         */
+        /**
+     * Sinkronisasi status kelayakan berdasarkan kondisi & umur
      */
-    protected function syncKelayakanForAsset(Assets $asset)
+        protected function syncKelayakanForAsset(Assets $asset)
     {
         $umur = $asset->calculateUmur();
         $asset->update(['umur_tahun' => $umur]);
 
-        // Hitung status kelayakan berdasarkan umur
+        // Logika dasar kelayakan berdasarkan umur
         if ($umur <= 2) {
             $status = 'Layak';
             $keterangan = 'Aset dalam kondisi sangat baik.';
@@ -98,8 +101,15 @@ class AssetsController extends Controller
             $keterangan = 'Aset sudah tua dan perlu diganti.';
         }
 
-        // Sesuaikan kondisi manual jika rusak
-        if (strtolower($asset->kondisi) === 'rusak') {
+        // Tambahan logika berdasarkan kondisi fisik
+        $kondisi = strtolower($asset->kondisi);
+        if ($kondisi === 'baik') {
+            $status = 'Layak';
+            $keterangan = 'Aset dalam kondisi baik dan berfungsi normal.';
+        } elseif ($kondisi === 'cukup') {
+            $status = 'Kurang Layak';
+            $keterangan = 'Aset masih berfungsi tapi mulai mengalami penurunan.';
+        } elseif ($kondisi === 'rusak') {
             $status = 'Tidak Layak';
             $keterangan = 'Aset rusak dan tidak berfungsi.';
         }
@@ -113,15 +123,15 @@ class AssetsController extends Controller
         );
     }
 
-    public function formPerbaikan($id)
-{
-    $asset = Assets::findOrFail($id);
-    return view('pages.petugas.perbaikan.create', compact('asset'));
-}
+        public function formPerbaikan($id)
+    {
+        $asset = Assets::findOrFail($id);
+        return view('pages.petugas.perbaikan.create', compact('asset'));
+    }
 
-/**
- * Simpan data perbaikan ke tabel riwayat_perbaikan
- */
+    /** 
+     * Simpan data perbaikan ke tabel riwayat_perbaikan
+     */
     public function simpanPerbaikan(Request $request, $id)
     {
         $request->validate([
