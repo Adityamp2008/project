@@ -155,6 +155,8 @@ Route::get('pengajuan-stok', [PengajuanStokController::class, 'index'])->name('k
 Route::post('pengajuan-stok/{pengajuan}/setujui', [PengajuanStokController::class, 'setujui'])->name('kepdin.pengajuan.setujui');
 Route::post('pengajuan-stok/{pengajuan}/tolak', [PengajuanStokController::class, 'tolak'])->name('kepdin.pengajuan.tolak');
 
+Route::get('/kepdin/pengajuan/pdf', [PengajuanStokController::class, 'pengajuanPdf'])->name('kepdin.pengajuan.pdf');
+
     
 });
 

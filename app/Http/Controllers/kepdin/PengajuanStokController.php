@@ -5,19 +5,34 @@ namespace App\Http\Controllers\kepdin;
 use App\Http\Controllers\Controller;
 use App\Models\PengajuanStokAtk;
 use App\Models\StockTransaction;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\AtkItem;
 use Illuminate\Http\Request;
 
 class PengajuanStokController extends Controller
 {
-    public function index()
-    {
-        $pengajuan = PengajuanStokAtk::with(['item','user'])
-            ->orderBy('created_at', 'desc')
-            ->get();
+    public function index(Request $request)
+{
+    // Ambil kata kunci pencarian
+    $search = $request->input('search');
 
-        return view('pages.kepdin.pengajuan.index', compact('pengajuan'));
-    }
+    // Query dengan relasi dan pencarian
+    $pengajuan = \App\Models\PengajuanStokAtk::with(['item', 'user'])
+        ->when($search, function ($query, $search) {
+            $query->whereHas('item', function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
+            })
+            ->orWhereHas('user', function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
+            })
+            ->orWhere('keterangan', 'like', "%{$search}%")
+            ->orWhere('status', 'like', "%{$search}%");
+        })
+        ->latest()
+        ->paginate(10); // 10 data per halaman
+
+    return view('pages.kepdin.pengajuan.index', compact('pengajuan', 'search'));
+}
 
     public function setujui(PengajuanStokAtk $pengajuan)
     {
@@ -49,4 +64,29 @@ class PengajuanStokController extends Controller
         $pengajuan->update(['status' => 'ditolak']);
         return back()->with('warning', 'Pengajuan stok ditolak.');
     }
+
+    public function pengajuanPdf(Request $request)
+{
+    $search = $request->input('search');
+
+    $pengajuan = \App\Models\PengajuanStokAtk::with(['item', 'user'])
+        ->when($search, function ($query, $search) {
+            $query->whereHas('item', function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
+            })
+            ->orWhereHas('user', function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
+            })
+            ->orWhere('keterangan', 'like', "%{$search}%")
+            ->orWhere('status', 'like', "%{$search}%");
+        })
+        ->latest()
+        ->get();
+
+    $pdf = Pdf::loadView('pages.kepdin.pengajuan.pdf', compact('pengajuan', 'search'))
+        ->setPaper('a4', 'landscape');
+
+    return $pdf->stream('Daftar_Pengajuan_Stok_ATK.pdf');
+}
+
 }
