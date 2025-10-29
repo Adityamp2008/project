@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('kategoris', function (Blueprint $table) {
             $table->id();
+            $table->string('nama'); // Nama kategori, contoh: Laptop, Kertas
+            $table->enum('tipe', ['aset_tetap', 'atk']); // Tipe kategori
             $table->timestamps();
         });
     }

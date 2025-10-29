@@ -7,12 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Kategori extends Model
 {
-    use HasFactory;
-
-    protected $table = 'kategoris';
-
-    public function assets()
+    protected $fillable = ['nama', 'tipe'];
+    
+    public function atkItems()
     {
-        return $this->hasMany(Assets::class, 'kategori_id');
+        return $this->hasMany(AtkItem::class, 'kategori_id');
     }
 }
+
+// App\Models\Kategori.php
+
+

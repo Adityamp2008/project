@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->string('kategori')->nullable();
+            $table->foreignId('kategori_id')->nullable()->constrained('kategoris')->onDelete('cascade');
             $table->string('lokasi')->nullable();
             $table->date('tanggal_perolehan')->nullable();
             $table->integer('umur_tahun')->nullable();

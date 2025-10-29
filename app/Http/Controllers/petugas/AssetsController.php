@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Assets;
 use App\Models\KelayakanAssets; 
 use App\Models\User;
+use App\Models\Kategori;
 use App\Models\PengajuanPenghapusanAset;
 use App\Models\RiwayatPerbaikan;
 use Illuminate\Http\Request;
@@ -15,35 +16,47 @@ class AssetsController extends Controller
 {
     public function index()
     {
-        $assets = Assets::with(['KelayakanAssets', 'laporanKelayakanTerakhir', 'izinPerbaikanTerakhir'])->orderBy('nama')->get();
+        $assets = Assets::with(['KelayakanAssets', 'laporanKelayakanTerakhir', 'izinPerbaikanTerakhir', 'kategoriRel'])->orderBy('nama')->get();
         return view('pages.petugas.assets.index', compact('assets'));
     }
     
 
     public function create()
     {
-        return view('pages.petugas.assets.create');
+        $kategoriAsetTetap = Kategori::where('tipe', 'aset_tetap')->get();
+        $kategoriATK = Kategori::where('tipe', 'atk')->get();
+        $kategoris = Kategori::all();
+        return view('pages.petugas.assets.create', compact('kategoriAsetTetap', 'kategoriATK', 'kategoris'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'nama' => 'required|string|max:255',
-            'kategori' => 'nullable|string|max:255',
+            'kategori_id' => [
+                'required',
+                function ($attr, $val, $fail) {
+                    $kategori = \App\Models\Kategori::find($val);
+                    if (!$kategori || $kategori->tipe !== 'aset_tetap') {
+                        $fail('Kategori tidak valid untuk jenis aset ini.');
+                    }
+                }
+            ],
             'lokasi' => 'nullable|string|max:255',
             'tanggal_perolehan' => 'nullable|date',
             'kondisi' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
-
+    
         $asset = Assets::create($request->only([
-            'nama', 'kategori', 'lokasi', 'tanggal_perolehan', 'kondisi', 'description'
+            'nama', 'kategori_id', 'lokasi', 'tanggal_perolehan', 'kondisi', 'description'
         ]));
-
+    
         $this->syncKelayakanForAsset($asset);
-
+    
         return redirect()->route('assets.index')->with('success', 'Data aset berhasil ditambahkan.');
     }
+
 
     public function edit(Assets $asset)
     {
@@ -78,15 +91,18 @@ class AssetsController extends Controller
         return redirect()->route('assets.index')->with('success', 'Data aset berhasil dihapus.');
     }
 
-    /**
-     * Tentukan kelayakan berdasarkan umur & kondisi
+        /**
+         * Tentukan kelayakan berdasarkan umur & kondisi
+         */
+        /**
+     * Sinkronisasi status kelayakan berdasarkan kondisi & umur
      */
-    protected function syncKelayakanForAsset(Assets $asset)
+        protected function syncKelayakanForAsset(Assets $asset)
     {
         $umur = $asset->calculateUmur();
         $asset->update(['umur_tahun' => $umur]);
 
-        // Hitung status kelayakan berdasarkan umur
+        // Logika dasar kelayakan berdasarkan umur
         if ($umur <= 2) {
             $status = 'Layak';
             $keterangan = 'Aset dalam kondisi sangat baik.';
@@ -98,8 +114,15 @@ class AssetsController extends Controller
             $keterangan = 'Aset sudah tua dan perlu diganti.';
         }
 
-        // Sesuaikan kondisi manual jika rusak
-        if (strtolower($asset->kondisi) === 'rusak') {
+        // Tambahan logika berdasarkan kondisi fisik
+        $kondisi = strtolower($asset->kondisi);
+        if ($kondisi === 'baik') {
+            $status = 'Layak';
+            $keterangan = 'Aset dalam kondisi baik dan berfungsi normal.';
+        } elseif ($kondisi === 'cukup') {
+            $status = 'Kurang Layak';
+            $keterangan = 'Aset masih berfungsi tapi mulai mengalami penurunan.';
+        } elseif ($kondisi === 'rusak') {
             $status = 'Tidak Layak';
             $keterangan = 'Aset rusak dan tidak berfungsi.';
         }
@@ -113,15 +136,15 @@ class AssetsController extends Controller
         );
     }
 
-    public function formPerbaikan($id)
-{
-    $asset = Assets::findOrFail($id);
-    return view('pages.petugas.perbaikan.create', compact('asset'));
-}
+        public function formPerbaikan($id)
+    {
+        $asset = Assets::findOrFail($id);
+        return view('pages.petugas.perbaikan.create', compact('asset'));
+    }
 
-/**
- * Simpan data perbaikan ke tabel riwayat_perbaikan
- */
+    /** 
+     * Simpan data perbaikan ke tabel riwayat_perbaikan
+     */
     public function simpanPerbaikan(Request $request, $id)
     {
         $request->validate([

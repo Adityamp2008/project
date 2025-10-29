@@ -4,6 +4,7 @@ namespace App\Http\Controllers\petugas;
 
 use App\Http\Controllers\Controller;
 use App\Models\AtkItem;
+use App\Models\Kategori;
 use App\Models\PengajuanStokAtk;
 use App\Models\PenghapusanAtk;
 use Illuminate\Http\Request;
@@ -20,48 +21,64 @@ class AtkItemController extends Controller
                 $q->where('name', 'like', '%' . $req->search . '%')
             )
             ->paginate(15);
+            
+            $kategori = Kategori::where('tipe', 'atk')->get();
+            
 
-        return view('pages.petugas.atk.index', compact('items'));
+        return view('pages.petugas.atk.index', compact('items', 'kategori'));
     }
 
     /** ===============================
      *  FORM TAMBAH ITEM
      *  =============================== */
-    public function create()
-    {
-        $lastCode = AtkItem::orderBy('id', 'desc')->value('code');
-        $num = $lastCode ? ((int) str_replace('ID-', '', $lastCode) + 1) : 1;
-        $newCode = 'ID-' . str_pad($num, 3, '0', STR_PAD_LEFT);
+     public function create()
+     {
+         $lastCode = AtkItem::orderBy('id', 'desc')->value('code');
+         $num = $lastCode ? ((int) str_replace('ID-', '', $lastCode) + 1) : 1;
+         $newCode = 'ID-' . str_pad($num, 3, '0', STR_PAD_LEFT);
+     
+         $kategoriAtk = Kategori::where('tipe', 'atk')->get();
+     
+         return view('pages.petugas.atk.create', compact('newCode', 'kategoriAtk'));
+     }
 
-        return view('pages.petugas.atk.create', compact('newCode'));
-    }
 
     /** ===============================
      *  SIMPAN ITEM BARU
      *  =============================== */
-    public function store(Request $r)
-    {
-        $r->validate([
-            'name' => 'required',
-            'stock' => 'nullable|integer|min:0',
-        ]);
+     public function store(Request $r)
+     {
+         $r->validate([
+             'name' => 'required|string|max:255',
+             'kategori_id' => [
+                 'required',
+                 function ($attr, $val, $fail) {
+                     $kategori = Kategori::find($val);
+                     if (!$kategori || $kategori->tipe !== 'atk') {
+                         $fail('Kategori tidak valid untuk ATK.');
+                     }
+                 }
+             ],
+             'stock' => 'nullable|integer|min:0',
+         ]);
+     
+         $lastCode = AtkItem::orderBy('id', 'desc')->value('code');
+         $num = $lastCode ? ((int) str_replace('ID-', '', $lastCode) + 1) : 1;
+         $code = 'ID-' . str_pad($num, 3, '0', STR_PAD_LEFT);
+     
+         AtkItem::create([
+             'code' => $code,
+             'name' => $r->name,
+             'kategori_id' => $r->kategori_id,
+             'description' => $r->description,
+             'unit' => $r->unit,
+             'stock' => $r->stock ?? 0,
+             'low_stock_threshold' => $r->low_stock_threshold,
+         ]);
+     
+         return redirect()->route('atk.index')->with('success', 'Item baru berhasil dibuat!');
+     }
 
-        $lastCode = AtkItem::orderBy('id', 'desc')->value('code');
-        $num = $lastCode ? ((int) str_replace('ID-', '', $lastCode) + 1) : 1;
-        $code = 'ID-' . str_pad($num, 3, '0', STR_PAD_LEFT);
-
-        AtkItem::create([
-            'code' => $code,
-            'name' => $r->name,
-            'description' => $r->description,
-            'unit' => $r->unit,
-            'stock' => $r->stock ?? 0,
-            'low_stock_threshold' => $r->low_stock_threshold,
-            'category' => $r->category,
-        ]);
-
-        return redirect()->route('atk.index')->with('success', 'Item baru berhasil dibuat!');
-    }
 
     /** ===============================
      *  EDIT ITEM

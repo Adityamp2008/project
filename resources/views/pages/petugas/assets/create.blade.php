@@ -21,8 +21,15 @@
 
                 <div class="mb-3">
                     <label>Kategori</label>
-                    <input type="text" name="kategori" class="form-control">
+                    <select name="kategori_id" class="form-select" required>
+                        <option value="">-- Pilih Kategori Aset Tetap --</option>
+                        @foreach ($kategoriAsetTetap as $kategori)
+                            <option value="{{ $kategori->id }}">{{ $kategori->nama }}</option>
+                        @endforeach
+                    </select>
+
                 </div>
+
 
                 <div class="mb-3">
                     <label>Lokasi</label>

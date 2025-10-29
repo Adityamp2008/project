@@ -62,7 +62,7 @@
                             <td class="text-center">{{ $items->firstItem() + $i }}</td>
                             <td class="text-center">{{ $item->code }}</td>
                             <td>{{ $item->name }}</td>
-                            <td>{{ $item->category ?? '-' }}</td>
+                            <td>{{ $item->kategori->nama ?? '-' }}</td>
                             <td class="text-center">{{ $item->unit ?? '-' }}</td>
                             <td class="text-center">{{ $item->stock }}</td>
                             <td class="text-center">
