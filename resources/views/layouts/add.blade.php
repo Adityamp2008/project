@@ -103,98 +103,61 @@
           <!--end::Brand Link-->
         </div>
         <div class="sidebar-wrapper">
-<nav class="mt-2">
-  <ul class="nav sidebar-menu flex-column"
-      data-lte-toggle="treeview"
-      role="navigation"
-      aria-label="Main navigation"
-      data-accordion="false"
-      id="navigation">
+            <nav class="mt-2">
+              <ul class="nav sidebar-menu flex-column"
+                  data-lte-toggle="treeview"
+                  role="navigation"
+                  aria-label="Main navigation"
+                  data-accordion="false"
+                  id="navigation">
+            
+                {{-- === Menu utama === --}}
+                <li class="nav-item">
+                  <a href="{{ route('admin.dashboard') }}"
+                     class="nav-link {{ Route::is('admin.dashboard') ? 'active' : '' }}">
+                    <i class="nav-icon bi bi-speedometer2"></i>
+                    <p>Dashboard</p>
+                  </a>
+                </li>
+            
+                {{-- === Manajemen Akun === --}}
+                <li class="nav-item {{ Route::is('users.*') ? 'menu-open' : '' }}">
+                  <a href="#" class="nav-link {{ Route::is('users.*') ? 'active' : '' }}">
+                    <i class="nav-icon bi bi-people-fill"></i>
+                    <p>
+                      Manajemen Akun
+                      <i class="nav-arrow bi bi-chevron-right"></i>
+                    </p>
+                  </a>
+                  <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      <a href="{{ route('users.index') }}"
+                         class="nav-link {{ Route::is('users.*') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-person-gear"></i>
+                        <p>Kelola Akun</p>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+            
+                {{-- === Manajemen Kategori === --}}
+                {{-- === Manajemen Kategori === --}}
+                <li class="nav-item">
+                  <a href="{{ route('kategori.index') }}"
+                     class="nav-link {{ Route::is('kategori.*') ? 'active' : '' }}">
+                    <i class="nav-icon bi bi-tags-fill"></i>
+                    <p>Manajemen Kategori</p>
+                  </a>
+                </li>
 
-          {{-- === Menu di luar group === --}}
-        <li class="nav-item">
-          <a href="{{ route('admin.dashboard') }}"
-             class="nav-link {{ Route::is('admin.dashboard') ? 'active' : '' }}">
-            <i class="nav-icon bi bi-speedometer2"></i>
-            <p>Dashboard</p>
-          </a>
-        </li>
 
-        <!-- <li class="nav-item">
-          <a href="{{ route('riwayat.index') }}"
-             class="nav-link {{ Route::is('riwayat-perbaikan') ? 'active' : '' }}">
-            <i class="nav-icon bi bi-gear"></i>
-            <p>riwayat perbaikan</p>
-          </a>
-        </li> -->
 
-    {{-- === Group: Admin === --}}
-<!-- <li class="nav-item {{ Route::is('laporan.*') ? 'menu-open' : '' }}">
-  <a href="#" class="nav-link {{ Route::is('userlaporan.*') ? 'active' : '' }}">
-    <i class="nav-icon bi bi bi-file-earmark-bar-graph"></i>
-    <p>
-      Laporan
-      <i class="nav-arrow bi bi-chevron-right"></i>
-    </p>
-  </a> -->
+            
+              </ul>
+            </nav>
 
-  <ul class="nav nav-treeview">
-    <li class="nav-item">
-      <a href="{{ route('laporan.inventaris') }}"
-         class="nav-link {{ Route::is('laporan.inventaris*') ? 'active' : '' }}">
-        <i class="nav-icon bi bi-box"></i>
-        <p>Inventaris</p>
-      </a>
-    </li>
 
-    <li class="nav-item">
-      <a href="{{ route('laporan.report') }}"
-         class="nav-link {{ Route::is('laporan.report*') ? 'active' : '' }}">
-        <i class="nav-icon bi bi-journal-text"></i>
-        <p>Stok & Pemakaian</p>
-      </a>
-    </li>
 
-    <li class="nav-item">
-      <a href="{{ route('laporan.perbaikan') }}"
-         class="nav-link {{ Route::is('laporan.perbaikan*') ? 'active' : '' }}">
-        <i class="nav-icon bi bi-wrench-adjustable-circle"></i>
-        <p>Perbaikan</p>
-      </a>
-    </li>
-
-    <li class="nav-item">
-      <a href="{{ route('users.index') }}"
-         class="nav-link {{ Route::is('laporan.index*') ? 'active' : '' }}">
-        <i class="nav-icon bi bi bi-clipboard-data"></i>
-        <p>Hasil Kelayakan</p>
-      </a>
-    </li>
-  </ul>
-</li>
-
-        <li class="nav-item {{ Route::is('users.*') ? 'menu-open' : '' }}">
-  <a href="#" class="nav-link {{ Route::is('users.*') ? 'active' : '' }}">
-    <i class="nav-icon bi bi bi-people-fill"></i>
-    <p>
-      Manajemen Akun
-      <i class="nav-arrow bi bi-chevron-right"></i>
-    </p>
-  </a>
-
-  <ul class="nav nav-treeview">
-    <li class="nav-item">
-      <a href="{{ route('users.index') }}"
-         class="nav-link {{ Route::is('users.*') ? 'active' : '' }}">
-        <i class="nav-icon bi bi-person-gear"></i>
-        <p>Kelola akun</p>
-      </a>
-    </li>
-  </ul>
-</li>
-
-  </ul>
-</nav>
 
 
         </div>

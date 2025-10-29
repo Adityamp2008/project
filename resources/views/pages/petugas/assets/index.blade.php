@@ -86,7 +86,7 @@
                                         </div>
                                     </td>
 
-                                    <td>{{ $asset->kategori ?? '-' }}</td>
+                                    <td>{{ $asset->kategoriRel->nama ?? '-' }}</td>
                                     <td>{{ $asset->lokasi ?? '-' }}</td>
                                     <td>{{ $asset->tanggal_perolehan ? \Carbon\Carbon::parse($asset->tanggal_perolehan)->format('d-m-Y') : '-' }}</td>
                                     <td>{{ ucfirst($asset->kondisi ?? '-') }}</td>
@@ -110,6 +110,7 @@
                                         <a href="{{ route('assets.formHapus', $asset->id) }}" class="btn btn-sm btn-danger" title="Ajukan Penghapusan">
                                             <i class="bi bi-trash"></i>
                                         </a>
+<<<<<<< HEAD
 
                                         {{-- Tombol perbaikan / izin --}}
                                         @if ($status === 'Tidak Layak')
@@ -141,6 +142,23 @@
                                                     <i class="bi bi-tools"></i>
                                                 </a>
                                             @endif
+=======
+                                    
+                                        {{-- Tombol logika izin & perbaikan --}}
+                                        @php
+                                            $izin = $asset->izinPerbaikanTerakhir;
+                                        @endphp
+                                    
+                                        @if ($izin && $izin->status === 'approved')
+                                            <a href="{{ route('assets.formPerbaikan', $asset->id) }}" class="btn btn-sm btn-primary">
+                                                <i class="bi bi-tools"></i> 
+                                            </a>
+                                        @elseif ($izin && $izin->status === 'pending')
+                                            <button class="btn btn-sm btn-secondary" disabled>
+                                                <i class="bi bi-hourglass-split"></i> 
+                                            </button>
+                                        @else
+>>>>>>> 7767447 (MAAASSSUUU)
                                         @endif
                                     </td>
                                 </tr>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Assets;
 use App\Models\KelayakanAssets; 
 use App\Models\User;
+use App\Models\Kategori;
 use App\Models\PengajuanPenghapusanAset;
 use App\Models\RiwayatPerbaikan;
 use Illuminate\Http\Request;
@@ -15,35 +16,47 @@ class AssetsController extends Controller
 {
     public function index()
     {
-        $assets = Assets::with(['KelayakanAssets', 'laporanKelayakanTerakhir', 'izinPerbaikanTerakhir'])->orderBy('nama')->get();
+        $assets = Assets::with(['KelayakanAssets', 'laporanKelayakanTerakhir', 'izinPerbaikanTerakhir', 'kategoriRel'])->orderBy('nama')->get();
         return view('pages.petugas.assets.index', compact('assets'));
     }
     
 
     public function create()
     {
-        return view('pages.petugas.assets.create');
+        $kategoriAsetTetap = Kategori::where('tipe', 'aset_tetap')->get();
+        $kategoriATK = Kategori::where('tipe', 'atk')->get();
+        $kategoris = Kategori::all();
+        return view('pages.petugas.assets.create', compact('kategoriAsetTetap', 'kategoriATK', 'kategoris'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'nama' => 'required|string|max:255',
-            'kategori' => 'nullable|string|max:255',
+            'kategori_id' => [
+                'required',
+                function ($attr, $val, $fail) {
+                    $kategori = \App\Models\Kategori::find($val);
+                    if (!$kategori || $kategori->tipe !== 'aset_tetap') {
+                        $fail('Kategori tidak valid untuk jenis aset ini.');
+                    }
+                }
+            ],
             'lokasi' => 'nullable|string|max:255',
             'tanggal_perolehan' => 'nullable|date',
             'kondisi' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
-
+    
         $asset = Assets::create($request->only([
-            'nama', 'kategori', 'lokasi', 'tanggal_perolehan', 'kondisi', 'description'
+            'nama', 'kategori_id', 'lokasi', 'tanggal_perolehan', 'kondisi', 'description'
         ]));
-
+    
         $this->syncKelayakanForAsset($asset);
-
+    
         return redirect()->route('assets.index')->with('success', 'Data aset berhasil ditambahkan.');
     }
+
 
     public function edit(Assets $asset)
     {

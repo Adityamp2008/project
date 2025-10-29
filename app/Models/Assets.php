@@ -11,14 +11,8 @@ class Assets extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nama',
-        'kategori',
-        'lokasi',
-        'tanggal_perolehan',
-        'kondisi',
-        'umur_tahun',
-        'description',
-        'pernah_diperbaiki',
+        'nama', 'kategori_id', 'lokasi', 'tanggal_perolehan', 'kondisi',
+        'umur_tahun', 'description', 'pernah_diperbaiki'
     ];
 
     public function KelayakanAssets()
@@ -65,5 +59,10 @@ class Assets extends Model
     public function getKeteranganKelayakanAttribute()
     {
         return $this->KelayakanAssets->keterangan ?? '-';
+    }
+    
+    public function kategori()
+    {
+        return $this->belongsTo(Kategori::class, 'kategori_id');
     }
 }

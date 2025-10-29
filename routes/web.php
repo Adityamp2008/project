@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Admin\{
     DashboardController as AdminDashboard,
     UserController,
+    KategoriController
     
     
 };
@@ -57,7 +58,9 @@ Route::group([
         Route::get('/riwayat-perbaikan/create', [RiwayatPerbaikanController::class, 'create'])->name('riwayat.create');
     Route::post('/riwayat-perbaikan', [RiwayatPerbaikanController::class, 'store'])->name('riwayat.store');
     Route::get('/get-items/{type}', [RiwayatPerbaikanController::class, 'getItems'])->name('get.items');
-
+    
+    
+        Route::resource('kategori', KategoriController::class);
 
 
     //Laporan perbaikan

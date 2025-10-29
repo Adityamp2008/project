@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('atk_items', function (Blueprint $table) {
             $table->id();
-             $table->string('code')->unique(); // kode barang
+             $table->string('code')->unique();
+             $table->foreignId('kategori_id')->constrained('kategoris')->onDelete('cascade');// kode barang
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('unit')->default('pcs');

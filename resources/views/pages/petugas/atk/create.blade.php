@@ -40,11 +40,16 @@
                         <label class="form-label">Stok Awal</label>
                         <input type="number" name="stock" class="form-control" value="{{ old('stock', 0) }}">
                     </div>
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Kategori</label>
-                        <input type="text" name="category" class="form-control" value="{{ old('category') }}" placeholder="Tulis kategori">
+                    <div class="mb-3">
+                        <label for="kategori_id" class="form-label">Kategori ATK</label>
+                        <select name="kategori_id" class="form-select" required>
+                            <option value="">-- Pilih Kategori --</option>
+                            @foreach($kategoriAtk as $kategori)
+                                <option value="{{ $kategori->id }}">{{ $kategori->nama }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                </div>
+
 
                 {{-- Baris 3: Batas Minimum Stok --}}
                 <div class="mb-3">
