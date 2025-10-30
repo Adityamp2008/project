@@ -14,70 +14,91 @@
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
+    {{-- Search & Filter --}}
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="GET" action="{{ route('riwayat-perbaikan.index') }}" class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label class="form-label">Nama Aset</label>
+                    <input type="text" name="nama_asset" class="form-control"
+                        value="{{ request('nama_asset') }}" placeholder="Cari nama aset...">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Kategori</label>
+                    <select name="kategori" class="form-select">
+                        <option value="">-- Semua Kategori --</option>
+                        @foreach($kategori as $kat)
+                            <option value="{{ $kat->id }}" {{ request('kategori') == $kat->id ? 'selected' : '' }}>
+                                {{ $kat->nama }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Petugas</label>
+                    <input type="text" name="diperbaiki_oleh" class="form-control"
+                        value="{{ request('diperbaiki_oleh') }}" placeholder="Nama petugas...">
+                </div>
+                <div class="col-md-12 text-end">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-search"></i> Cari
+                    </button>
+                    <a href="{{ route('riwayat-perbaikan.index') }}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-repeat"></i> Reset
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    {{-- Tabel Data --}}
     <div class="table-responsive">
         <table class="table table-bordered align-middle text-center">
             <thead class="table-dark">
                 <tr>
                     <th>No</th>
                     <th>Nama Aset</th>
-                    <th>Tanggal Perbaikan</th>
+                    <th>Kategori</th>
+                    <th>Tanggal Mulai</th>
+                    <th>Tanggal Selesai</th>
                     <th>Deskripsi</th>
                     <th>Biaya</th>
                     <th>Diperbaiki Oleh</th>
                     <th>Status</th>
-                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse ($riwayats as $i => $r)
-                    <tr>
-                        <td>{{ $i + 1 }}</td>
-                        <td>{{ $r->asset->nama ?? '-' }}</td>
-                        <td>{{ \Carbon\Carbon::parse($r->tanggal_perbaikan)->format('d-m-Y') }}</td>
-                        <td class="text-start">{{ $r->deskripsi ?? '-' }}</td>
-                        <td>Rp {{ number_format($r->biaya, 0, ',', '.') }}</td>
-                        <td>{{ $r->diperbaiki_oleh ?? '-' }}</td>
-                        <td>
-                            {{-- Badge status perbaikan --}}
-                            @if ($r->status == 'selesai')
-                                <span class="badge bg-success">
-                                    <i class="bi bi-check-circle"></i> Selesai
-                                </span>
-                            @elseif ($r->status == 'proses')
-                                <span class="badge bg-warning text-dark">
-                                    <i class="bi bi-hourglass-split"></i> Proses
-                                </span>
-                            @elseif ($r->status == 'gagal')
-                                <span class="badge bg-danger">
-                                    <i class="bi bi-x-circle"></i> Gagal
-                                </span>
-                            @else
-                                <span class="badge bg-secondary">
-                                    <i class="bi bi-clock"></i> Belum Dimulai
-                                </span>
-                            @endif
-                        </td>
-                        <td>
-                            {{-- Tombol aksi, bisa disesuaikan --}}
-                            @if ($r->status == 'proses')
-                                <form action="{{ route('riwayat.selesai', $r->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    <button type="submit" class="btn btn-success btn-sm"
-                                        onclick="return confirm('Tandai perbaikan ini sebagai selesai?')">
-                                        <i class="bi bi-check-circle"></i> Tandai Selesai
-                                    </button>
-                                </form>
-                            @else
-                                <button class="btn btn-secondary btn-sm" disabled>
-                                    <i class="bi bi-info-circle"></i> Tidak Ada Aksi
-                                </button>
-                            @endif
-                        </td>
-                    </tr>
+            @forelse ($riwayat as $i => $r)
+                <tr>
+                    <td>{{ $i + 1 }}</td>
+                    <td>{{ $r->asset->nama ?? '-' }}</td>
+                    <td>{{ $r->asset->kategori->nama ?? '-' }}</td>
+                    <td>{{ $r->tanggal_perbaikan ? \Carbon\Carbon::parse($r->tanggal_perbaikan)->format('d-m-Y') : '-' }}</td>
+                    <td>{{ $r->tanggal_selesai ? \Carbon\Carbon::parse($r->tanggal_selesai)->format('d-m-Y') : '-' }}</td>
+                    <td class="text-start">{{ $r->description ?? '-' }}</td>
+                    <td>Rp {{ number_format($r->biaya, 0, ',', '.') }}</td>
+                    <td>{{ $r->diperbaiki_oleh ?? '-' }}</td>
+                    <td>
+                        @if(!$r->tanggal_perbaikan && $r->asset->izin_perbaikan)
+                            <span class="badge bg-secondary">
+                                <i class="bi bi-clock"></i> Menunggu Perbaikan
+                            </span>
+                        @elseif($r->status == 'proses')
+                            <span class="badge bg-warning text-dark">
+                                <i class="bi bi-tools"></i> Sedang Diperbaiki
+                            </span>
+                        @elseif($r->status == 'selesai')
+                            <span class="badge bg-success">
+                                <i class="bi bi-check-circle"></i> Selesai
+                            </span>
+                        @endif
+                    </td>
+                </tr>
                 @empty
-                    <tr>
-                        <td colspan="8" class="text-muted">Belum ada data riwayat perbaikan aset.</td>
-                    </tr>
+                <tr>
+                    <td colspan="9" class="text-muted">Belum ada data riwayat perbaikan aset.</td>
+                </tr>
                 @endforelse
             </tbody>
         </table>

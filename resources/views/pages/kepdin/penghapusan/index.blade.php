@@ -26,7 +26,7 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $p->asset->nama ?? '-' }}</td>
-                            <td>{{ $p->asset->kategori ?? '-' }}</td>
+                            <td>{{ $p->asset->kategori->nama ?? '-' }}</td>
                             <td>{{ $p->asset->lokasi ?? '-' }}</td>
                             <td>{{ $p->alasan ?? '-' }}</td>
                             <td>{{ $p->diajukan_oleh ?? '-' }}</td>

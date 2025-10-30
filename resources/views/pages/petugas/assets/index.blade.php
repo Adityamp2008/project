@@ -50,7 +50,7 @@
                                 <th>Umur (th)</th>
                                 <th>Deskripsi</th>
                                 <th>Status Kelayakan</th>
-                                <th width="200">Aksi</th>
+                                <th width="250">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -100,35 +100,63 @@
                                     </td>
 
                                     {{-- Tombol Aksi --}}
-                                    <td>
-                                        {{-- Tombol Edit & Hapus --}}
+                                    <td class="d-flex justify-content-center gap-1">
+                                        {{-- Edit --}}
                                         <a href="{{ route('assets.edit', $asset->id) }}" class="btn btn-sm btn-warning" title="Edit Data">
                                             <i class="bi bi-pencil"></i>
                                         </a>
 
+                                        {{-- Ajukan Hapus --}}
                                         <a href="{{ route('assets.formHapus', $asset->id) }}" class="btn btn-sm btn-danger" title="Ajukan Penghapusan">
                                             <i class="bi bi-trash"></i>
                                         </a>
 
-                                        {{-- Tombol Perbaikan Berdasarkan Izin --}}
+                                        {{-- Tombol Perbaikan --}}
                                         @php
-                                            $izin = $asset->izinPerbaikanTerakhir;
+                                            $kondisi_baik = strtolower($asset->kondisi) === 'baik';
+                                            $layak = strtolower($status) === 'layak';
                                         @endphp
 
-                                        {{-- Tampilkan tombol hanya kalau aset belum diperbaiki --}}
-                                        @if (empty($asset->pernah_diperbaiki) || $asset->pernah_diperbaiki == false)
+                                        @if (!($kondisi_baik && $layak))
+                                            {{-- Hanya tampilkan tombol jika aset tidak baik atau tidak layak --}}
                                             @if ($izin)
-                                                @if ($izin->status === 'pending')
-                                                    {{-- Izin masih menunggu --}}
-                                                    <button class="btn btn-sm btn-secondary" disabled>
-                                                        <i class="bi bi-hourglass-split"></i>
-                                                    </button>
-                                                @elseif ($izin->status === 'approved')
-                                                    {{-- Izin sudah disetujui --}}
-                                                    <a href="{{ route('assets.formPerbaikan', $asset->id) }}" class="btn btn-sm btn-primary">
-                                                        <i class="bi bi-tools"></i> Perbaiki
-                                                    </a>
-                                                @endif
+                                                {{-- Ada izin, cek status --}}
+                                                @switch($izin->status)
+                                                    @case('pending')
+                                                        {{-- Menunggu persetujuan --}}
+                                                        <button class="btn btn-sm btn-secondary" disabled title="Menunggu persetujuan">
+                                                            <i class="bi bi-hourglass-split"></i>
+                                                        </button>
+                                                        @break
+
+                                                    @case('approved')
+                                                        {{-- Bisa diperbaiki --}}
+                                                        <a href="{{ route('assets.formPerbaikan', $asset->id) }}" class="btn btn-sm btn-primary" title="Perbaikan Aset">
+                                                            <i class="bi bi-tools"></i>
+                                                        </a>
+                                                        @break
+
+                                                    @case('in_progress')
+                                                        {{-- Sedang diperbaiki --}}
+                                                        <a href="{{ route('assets.selesaikanPerbaikan', $izin->id) }}" class="btn btn-sm btn-success" title="Selesaikan Perbaikan">
+                                                            <i class="bi bi-check-circle"></i>
+                                                        </a>
+                                                        @break
+
+                                                    @case('completed')
+                                                        {{-- Perbaikan selesai, bisa kirim ke Kepdin --}}
+                                                        <a href="{{ route('assets.kirimKeKepdin', $izin->id) }}" class="btn btn-sm btn-info" title="Kirim ke Kepdin">
+                                                            <i class="bi bi-send"></i>
+                                                        </a>
+                                                        @break
+
+                                                    @case('final_approved')
+                                                        {{-- Sudah disetujui --}}
+                                                        <span class="badge bg-success">Sudah Disetujui</span>
+                                                        @break
+                                                @endswitch
+                                            @else
+                                                {{-- Tidak ada izin, tombol tidak muncul --}}
                                             @endif
                                         @endif
                                     </td>

@@ -9,37 +9,58 @@
     <form action="{{ route('assets.simpanPerbaikan', $asset->id) }}" method="POST">
         @csrf
 
+        {{-- Nama Aset --}}
         <div class="mb-3">
             <label class="form-label">Nama Aset</label>
             <input type="text" class="form-control" value="{{ $asset->nama }}" readonly>
         </div>
 
+        {{-- Deskripsi --}}
         <div class="mb-3">
             <label class="form-label">Deskripsi Perbaikan</label>
-            <textarea name="deskripsi" class="form-control" rows="4" required>{{ old('deskripsi_perbaikan') }}</textarea>
+            <textarea name="description" class="form-control" rows="4" required>{{ old('description') }}</textarea>
         </div>
 
+        {{-- Tanggal Mulai Perbaikan --}}
         <div class="mb-3">
-            <label class="form-label">Tanggal Perbaikan</label>
-            <input type="date" name="tanggal_perbaikan" class="form-control" value="{{ old('tanggal_perbaikan', date('Y-m-d')) }}" required>
+            <label class="form-label">Tanggal Mulai Perbaikan</label>
+            <input type="date" name="tanggal_perbaikan" class="form-control"
+                   value="{{ old('tanggal_perbaikan', date('Y-m-d')) }}" required>
         </div>
 
+        {{-- Tanggal Selesai Perbaikan --}}
+        <div class="mb-3">
+            <label class="form-label">Tanggal Selesai Perbaikan</label>
+            <input type="date" name="tanggal_selesai" class="form-control"
+                   value="{{ old('tanggal_selesai') }}"
+                   placeholder="Isi jika perbaikan sudah selesai">
+            <small class="text-muted"></small>
+        </div>
+
+        {{-- Biaya --}}
         <div class="mb-3">
             <label class="form-label">Biaya (Rp)</label>
-            <input type="number" name="biaya" class="form-control" value="{{ old('biaya') }}" placeholder="Masukkan biaya perbaikan">
+            <input type="number" name="biaya" class="form-control"
+                   value="{{ old('biaya') }}" placeholder="Masukkan biaya perbaikan" required>
         </div>
 
+        {{-- Diperbaiki Oleh --}}
         <div class="mb-3">
             <label class="form-label">Diperbaiki Oleh</label>
             <input type="text" name="diperbaiki_oleh" class="form-control"
                    value="{{ old('diperbaiki_oleh', auth()->user()->name ?? '') }}"
-                   placeholder="Nama yang memperbaiki (otomatis terisi)" />
+                   placeholder="Nama petugas yang memperbaiki" required>
         </div>
 
+        {{-- Status hidden --}}
+        <input type="hidden" name="status" value="proses">
+
         <div class="d-flex gap-2 justify-content-end">
-            <a href="{{ route('assets.index') }}" class="btn btn-secondary">Kembali</a>
+            <a href="{{ route('assets.index') }}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Kembali
+            </a>
             <button type="submit" class="btn btn-primary">
-                <i class="bi bi-save"></i> Simpan Perbaikan
+                <i class="bi bi-tools"></i> Simpan Perbaikan
             </button>
         </div>
     </form>

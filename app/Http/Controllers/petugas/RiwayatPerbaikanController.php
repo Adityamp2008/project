@@ -1,25 +1,37 @@
 <?php
 
-namespace App\Http\Controllers\petugas;
+namespace App\Http\Controllers\Petugas;
 
 use App\Http\Controllers\Controller;
 use App\Models\Assets;
+use App\Models\Kategori;
 use App\Models\RiwayatPerbaikan;
 use Illuminate\Http\Request;
 
 class RiwayatPerbaikanController extends Controller
 {
-    
-    public function index()
-    {
-        // Ambil semua data perbaikan dengan relasi aset
-        $riwayats = RiwayatPerbaikan::with('asset')->latest()->get();
-
-        return view('pages.petugas.riwayat_perbaikan.index', compact('riwayats'));
-    }
-    
     /**
-     * Form tambah perbaikan
+     * Tampilkan semua riwayat perbaikan yang sudah diizinkan
+     * dengan filter kategori & petugas.
+     */
+    public function index(Request $request)
+    {
+        $kategori = Kategori::all();
+
+        $riwayat = RiwayatPerbaikan::with('asset')
+            ->when($request->filled('kategori'), fn($q) => 
+                $q->whereHas('asset.kategori', fn($q2) => $q2->where('id', $request->kategori))
+            )
+            ->when($request->filled('diperbaiki_oleh'), fn($q) => 
+                $q->where('diperbaiki_oleh', 'like', "%{$request->diperbaiki_oleh}%")
+            )
+            ->get(); // ambil semua tanpa pagination
+
+        return view('pages.petugas.riwayat_perbaikan.index', compact('riwayat', 'kategori'));
+    }
+
+    /**
+     * Form tambah perbaikan aset
      */
     public function create(Assets $asset)
     {
@@ -27,24 +39,41 @@ class RiwayatPerbaikanController extends Controller
     }
 
     /**
-     * Simpan ke database
+     * Simpan perbaikan baru
      */
     public function store(Request $request, Assets $asset)
     {
         $request->validate([
-            'deskripsi_perbaikan' => 'required|string|max:255',
+            'deskripsi' => 'required|string|max:255',
             'biaya' => 'required|numeric|min:0',
             'diperbaiki_oleh' => 'required|string|max:255',
+            'tanggal_perbaikan' => 'required|date',
         ]);
 
         RiwayatPerbaikan::create([
             'asset_id' => $asset->id,
-            'deskripsi_perbaikan' => $request->deskripsi_perbaikan,
+            'deskripsi' => $request->deskripsi,
             'biaya' => $request->biaya,
-            'diperbaiki_oleh' => $request->diperbaiki_oleh,
-            'tanggal_perbaikan' => now(),
+            'diperbaiki_oleh' => auth()->user()->name,
+            'tanggal_perbaikan' => $request->tanggal_perbaikan,
+            'status' => 'proses',
         ]);
 
-        return redirect()->route('assets.index')->with('success', 'Perbaikan berhasil dicatat.');
+        return redirect()->route('assets.index')
+            ->with('success', 'Perbaikan aset berhasil dicatat.');
+    }
+
+    /**
+     * Tandai perbaikan selesai
+     */
+    public function selesai(RiwayatPerbaikan $riwayat)
+    {
+        $riwayat->update([
+            'status' => 'selesai',
+            'tanggal_selesai' => now(),
+        ]);
+
+        return redirect()->route('riwayat-perbaikan.index')
+            ->with('success', 'Perbaikan berhasil ditandai selesai.');
     }
 }

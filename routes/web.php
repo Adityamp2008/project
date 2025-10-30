@@ -100,20 +100,27 @@ Route::group([
     Route::get('/perbaikan/{asset}/create', [RiwayatPerbaikanController::class, 'create'])->name('perbaikan.create');
     Route::post('/perbaikan/{asset}', [RiwayatPerbaikanController::class, 'store'])->name('perbaikan.store');
     
+
+    // Form Perbaikan sudah digabung di assets
     Route::get('/assets/{id}/perbaikan', [AssetsController::class, 'formPerbaikan'])
         ->name('assets.formPerbaikan');
-    
-    // Proses Simpan Perbaikan
+
+    // Simpan perbaikan baru
     Route::post('/assets/{id}/perbaikan', [AssetsController::class, 'simpanPerbaikan'])
-        ->name('assets.simpanPerbaikan');
-        
-        Route::get('/riwayat-perbaikan', [RiwayatPerbaikanController::class, 'index'])
-            ->name('riwayat-perbaikan.index');
+    ->name('assets.simpanPerbaikan');
+
+    Route::get('petugas/assets/{asset}/mulai-perbaikan', [AssetsController::class, 'mulaiPerbaikan'])->name('assets.mulaiPerbaikan');
+    Route::get('petugas/assets/selesaikan-perbaikan/{riwayat}', [AssetsController::class, 'selesaikanPerbaikan'])->name('assets.selesaikanPerbaikan');
+    Route::get('petugas/assets/kirim-ke-kepdin/{riwayat}', [AssetsController::class, 'kirimKeKepdin'])->name('assets.kirimKeKepdin');
+    
+
+    Route::get('/riwayat-perbaikan', [RiwayatPerbaikanController::class, 'index'])
+        ->name('riwayat-perbaikan.index');
             
-            Route::get('/assets/hapus/{id}', [AssetsController::class, 'formHapus'])->name('assets.formHapus');
-            Route::post('/assets/hapus/{id}', [AssetsController::class, 'ajukanHapus'])->name('assets.ajukanHapus');
+    Route::get('/assets/hapus/{id}', [AssetsController::class, 'formHapus'])->name('assets.formHapus');
+    Route::post('/assets/hapus/{id}', [AssetsController::class, 'ajukanHapus'])->name('assets.ajukanHapus');
             
-            Route::post('/atk/{atk}/ajukan-hapus', [AtkItemController::class, 'ajukanHapus'])->name('atk.ajukanHapus');
+    Route::post('/atk/{atk}/ajukan-hapus', [AtkItemController::class, 'ajukanHapus'])->name('atk.ajukanHapus');
 });
 
 
@@ -139,15 +146,23 @@ Route::group([
     Route::post('/penghapusan-atk/{id}/tolak', [KepdinAtkController::class, 'tolak'])->name('penghapusan_atk.tolak');
 
           // Laporan Inventaris
-Route::get('laporan/inventaris', [LaporanInventarisController::class, 'index'])->name('laporan.inventaris');
-Route::get('laporan/inventaris/pdf', [LaporanInventarisController::class, 'pdf'])->name('laporan.inventaris.pdf');
-Route::get('laporan/inventaris/excel', [LaporanInventarisController::class, 'excel'])->name('laporan.inventaris.excel');
+    Route::get('laporan/inventaris', [LaporanInventarisController::class, 'index'])->name('laporan.inventaris');
+    Route::get('laporan/inventaris/pdf', [LaporanInventarisController::class, 'pdf'])->name('laporan.inventaris.pdf');
+    Route::get('laporan/inventaris/excel', [LaporanInventarisController::class, 'excel'])->name('laporan.inventaris.excel');
 
-//laporan perbaikan
-Route::get('laporan/perbaikan', [LaporanPerbaikanController::class, 'laporan'])->name('laporan.perbaikan');
-Route::get('laporan/perbaikan/pdf', [LaporanPerbaikanController::class, 'laporanPdf'])->name('laporan.perbaikan.pdf');
-Route::get('laporan/perbaikan/excel', [LaporanPerbaikanController::class, 'laporanExcel'])->name('laporan.perbaikan.excel');
+    // Laporan riwayat perbaikan
+        Route::get('laporan-perbaikan', [LaporanPerbaikanController::class, 'index'])->name('laporan.perbaikan');
+        Route::get('laporan-perbaikan/pdf', [LaporanPerbaikanController::class, 'laporanPdf'])->name('laporan.perbaikan.pdf');
+        Route::get('laporan-perbaikan/excel', [LaporanPerbaikanController::class, 'laporanExcel'])->name('laporan.perbaikan.excel');
 
+
+    // Approve perbaikan dari petugas
+    Route::post('/perbaikan/{id}/approve', [AssetsController::class, 'approvePerbaikan'])
+        ->name('kepdin.perbaikan.approve');
+
+    // Reject perbaikan dari petugas
+    Route::post('/perbaikan/{id}/reject', [AssetsController::class, 'rejectPerbaikan'])
+        ->name('kepdin.perbaikan.reject');
  // --- Laporan atk ---
     Route::get('laporan/report', [LaporanAtkController::class, 'report'])->name('laporan.report');
     Route::get('laporan/report/pdf', [LaporanAtkController::class, 'reportPdf'])->name('laporan.report.pdf');

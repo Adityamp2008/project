@@ -4,6 +4,7 @@ namespace App\Http\Controllers\kepdin;
 
 use App\Http\Controllers\Controller;
 use App\Models\RiwayatPerbaikan;
+use App\Models\Kategori;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF;
@@ -14,15 +15,23 @@ class LaporanPerbaikanController extends Controller
     /**
      * Tampilkan halaman laporan perbaikan
      */
-    public function laporan(Request $request)
+    public function index(Request $request)
     {
-        $riwayats = RiwayatPerbaikan::with('asset')->latest()->get();
+        // Ambil semua riwayat perbaikan yang sudah memiliki tanggal perbaikan
+        $riwayats = RiwayatPerbaikan::with('asset')
+            ->whereNotNull('tanggal_perbaikan')
+            ->latest()
+            ->get(); // tanpa pagination
 
-        return view('pages.kepdin.laporan.perbaikan', compact('riwayats'));
+        // Ambil semua kategori untuk dropdown filter
+        $kategori = Kategori::all();
+
+        // Kirim ke view
+        return view('pages.kepdin.laporan.perbaikan', compact('riwayats', 'kategori'));
     }
 
     /**
-     * Export ke PDF
+     * Export laporan perbaikan ke PDF
      */
     public function laporanPdf()
     {
@@ -31,11 +40,11 @@ class LaporanPerbaikanController extends Controller
         $pdf = PDF::loadView('pages.kepdin.laporan_pdf', compact('riwayats'))
             ->setPaper('a4', 'landscape');
 
-        return $pdf->download('perbaikan_pdf');
+        return $pdf->download('laporan_perbaikan.pdf');
     }
 
     /**
-     * Export ke Excel
+     * Export laporan perbaikan ke Excel
      */
     public function laporanExcel()
     {
