@@ -16,7 +16,7 @@ class AssetsController extends Controller
 {
     public function index()
     {
-        $assets = Assets::with(['KelayakanAssets', 'laporanKelayakanTerakhir', 'izinPerbaikanTerakhir', 'kategoriRel'])->orderBy('nama')->get();
+        $assets = Assets::with(['KelayakanAssets', 'laporanKelayakanTerakhir', 'izinPerbaikanTerakhir', 'kategori'])->orderBy('nama')->get();
         return view('pages.petugas.assets.index', compact('assets'));
     }
     

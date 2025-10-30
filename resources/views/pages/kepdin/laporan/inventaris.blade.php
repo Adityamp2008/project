@@ -49,7 +49,7 @@
                 @forelse($asetItems as $item)
                     <tr>
                         <td>{{ $item->nama }}</td>
-                        <td>{{ $item->kategori }}</td>
+                        <td>{{ $item->kategori->nama ?? '-'}}</td>
                         <td>{{ $item->kondisi }}</td>
                         <td>{{ $item->lokasi }}</td>
                     </tr>

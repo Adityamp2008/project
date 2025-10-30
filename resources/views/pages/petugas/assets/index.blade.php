@@ -85,8 +85,7 @@
                                             @endif
                                         </div>
                                     </td>
-
-                                    <td>{{ $asset->kategoriRel->nama ?? '-' }}</td>
+                                    <td>{{ $asset->kategori->nama ?? '-' }}</td>
                                     <td>{{ $asset->lokasi ?? '-' }}</td>
                                     <td>{{ $asset->tanggal_perolehan ? \Carbon\Carbon::parse($asset->tanggal_perolehan)->format('d-m-Y') : '-' }}</td>
                                     <td>{{ ucfirst($asset->kondisi ?? '-') }}</td>
@@ -100,9 +99,9 @@
                                         </span>
                                     </td>
 
-                                    {{-- Aksi --}}
+                                    {{-- Tombol Aksi --}}
                                     <td>
-                                        {{-- Tombol edit & hapus --}}
+                                        {{-- Tombol Edit & Hapus --}}
                                         <a href="{{ route('assets.edit', $asset->id) }}" class="btn btn-sm btn-warning" title="Edit Data">
                                             <i class="bi bi-pencil"></i>
                                         </a>
@@ -110,55 +109,27 @@
                                         <a href="{{ route('assets.formHapus', $asset->id) }}" class="btn btn-sm btn-danger" title="Ajukan Penghapusan">
                                             <i class="bi bi-trash"></i>
                                         </a>
-<<<<<<< HEAD
 
-                                        {{-- Tombol perbaikan / izin --}}
-                                        @if ($status === 'Tidak Layak')
-                                            @if (!$izin)
-                                                {{-- Belum minta izin --}}
-                                                <a href="{{ route('assets.formPerbaikan', $asset->id) }}" class="btn btn-sm btn-outline-primary" title="Ajukan Izin Perbaikan">
-                                                    <i class="bi bi-envelope-plus"></i>
-                                                </a>
-                                            @elseif ($izin->status === 'pending')
-                                                {{-- Sudah minta tapi pending --}}
-                                                <button class="btn btn-sm btn-secondary" disabled title="Menunggu Persetujuan">
-                                                    <i class="bi bi-hourglass-split"></i>
-                                                </button>
-                                            @elseif ($izin->status === 'approved' && !$asset->pernah_diperbaiki)
-                                                {{-- Sudah disetujui --}}
-                                                <a href="{{ route('assets.perbaiki', $asset->id) }}" class="btn btn-sm btn-primary" title="Lakukan Perbaikan">
-                                                    <i class="bi bi-tools"></i>
-                                                </a>
-                                            @endif
-                                        @elseif ($status === 'Kurang Layak')
-                                            @if ($izin && $izin->status === 'pending')
-                                                {{-- Sudah minta tapi pending --}}
-                                                <button class="btn btn-sm btn-secondary" disabled title="Menunggu Persetujuan">
-                                                    <i class="bi bi-hourglass-split"></i>
-                                                </button>
-                                            @elseif ($izin && $izin->status === 'approved' && !$asset->pernah_diperbaiki)
-                                                {{-- Sudah disetujui --}}
-                                                <a href="{{ route('assets.perbaiki', $asset->id) }}" class="btn btn-sm btn-primary" title="Lakukan Perbaikan">
-                                                    <i class="bi bi-tools"></i>
-                                                </a>
-                                            @endif
-=======
-                                    
-                                        {{-- Tombol logika izin & perbaikan --}}
+                                        {{-- Tombol Perbaikan Berdasarkan Izin --}}
                                         @php
                                             $izin = $asset->izinPerbaikanTerakhir;
                                         @endphp
-                                    
-                                        @if ($izin && $izin->status === 'approved')
-                                            <a href="{{ route('assets.formPerbaikan', $asset->id) }}" class="btn btn-sm btn-primary">
-                                                <i class="bi bi-tools"></i> 
-                                            </a>
-                                        @elseif ($izin && $izin->status === 'pending')
-                                            <button class="btn btn-sm btn-secondary" disabled>
-                                                <i class="bi bi-hourglass-split"></i> 
-                                            </button>
-                                        @else
->>>>>>> 7767447 (MAAASSSUUU)
+
+                                        {{-- Tampilkan tombol hanya kalau aset belum diperbaiki --}}
+                                        @if (empty($asset->pernah_diperbaiki) || $asset->pernah_diperbaiki == false)
+                                            @if ($izin)
+                                                @if ($izin->status === 'pending')
+                                                    {{-- Izin masih menunggu --}}
+                                                    <button class="btn btn-sm btn-secondary" disabled>
+                                                        <i class="bi bi-hourglass-split"></i>
+                                                    </button>
+                                                @elseif ($izin->status === 'approved')
+                                                    {{-- Izin sudah disetujui --}}
+                                                    <a href="{{ route('assets.formPerbaikan', $asset->id) }}" class="btn btn-sm btn-primary">
+                                                        <i class="bi bi-tools"></i> Perbaiki
+                                                    </a>
+                                                @endif
+                                            @endif
                                         @endif
                                     </td>
                                 </tr>

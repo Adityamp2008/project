@@ -4,6 +4,7 @@ namespace App\Http\Controllers\kepdin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Assets;
+use App\Models\Kategori;
 use App\Models\KelayakanAssets;
 use App\Models\RiwayatPerbaikan;
 
@@ -13,7 +14,7 @@ class DashboardController extends Controller
     {
         $data = [
             'totalAset' => Assets::count(),
-            'totalAtk' => Assets::where('kategori', 'ATK')->count(),
+            'totalAtk' => Assets::where('kategori_id', 'ATK')->count(),
             'totalLaporanKelayakan' => KelayakanAssets::count(),
             'totalPerbaikan' => RiwayatPerbaikan::count(),
         ];
