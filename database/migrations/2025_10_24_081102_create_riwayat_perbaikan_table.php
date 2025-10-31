@@ -10,7 +10,7 @@ return new class extends Migration {
         Schema::create('riwayat_perbaikan', function (Blueprint $table) {
             $table->id();
             $table->foreignId('asset_id')->constrained('assets')->onDelete('cascade');
-            $table->text('deskripsi_perbaikan')->nullable(); // sesuai controller
+            $table->text('deskripsi')->nullable();
             $table->decimal('biaya', 15, 2)->default(0);
             $table->string('diperbaiki_oleh')->nullable();
             $table->date('tanggal_perbaikan')->nullable();
