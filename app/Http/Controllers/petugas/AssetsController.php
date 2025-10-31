@@ -4,7 +4,13 @@ namespace App\Http\Controllers\Petugas;
 
 use App\Http\Controllers\Controller;
 use App\Models\Assets;
+<<<<<<< HEAD
 use App\Models\KelayakanAssets;
+=======
+use App\Models\KelayakanAssets; 
+use App\Models\User;
+use App\Models\Room;
+>>>>>>> a316a51 (BISMILLAH)
 use App\Models\Kategori;
 use App\Models\PengajuanPenghapusanAset;
 use App\Models\RiwayatPerbaikan;
@@ -16,6 +22,7 @@ class AssetsController extends Controller
     /** Tampilkan semua aset */
     public function index()
     {
+<<<<<<< HEAD
         $assets = Assets::with([
             'KelayakanAssets',
             'laporanKelayakanTerakhir',
@@ -23,17 +30,25 @@ class AssetsController extends Controller
             'kategori'
         ])->orderBy('nama')->get();
 
+=======
+        $assets = Assets::with(['KelayakanAssets', 'laporanKelayakanTerakhir', 'izinPerbaikanTerakhir', 'kategori', 'user','room'])->orderBy('nama')->get();
+>>>>>>> a316a51 (BISMILLAH)
         return view('pages.petugas.assets.index', compact('assets'));
     }
 
     /** Form tambah aset */
     public function create()
     {
+        $rooms = Room::orderBy('name')->get();
         $kategoriAsetTetap = Kategori::where('tipe', 'aset_tetap')->get();
         $kategoriATK = Kategori::where('tipe', 'atk')->get();
         $kategoris = Kategori::all();
+<<<<<<< HEAD
 
         return view('pages.petugas.assets.create', compact('kategoriAsetTetap', 'kategoriATK', 'kategoris'));
+=======
+        return view('pages.petugas.assets.create', compact('kategoriAsetTetap', 'kategoriATK', 'kategoris', 'rooms'));
+>>>>>>> a316a51 (BISMILLAH)
     }
 
     /** Simpan aset baru */
@@ -50,22 +65,42 @@ class AssetsController extends Controller
                     }
                 }
             ],
-            'lokasi' => 'nullable|string|max:255',
+            'room_id' => 'required|exists:rooms,id', 
             'tanggal_perolehan' => 'nullable|date',
             'kondisi' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
+<<<<<<< HEAD
 
         $asset = Assets::create($request->only([
             'nama', 'kategori_id', 'lokasi', 'tanggal_perolehan', 'kondisi', 'description'
         ]));
 
+=======
+    
+        // Simpan data aset
+        $asset = Assets::create([
+            'nama' => $request->nama,
+            'kategori_id' => $request->kategori_id,
+            'room_id' => $request->room_id,
+            'tanggal_perolehan' => $request->tanggal_perolehan,
+            'kondisi' => $request->kondisi,
+            'description' => $request->description,
+        ]);
+    
+        // Sinkronkan status kelayakan otomatis
+>>>>>>> a316a51 (BISMILLAH)
         $this->syncKelayakanForAsset($asset);
 
         return redirect()->route('assets.index')->with('success', 'Data aset berhasil ditambahkan.');
     }
 
+<<<<<<< HEAD
     /** Form edit aset */
+=======
+
+
+>>>>>>> a316a51 (BISMILLAH)
     public function edit(Assets $asset)
     {
         $kategoriAsetTetap = Kategori::where('tipe', 'aset_tetap')->get();

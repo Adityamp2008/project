@@ -119,8 +119,28 @@
                     <p>Dashboard</p>
                   </a>
                 </li>
+                
+                {{-- === Manajemen Lokasi === --}}
+                <li class="nav-item">
+                  <a href="{{ route('rooms.index') }}"
+                      class="nav-link {{ Route::is('room.*') ? 'active' : '' }}">
+                    <i class="nav-icon bi bi-tags-fill"></i>
+                    <p>Manajemen Lokasi</p>
+                  </a>
+                </li>
             
-                {{-- === Manajemen Akun === --}}
+
+
+                {{-- === Manajemen Kategori === --}}
+                <li class="nav-item">
+                  <a href="{{ route('kategori.index') }}"
+                     class="nav-link {{ Route::is('kategori.*') ? 'active' : '' }}">
+                    <i class="nav-icon bi bi-tags-fill"></i>
+                    <p>Manajemen Kategori</p>
+                  </a>
+                </li>
+                
+                                {{-- === Manajemen Akun === --}}
                 <li class="nav-item {{ Route::is('users.*') ? 'menu-open' : '' }}">
                   <a href="#" class="nav-link {{ Route::is('users.*') ? 'active' : '' }}">
                     <i class="nav-icon bi bi-people-fill"></i>
@@ -138,16 +158,6 @@
                       </a>
                     </li>
                   </ul>
-                </li>
-            
-                {{-- === Manajemen Kategori === --}}
-                {{-- === Manajemen Kategori === --}}
-                <li class="nav-item">
-                  <a href="{{ route('kategori.index') }}"
-                     class="nav-link {{ Route::is('kategori.*') ? 'active' : '' }}">
-                    <i class="nav-icon bi bi-tags-fill"></i>
-                    <p>Manajemen Kategori</p>
-                  </a>
                 </li>
 
 

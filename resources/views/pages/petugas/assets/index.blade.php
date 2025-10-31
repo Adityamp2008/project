@@ -86,7 +86,7 @@
                                         </div>
                                     </td>
                                     <td>{{ $asset->kategori->nama ?? '-' }}</td>
-                                    <td>{{ $asset->lokasi ?? '-' }}</td>
+                                    <td>{{ $asset->room->name ?? '-' }} - {{ $asset->lokasi }}</td>
                                     <td>{{ $asset->tanggal_perolehan ? \Carbon\Carbon::parse($asset->tanggal_perolehan)->format('d-m-Y') : '-' }}</td>
                                     <td>{{ ucfirst($asset->kondisi ?? '-') }}</td>
                                     <td>{{ $asset->umur_tahun ?? 0 }}</td>
