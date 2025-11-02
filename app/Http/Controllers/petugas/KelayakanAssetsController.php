@@ -14,7 +14,9 @@ class KelayakanAssetsController extends Controller
      */
     public function index()
     {
-        $kelayakanassets = KelayakanAssets::with('asset')->orderBy('id')->get();
+        $kelayakanassets = KelayakanAssets::with(['asset'])
+            ->whereIn('status_kelayakan', ['Kurang Layak', 'Tidak Layak'])
+            ->get();
         return view('pages.petugas.kelayakanassets.index', compact('kelayakanassets'));
     }
 

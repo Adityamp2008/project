@@ -4,13 +4,10 @@ namespace App\Http\Controllers\Petugas;
 
 use App\Http\Controllers\Controller;
 use App\Models\Assets;
-<<<<<<< HEAD
+
 use App\Models\KelayakanAssets;
-=======
-use App\Models\KelayakanAssets; 
 use App\Models\User;
 use App\Models\Room;
->>>>>>> a316a51 (BISMILLAH)
 use App\Models\Kategori;
 use App\Models\PengajuanPenghapusanAset;
 use App\Models\RiwayatPerbaikan;
@@ -22,17 +19,14 @@ class AssetsController extends Controller
     /** Tampilkan semua aset */
     public function index()
     {
-<<<<<<< HEAD
         $assets = Assets::with([
             'KelayakanAssets',
+            'Room',
             'laporanKelayakanTerakhir',
             'izinPerbaikanTerakhir',
             'kategori'
         ])->orderBy('nama')->get();
-
-=======
         $assets = Assets::with(['KelayakanAssets', 'laporanKelayakanTerakhir', 'izinPerbaikanTerakhir', 'kategori', 'user','room'])->orderBy('nama')->get();
->>>>>>> a316a51 (BISMILLAH)
         return view('pages.petugas.assets.index', compact('assets'));
     }
 
@@ -43,12 +37,7 @@ class AssetsController extends Controller
         $kategoriAsetTetap = Kategori::where('tipe', 'aset_tetap')->get();
         $kategoriATK = Kategori::where('tipe', 'atk')->get();
         $kategoris = Kategori::all();
-<<<<<<< HEAD
-
-        return view('pages.petugas.assets.create', compact('kategoriAsetTetap', 'kategoriATK', 'kategoris'));
-=======
         return view('pages.petugas.assets.create', compact('kategoriAsetTetap', 'kategoriATK', 'kategoris', 'rooms'));
->>>>>>> a316a51 (BISMILLAH)
     }
 
     /** Simpan aset baru */
@@ -65,42 +54,37 @@ class AssetsController extends Controller
                     }
                 }
             ],
-            'room_id' => 'required|exists:rooms,id', 
+            'room_id' => 'required|exists:rooms,id',
+            'lokasi'=> 'nullable|string|max:255', // ubah dari exists ke string
             'tanggal_perolehan' => 'nullable|date',
             'kondisi' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
-<<<<<<< HEAD
-
-        $asset = Assets::create($request->only([
-            'nama', 'kategori_id', 'lokasi', 'tanggal_perolehan', 'kondisi', 'description'
-        ]));
-
-=======
     
-        // Simpan data aset
+        // Hitung umur
+        $umur = $request->tanggal_perolehan
+            ? Carbon::parse($request->tanggal_perolehan)->diffInYears(now())
+            : null;
+    
+        // Create Aset
         $asset = Assets::create([
             'nama' => $request->nama,
             'kategori_id' => $request->kategori_id,
             'room_id' => $request->room_id,
+            'lokasi' => $request->lokasi,
             'tanggal_perolehan' => $request->tanggal_perolehan,
+            'umur_tahun' => $umur,
             'kondisi' => $request->kondisi,
             'description' => $request->description,
         ]);
     
-        // Sinkronkan status kelayakan otomatis
->>>>>>> a316a51 (BISMILLAH)
+        // Generate kelayakan otomatis
         $this->syncKelayakanForAsset($asset);
-
+    
         return redirect()->route('assets.index')->with('success', 'Data aset berhasil ditambahkan.');
     }
 
-<<<<<<< HEAD
-    /** Form edit aset */
-=======
 
-
->>>>>>> a316a51 (BISMILLAH)
     public function edit(Assets $asset)
     {
         $kategoriAsetTetap = Kategori::where('tipe', 'aset_tetap')->get();
@@ -113,6 +97,7 @@ class AssetsController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'kategori_id' => 'required|exists:kategoris,id',
+            'room_id' => 'required|exists:rooms,id',
             'lokasi' => 'nullable|string|max:255',
             'tanggal_perolehan' => 'nullable|date',
             'kondisi' => 'required|string|max:255',
@@ -120,7 +105,7 @@ class AssetsController extends Controller
         ]);
 
         $asset->update($request->only([
-            'nama', 'kategori_id', 'lokasi', 'tanggal_perolehan', 'kondisi', 'description'
+            'nama', 'kategori_id', 'room_id', 'lokasi', 'tanggal_perolehan', 'kondisi', 'description'
         ]));
 
         $this->syncKelayakanForAsset($asset);

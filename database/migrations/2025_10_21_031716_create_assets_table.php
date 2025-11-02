@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->foreignId('kategori_id')->nullable()->constrained('kategoris')->onDelete('cascade');
+            $table->foreignId('room_id')->nullable()->constrained('rooms')->onDelete('cascade');
             $table->string('lokasi')->nullable();
             $table->date('tanggal_perolehan')->nullable();
             $table->integer('umur_tahun')->nullable();
