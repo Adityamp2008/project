@@ -5,7 +5,8 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Admin\{
     DashboardController as AdminDashboard,
     UserController,
-    KategoriController
+    KategoriController,
+    RoomController,
     
     
 };
@@ -61,6 +62,7 @@ Route::group([
     
     
         Route::resource('kategori', KategoriController::class);
+            Route::resource('rooms', RoomController::class);
 
 
     //Laporan perbaikan

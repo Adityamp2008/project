@@ -9,7 +9,7 @@
     <div class="card border-0 shadow-sm">
         <div class="card-body">
             <p><strong>Nama Aset:</strong> {{ $asset->nama }}</p>
-            <p><strong>Kategori:</strong> {{ $asset->kategori }}</p>
+            <p><strong>Kategori:</strong> {{ $asset->kategori->nama }}</p>
             <p><strong>Lokasi:</strong> {{ $asset->lokasi }}</p>
 
             <form method="POST" action="{{ route('assets.ajukanHapus', $asset->id) }}">

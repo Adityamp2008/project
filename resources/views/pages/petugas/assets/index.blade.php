@@ -45,12 +45,13 @@
                                 <th>Nama</th>
                                 <th>Kategori</th>
                                 <th>Lokasi</th>
+                                <th>Detail lokasi</th>
                                 <th>Tanggal Perolehan</th>
                                 <th>Kondisi</th>
                                 <th>Umur (th)</th>
                                 <th>Deskripsi</th>
                                 <th>Status Kelayakan</th>
-                                <th width="250">Aksi</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -86,7 +87,8 @@
                                         </div>
                                     </td>
                                     <td>{{ $asset->kategori->nama ?? '-' }}</td>
-                                    <td>{{ $asset->lokasi ?? '-' }}</td>
+                                    <td>{{ $asset->room->name ?? '-' }} </td>
+                                    <td> {{ $asset->lokasi  ?? '-' }} </td>
                                     <td>{{ $asset->tanggal_perolehan ? \Carbon\Carbon::parse($asset->tanggal_perolehan)->format('d-m-Y') : '-' }}</td>
                                     <td>{{ ucfirst($asset->kondisi ?? '-') }}</td>
                                     <td>{{ $asset->umur_tahun ?? 0 }}</td>

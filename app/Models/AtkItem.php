@@ -10,10 +10,13 @@ class AtkItem extends Model
         'code',
         'name',
         'kategori_id',
+        'room_id',
+        'sub_location',
         'description',
         'unit',
         'stock',
         'low_stock_threshold',
+        'active'
     ];
 
 
@@ -31,6 +34,10 @@ class AtkItem extends Model
         return $this->belongsTo(Kategori::class, 'kategori_id');
     }
 
+    public function room()
+    {
+        return $this->belongsTo(Room::class, 'room_id');
+    }
 
 
     

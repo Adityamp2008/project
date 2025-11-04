@@ -32,9 +32,21 @@
 
 
                 <div class="mb-3">
-                    <label>Lokasi</label>
-                    <input type="text" name="lokasi" class="form-control">
+                    <label>Ruangan</label>
+                    <select name="room_id" class="form-select" required>
+                        <option value="">-- Pilih Ruangan --</option>
+                        @foreach ($rooms as $room)
+                            <option value="{{ $room->id }}">{{ $room->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
+                
+                <div class="mb-3">
+                    <label>Detail Lokasi</label>
+                    <input type="text" name="lokasi" class="form-control" placeholder="Misal: Rak 12, Lemari A">
+                </div>
+
+
 
                 <div class="mb-3">
                     <label>Tanggal Perolehan</label>
