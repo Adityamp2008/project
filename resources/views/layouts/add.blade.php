@@ -6,15 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   {{-- Fonts, Icons, Styles --}}
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/styles/overlayscrollbars.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="{{ asset('frontend/AdminLTE/dist/css/adminlte.css') }}">
-
-  {{-- Chart & Map --}}
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css">
-
-  @stack('styles')
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/styles/overlayscrollbars.min.css" />
+  <link rel="stylesheet" href="{{ asset('frontend/AdminLTE/dist/css/adminlte.css') }}" />
 </head>
 
 <body class="layout-fixed sidebar-expand-lg sidebar-open bg-body-tertiary">
@@ -120,6 +114,7 @@
 
   <main class="app-main">
     @yield('content')
+    @yield('scripts')
   </main>
 
   <footer class="app-footer">
@@ -129,10 +124,7 @@
 </div>
 
 {{-- Scripts --}}
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{{ asset('frontend/AdminLTE/dist/js/adminlte.js') }}"></script>
-
-@stack('scripts')
-
 </body>
 </html>

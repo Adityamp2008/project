@@ -51,7 +51,7 @@
                         <td>{{ $item->nama }}</td>
                         <td>{{ $item->kategori->nama ?? '-'}}</td>
                         <td>{{ $item->kondisi }}</td>
-                        <td>{{ $item->lokasi }}</td>
+                        <td>{{ $item->room->name ?? '-' }} - {{ $item->lokasi ?? '-' }}</td>
                     </tr>
                 @empty
                     <tr><td colspan="4" class="text-center">Tidak ada data aset tetap</td></tr>
@@ -78,7 +78,7 @@
                 @forelse($atkItems as $item)
                     <tr>
                         <td>{{ $item->nama }}</td>
-                        <td>{{ $item->kategori }}</td>
+                        <td>{{ $item->kategori->nama ?? '-' }}</td>
                         <td>{{ $item->stok }}</td>
                     </tr>
                 @empty
