@@ -47,7 +47,8 @@ class RiwayatPerbaikanController extends Controller
             'deskripsi' => 'required|string|max:255',
             'biaya' => 'required|numeric|min:0',
             'diperbaiki_oleh' => 'required|string|max:255',
-            'tanggal_perbaikan' => 'required|date',
+            'tanggal_perbaikan' => 'nullable|date',
+            'tanggal_selesai' => 'nullable|date',
         ]);
 
         RiwayatPerbaikan::create([
@@ -56,6 +57,7 @@ class RiwayatPerbaikanController extends Controller
             'biaya' => $request->biaya,
             'diperbaiki_oleh' => auth()->user()->name,
             'tanggal_perbaikan' => $request->tanggal_perbaikan,
+            'tanggal_selesai' => $request->tanggal_selesai,
             'status' => 'proses',
         ]);
 
@@ -73,7 +75,7 @@ class RiwayatPerbaikanController extends Controller
             'tanggal_selesai' => now(),
         ]);
 
-        return redirect()->route('riwayat-perbaikan.index')
+        return redirect()->route('riwayat_perbaikan.index')
             ->with('success', 'Perbaikan berhasil ditandai selesai.');
     }
 }
