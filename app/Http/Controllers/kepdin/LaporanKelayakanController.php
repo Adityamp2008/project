@@ -36,4 +36,6 @@ class LaporanKelayakanController extends Controller
 
         return back()->with('error', 'Laporan telah ditolak.');
     }
+
+    
 }

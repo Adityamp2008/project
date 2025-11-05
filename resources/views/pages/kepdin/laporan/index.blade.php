@@ -12,6 +12,18 @@
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
+    <form method="GET" action="{{ route('kepdin.laporan.index') }}" class="mb-3 d-flex gap-2">
+    <input type="text" name="search" class="form-control" placeholder="Cari nama aset..." value="{{ request('search') }}">
+    <select name="status" class="form-select">
+        <option value="">Semua Status</option>
+        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+        <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Approved</option>
+        <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
+    </select>
+    <button class="btn btn-primary">Filter</button>
+</form>
+
+
     <div class="table-responsive">
         <table class="table table-bordered align-middle text-center">
             <thead class="table-dark">

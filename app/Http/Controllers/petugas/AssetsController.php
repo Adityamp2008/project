@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Petugas;
 
 use App\Http\Controllers\Controller;
 use App\Models\Assets;
-
 use App\Models\KelayakanAssets;
 use App\Models\User;
 use App\Models\Room;
@@ -60,6 +59,12 @@ class AssetsController extends Controller
             'kondisi' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
+
+        $asset = Assets::create($request->only([
+            'nama', 'kategori_id', 'lokasi', 'tanggal_perolehan', 'kondisi', 'description'
+        ]));    
+        // Simpan data aset
+
     
         // Hitung umur
         $umur = $request->tanggal_perolehan
@@ -78,12 +83,12 @@ class AssetsController extends Controller
             'description' => $request->description,
         ]);
     
+        // Sinkronkan status kelayakan otomatis
         // Generate kelayakan otomatis
         $this->syncKelayakanForAsset($asset);
     
         return redirect()->route('assets.index')->with('success', 'Data aset berhasil ditambahkan.');
     }
-
 
     public function edit(Assets $asset)
     {
