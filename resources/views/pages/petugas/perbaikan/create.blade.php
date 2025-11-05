@@ -15,10 +15,10 @@
             <input type="text" class="form-control" value="{{ $asset->nama }}" readonly>
         </div>
 
-        {{-- Deskripsi --}}
+        {{-- Deskripsi Perbaikan --}}
         <div class="mb-3">
             <label class="form-label">Deskripsi Perbaikan</label>
-            <textarea name="description" class="form-control" rows="4" required>{{ old('description') }}</textarea>
+            <textarea name="deskripsi" class="form-control" rows="4" required>{{ old('deskripsi') }}</textarea>
         </div>
 
         {{-- Tanggal Mulai Perbaikan --}}
@@ -28,20 +28,19 @@
                    value="{{ old('tanggal_perbaikan', date('Y-m-d')) }}" required>
         </div>
 
-        {{-- Tanggal Selesai Perbaikan --}}
+        {{-- Tanggal Selesai Perbaikan (opsional) --}}
         <div class="mb-3">
             <label class="form-label">Tanggal Selesai Perbaikan</label>
             <input type="date" name="tanggal_selesai" class="form-control"
                    value="{{ old('tanggal_selesai') }}"
                    placeholder="Isi jika perbaikan sudah selesai">
-            <small class="text-muted"></small>
         </div>
 
         {{-- Biaya --}}
         <div class="mb-3">
             <label class="form-label">Biaya (Rp)</label>
             <input type="number" name="biaya" class="form-control"
-                   value="{{ old('biaya') }}" placeholder="Masukkan biaya perbaikan" required>
+                   value="{{ old('biaya') }}" placeholder="Masukkan biaya perbaikan" min="0">
         </div>
 
         {{-- Diperbaiki Oleh --}}
@@ -49,11 +48,8 @@
             <label class="form-label">Diperbaiki Oleh</label>
             <input type="text" name="diperbaiki_oleh" class="form-control"
                    value="{{ old('diperbaiki_oleh', auth()->user()->name ?? '') }}"
-                   placeholder="Nama petugas yang memperbaiki" required>
+                   placeholder="Nama petugas yang memperbaiki">
         </div>
-
-        {{-- Status hidden --}}
-        <input type="hidden" name="status" value="proses">
 
         <div class="d-flex gap-2 justify-content-end">
             <a href="{{ route('assets.index') }}" class="btn btn-secondary">

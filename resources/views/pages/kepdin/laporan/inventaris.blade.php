@@ -34,7 +34,7 @@
     @if($assetType == '' || $assetType == 'aset_tetap')
         <h5 class="mt-4 mb-2">Aset Tetap</h5>
         <table class="table table-bordered">
-            <thead class="table-dark">
+            <thead class="table-dark text-center">
                 <tr>
                     <th>Nama</th>
                     <th>Kategori</th>
