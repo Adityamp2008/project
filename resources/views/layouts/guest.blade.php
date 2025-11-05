@@ -113,7 +113,7 @@
                   <a href="{{ route('kepdin.penghapusan.index') }}"
                      class="nav-link {{ Route::is('kepdin.penghapusan.*') ? 'active' : '' }}">
                     <i class="bi bi-clipboard-minus nav-icon"></i>
-                    <p>Laporan Izin Penghapusan</p>
+                    <p>Laporan Penghapusan</p>
                   </a>
                 </li>
 

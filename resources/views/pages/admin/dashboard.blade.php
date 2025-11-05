@@ -31,7 +31,7 @@
     </div>
 
     {{-- Admin --}}
-    <div class="col-md-3 col-sm-6">
+    {{-- <div class="col-md-3 col-sm-6">
       <div class="small-box text-bg-success shadow-sm">
         <div class="inner">
           <h3>{{ $total_admin ?? 0 }}</h3>
@@ -43,10 +43,10 @@
           0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
         </svg>
       </div>
-    </div>
+    </div> --}}
 
     {{-- Petugas --}}
-    <div class="col-md-3 col-sm-6">
+    {{-- <div class="col-md-3 col-sm-6">
       <div class="small-box text-bg-warning shadow-sm">
         <div class="inner">
           <h3>{{ $total_petugas ?? 0 }}</h3>
@@ -59,10 +59,10 @@
           1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
         </svg>
       </div>
-    </div>
+    </div> --}}
 
     {{-- Kepdin --}}
-    <div class="col-md-3 col-sm-6">
+    {{-- <div class="col-md-3 col-sm-6">
       <div class="small-box text-bg-danger shadow-sm">
         <div class="inner">
           <h3>{{ $total_kepdin ?? 0 }}</h3>
@@ -75,8 +75,41 @@
           1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
         </svg>
       </div>
+    </div> --}}
+    
+    {{-- Ruangan --}}
+    <div class="col-md-3 col-sm-6">
+      <div class="small-box text-bg-info shadow-sm">
+        <div class="inner">
+          <h3>{{ $total_rooms ?? 0 }}</h3>
+          <p>Total Ruangan</p>
+        </div>
+        <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M4 4h16v16H4V4zm2 2v12h12V6H6zm3 2h2v2H9V8zm4 0h2v2h-2V8zm-4 4h2v2H9v-2zm4 0h2v2h-2v-2z"/>
+        </svg>
+      </div>
     </div>
+
+    {{-- Kategori --}}
+    <div class="col-md-3 col-sm-6">
+      <div class="small-box text-bg-secondary shadow-sm">
+        <div class="inner">
+          <h3>{{ $total_categories ?? 0 }}</h3>
+          <p>Total Kategori</p>
+        </div>
+        <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M3 6l3-3h12l3 3v12l-3 3H6l-3-3V6zm3 0v12h12V6H6zm2 2h8v2H8V8zm0 4h5v2H8v-2z"/>
+        </svg>
+      </div>
+    </div>
+
+    
+    
   </div>
+  
+  
+  
+  
 
   {{-- Tombol Navigasi ke Manajemen Akun --}}
 

@@ -45,8 +45,9 @@ public function pdf(Request $request)
                 'jenis' => 'Aset Tetap',
                 'nama' => $a->nama,
                 'kategori' => $a->kategori,
-                'kondisi' => $a->kondisi ?? '-', 
-                'lokasi' => $a->lokasi ?? '-',   
+                'kondisi' => $a->kondisi ?? '-',
+                'room' => $a->room ?? '-',
+                'lokasi' => $a->lokasi ?? '-',
                 'stok' => '-'
             ]);
 
@@ -54,18 +55,19 @@ public function pdf(Request $request)
             return AtkItem::all()->map(fn($a) => (object)[
                 'jenis' => 'ATK',
                 'nama' => $a->name,
-                'kategori' => $a->category ?? '-',
+                'kategori' => $a->kategori ?? '-',
                 'kondisi' => '-',
                 'lokasi' => '-',
+                'room' => $a->room->nama ?? '-',
                 'stok' => $a->stock
             ]);
         } else {
-            // ✅ Gabungan dua jenis aset
             $aset = Assets::all()->map(fn($a) => (object)[
                 'jenis' => 'Aset Tetap',
                 'nama' => $a->nama,
                 'kategori' => $a->kategori,
                 'kondisi' => $a->kondisi ?? '-',
+                'room' => $a->room ?? '-',
                 'lokasi' => $a->lokasi ?? '-',  
                 'stok' => '-'
             ]);
@@ -73,9 +75,10 @@ public function pdf(Request $request)
             $atk = AtkItem::all()->map(fn($a) => (object)[
                 'jenis' => 'ATK',
                 'nama' => $a->name,
-                'kategori' => $a->category ?? '-',
+                'kategori' => $a->kategori ?? '-',
                 'kondisi' => '-',
                 'lokasi' => '-',
+                'room' => $a->room->nama ?? '-',
                 'stok' => $a->stock
             ]);
 

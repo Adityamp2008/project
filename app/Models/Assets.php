@@ -11,7 +11,7 @@ class Assets extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nama', 'kategori_id', 'lokasi', 'tanggal_perolehan', 'kondisi',
+        'nama', 'kategori_id','room_id', 'lokasi', 'tanggal_perolehan', 'kondisi',
         'umur_tahun', 'description', 'pernah_diperbaiki'
     ];
 

@@ -14,7 +14,7 @@
     @endif
 
     <table class="table table-bordered align-middle">
-        <thead>
+        <thead class="table-dark">
             <tr>
                 <th>#</th>
                 <th>Nama Ruangan</th>
@@ -30,12 +30,12 @@
                     <td>{{ $room->description ?? '-' }}</td>
                     <td>
                         <a href="{{ route('rooms.edit', $room->id) }}" class="btn btn-sm btn-warning">
-                            <i class="bi bi-pencil"></i> Edit
+                            <i class="bi bi-pencil"></i>
                         </a>
                         <form action="{{ route('rooms.destroy', $room->id) }}" method="POST" class="d-inline">
                             @csrf @method('DELETE')
                             <button class="btn btn-sm btn-danger" onclick="return confirm('Hapus ruangan ini?')">
-                                <i class="bi bi-trash"></i> Hapus
+                                <i class="bi bi-trash"></i>
                             </button>
                         </form>
                     </td>
