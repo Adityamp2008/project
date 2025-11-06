@@ -44,7 +44,7 @@ class RiwayatPerbaikanController extends Controller
     public function store(Request $request, Assets $asset)
     {
         $request->validate([
-            'deskripsi' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
             'biaya' => 'required|numeric|min:0',
             'diperbaiki_oleh' => 'required|string|max:255',
             'tanggal_perbaikan' => 'nullable|date',
@@ -53,7 +53,7 @@ class RiwayatPerbaikanController extends Controller
 
         RiwayatPerbaikan::create([
             'asset_id' => $asset->id,
-            'deskripsi' => $request->deskripsi,
+            'description' => $request->deskripsi,
             'biaya' => $request->biaya,
             'diperbaiki_oleh' => auth()->user()->name,
             'tanggal_perbaikan' => $request->tanggal_perbaikan,

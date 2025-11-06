@@ -65,7 +65,6 @@
                     <th>Deskripsi</th>
                     <th>Biaya</th>
                     <th>Diperbaiki Oleh</th>
-                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -75,25 +74,15 @@
                     <td>{{ $r->asset->nama ?? '-' }}</td>
                     <td>{{ $r->asset->kategori->nama ?? '-' }}</td>
                     <td>{{ $r->tanggal_perbaikan ? \Carbon\Carbon::parse($r->tanggal_perbaikan)->format('d-m-Y') : '-' }}</td>
-                    <td>{{ $r->tanggal_selesai ? \Carbon\Carbon::parse($r->tanggal_selesai)->format('d-m-Y') : '-' }}</td>
-                    <td class="text-start">{{ $r->description ?? '-' }}</td>
-                    <td>Rp {{ number_format($r->biaya, 0, ',', '.') }}</td>
-                    <td>{{ $r->diperbaiki_oleh ?? '-' }}</td>
-                    <td>
-                        @if(!$r->tanggal_perbaikan && $r->asset->izin_perbaikan)
-                            <span class="badge bg-secondary">
-                                <i class="bi bi-clock"></i> Menunggu Perbaikan
-                            </span>
-                        @elseif($r->status == 'proses')
-                            <span class="badge bg-warning text-dark">
-                                <i class="bi bi-tools"></i> Sedang Diperbaiki
-                            </span>
-                        @elseif($r->status == 'selesai')
-                            <span class="badge bg-success">
-                                <i class="bi bi-check-circle"></i> Selesai
-                            </span>
+                    <td>@if ($r->tanggal_selesai)
+                            {{ \Carbon\Carbon::parse($riwayat->tanggal_selesai)->format('d-m-Y') }}
+                        @else
+                            <span class="text-warning">Belum selesai</span>
                         @endif
                     </td>
+                    <td>{{ $r->description ?? '-' }}</td>
+                    <td>Rp {{ number_format($r->biaya, 0, ',', '.') }}</td>
+                    <td>{{ $r->diperbaiki_oleh ?? '-' }}</td>
                 </tr>
                 @empty
                 <tr>

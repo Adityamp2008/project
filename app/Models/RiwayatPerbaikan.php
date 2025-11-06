@@ -13,7 +13,7 @@ class RiwayatPerbaikan extends Model
     // Kolom yang bisa diisi mass-assignment
     protected $fillable = [
         'asset_id',
-        'deskripsi',
+        'description',
         'biaya',
         'diperbaiki_oleh',
         'tanggal_perbaikan',

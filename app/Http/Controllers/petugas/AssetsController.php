@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Petugas;
 
 use App\Http\Controllers\Controller;
 use App\Models\Assets;
+
 use App\Models\KelayakanAssets;
 use App\Models\User;
 use App\Models\Room;
@@ -59,12 +60,6 @@ class AssetsController extends Controller
             'kondisi' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
-
-        $asset = Assets::create($request->only([
-            'nama', 'kategori_id', 'lokasi', 'tanggal_perolehan', 'kondisi', 'description'
-        ]));    
-        // Simpan data aset
-
     
         // Hitung umur
         $umur = $request->tanggal_perolehan
@@ -83,12 +78,12 @@ class AssetsController extends Controller
             'description' => $request->description,
         ]);
     
-        // Sinkronkan status kelayakan otomatis
         // Generate kelayakan otomatis
         $this->syncKelayakanForAsset($asset);
     
         return redirect()->route('assets.index')->with('success', 'Data aset berhasil ditambahkan.');
     }
+
 
     public function edit(Assets $asset)
     {
@@ -177,7 +172,7 @@ class AssetsController extends Controller
     {
         $request->validate([
             'tanggal_perbaikan' => 'required|date',
-            'deskripsi' => 'required|string|max:1000',
+            'description' => 'required|string|max:1000',
             'biaya' => 'nullable|numeric|min:0',
             'diperbaiki_oleh' => 'nullable|string|max:255',
         ]);
@@ -187,7 +182,7 @@ class AssetsController extends Controller
         RiwayatPerbaikan::create([
             'asset_id' => $asset->id,
             'tanggal_perbaikan' => $request->tanggal_perbaikan,
-            'deskripsi_perbaikan' => $request->deskripsi,
+            'description' => $request->description,
             'biaya' => $request->biaya ?? 0,
             'diperbaiki_oleh' => $request->diperbaiki_oleh ?? auth()->user()->name,
             'status' => 'in_progress',
@@ -217,7 +212,7 @@ class AssetsController extends Controller
         RiwayatPerbaikan::create([
             'asset_id' => $asset->id,
             'tanggal_perbaikan' => now(),
-            'deskripsi_perbaikan' => 'Perbaikan sedang berlangsung',
+            'description' => 'Perbaikan sedang berlangsung',
             'biaya' => 0,
             'diperbaiki_oleh' => auth()->user()->name,
             'status' => 'in_progress',
@@ -241,7 +236,7 @@ class AssetsController extends Controller
     public function kirimKeKepdin(RiwayatPerbaikan $riwayat)
     {
         $riwayat->update([
-            'status' => 'final_approved',
+            'status' => 'final_approved', 
         ]);
 
         return redirect()->route('assets.index')->with('success', 'Perbaikan aset telah dikirim ke Kepdin.');

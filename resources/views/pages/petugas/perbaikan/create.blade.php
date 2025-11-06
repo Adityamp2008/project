@@ -18,7 +18,7 @@
         {{-- Deskripsi Perbaikan --}}
         <div class="mb-3">
             <label class="form-label">Deskripsi Perbaikan</label>
-            <textarea name="deskripsi" class="form-control" rows="4" required>{{ old('deskripsi') }}</textarea>
+            <textarea name="description" class="form-control" rows="4" required>{{ old('description') }}</textarea>
         </div>
 
         {{-- Tanggal Mulai Perbaikan --}}
