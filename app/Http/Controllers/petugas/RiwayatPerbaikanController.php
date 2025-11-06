@@ -7,6 +7,7 @@ use App\Models\Assets;
 use App\Models\Kategori;
 use App\Models\RiwayatPerbaikan;
 use Illuminate\Http\Request;
+use PDF;
 
 class RiwayatPerbaikanController extends Controller
 {
@@ -14,21 +15,61 @@ class RiwayatPerbaikanController extends Controller
      * Tampilkan semua riwayat perbaikan yang sudah diizinkan
      * dengan filter kategori & petugas.
      */
-    public function index(Request $request)
+        public function index(Request $request)
     {
         $kategori = Kategori::all();
 
-        $riwayat = RiwayatPerbaikan::with('asset')
-            ->when($request->filled('kategori'), fn($q) => 
-                $q->whereHas('asset.kategori', fn($q2) => $q2->where('id', $request->kategori))
+        $riwayat = RiwayatPerbaikan::with(['asset.kategori'])
+            ->when($request->filled('nama_asset'), fn($q) =>
+                $q->whereHas('asset', fn($q2) =>
+                    $q2->where('nama', 'like', "%{$request->nama_asset}%")
+                )
             )
-            ->when($request->filled('diperbaiki_oleh'), fn($q) => 
+            ->when($request->filled('kategori'), fn($q) =>
+                $q->whereHas('asset.kategori', fn($q2) =>
+                    $q2->where('id', $request->kategori)
+                )
+            )
+            ->when($request->filled('diperbaiki_oleh'), fn($q) =>
                 $q->where('diperbaiki_oleh', 'like', "%{$request->diperbaiki_oleh}%")
             )
-            ->get(); // ambil semua tanpa pagination
+            ->orderByDesc('tanggal_perbaikan')
+            ->get();
 
         return view('pages.petugas.riwayat_perbaikan.index', compact('riwayat', 'kategori'));
     }
+
+
+        //* Export PDF berdasarkan filter yang sedang aktif
+    public function exportPdf(Request $request)
+    {
+        $kategori = Kategori::all();
+
+        $riwayat = RiwayatPerbaikan::with(['asset.kategori'])
+            ->when($request->filled('nama_asset'), fn($q) =>
+                $q->whereHas('asset', fn($q2) =>
+                    $q2->where('nama', 'like', "%{$request->nama_asset}%")
+                )
+            )
+            ->when($request->filled('kategori'), fn($q) =>
+                $q->whereHas('asset.kategori', fn($q2) =>
+                    $q2->where('id', $request->kategori)
+                )
+            )
+            ->when($request->filled('diperbaiki_oleh'), fn($q) =>
+                $q->where('diperbaiki_oleh', 'like', "%{$request->diperbaiki_oleh}%")
+            )
+            ->orderByDesc('tanggal_perbaikan')
+            ->get();
+
+        $pdf = PDF::loadView('pages.petugas.riwayat_perbaikan.pdf', [
+            'riwayat' => $riwayat,
+            'kategori' => $kategori,
+        ])->setPaper('a4', 'landscape');
+
+        return $pdf->download('riwayat_perbaikan.pdf');
+    }
+
 
     /**
      * Form tambah perbaikan aset

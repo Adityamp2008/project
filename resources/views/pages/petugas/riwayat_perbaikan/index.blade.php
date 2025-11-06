@@ -43,6 +43,10 @@
                     <button type="submit" class="btn btn-primary">
                         <i class="bi bi-search"></i> Cari
                     </button>
+                    <a href="{{ route('riwayat-perbaikan.export-pdf', request()->query()) }}" target="_blank" class="btn btn-danger">
+    <i class="bi bi-file-earmark-pdf"></i> Export PDF
+</a>
+
                     <a href="{{ route('riwayat-perbaikan.index') }}" class="btn btn-secondary">
                         <i class="bi bi-arrow-repeat"></i> Reset
                     </a>

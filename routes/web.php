@@ -118,6 +118,8 @@ Route::group([
 
     Route::get('/riwayat-perbaikan', [RiwayatPerbaikanController::class, 'index'])
         ->name('riwayat-perbaikan.index');
+        Route::get('/petugas/riwayat-perbaikan/export-pdf', [RiwayatPerbaikanController::class, 'exportPdf'])
+        ->name('riwayat-perbaikan.export-pdf');
             
     Route::get('/assets/hapus/{id}', [AssetsController::class, 'formHapus'])->name('assets.formHapus');
     Route::post('/assets/hapus/{id}', [AssetsController::class, 'ajukanHapus'])->name('assets.ajukanHapus');
